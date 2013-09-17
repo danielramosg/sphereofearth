@@ -22,6 +22,8 @@ from numpy import *
 R=100.
 H=1e-5
 
+HRES = 1280 #screen resolution (hor)
+VRES = 1024 #screen resolution (ver)
 
 def Tissot (x,y,p):
 	# lon, lat coordinates of the point
@@ -76,7 +78,7 @@ def Tissot (x,y,p):
 
 class MyTissot(QWidget):
 
-    def __init__(self, parent, image, scalefactor, pr, prtrick = None):
+    def __init__(self, parent, image, pr, prtrick = None):
         super(QWidget, self).__init__(parent) #llamar al constructor de la superclase
         
 	self.pr = pr
@@ -87,8 +89,11 @@ class MyTissot(QWidget):
 
 	w = image.width()
 	h = image.height()
+	#scalefactor = min( 1894.0/w, 912.0/h ) if (1034.0/h)*w > 1395.0 else 1034.0/h
+	scalefactor = min( (HRES-26.)/w, (VRES-168.)/h ) if (1034.0/h)*w > 1395.0 else (VRES-130.)/h	
 	rect = QRect(0,0,scalefactor*w,scalefactor*h)		
-	
+	#rect=QRect(0,0,parent.width(),parent.height())
+
 	self.CX = rect.width()/2
 	self.CY = rect.height()/2
 	#self.SC = 30 # must be set manually when created
@@ -108,24 +113,33 @@ class MyTissot(QWidget):
         
 	self.clearbutton = QPushButton(self)
 	self.clearbutton.setText("Clear")
-        self.clearbutton.setGeometry(QRect(850,530,90,27))
+        self.clearbutton.setGeometry(QRect(HRES-150,VRES-130,90,27))
 	self.connect(self.clearbutton, SIGNAL("clicked()"),self.ClearEllipses)
 
 	self.coordlabel = QLabel(self)
-	self.coordlabel.setGeometry(QRect(750,560,300,27))
+	self.coordlabel.setGeometry(QRect(HRES-250,VRES-100,300,27))
 	self.coordlabel.setText('Coordinates:')
 
 	self.radiuslab = QLabel(self)
-	self.radiuslab.setGeometry(QRect(850,500,30,27))
+	self.radiuslab.setGeometry(QRect(HRES-250,VRES-130,25,27))
 	self.radiuslab.setText('r=') 
 	self.radiusbox = QDoubleSpinBox(self)
-	self.radiusbox.setGeometry(QRect(875,500,65,27))
+	self.radiusbox.setGeometry(QRect(HRES-225,VRES-130,65,27))
 	self.radiusbox.setValue(20)
 	self.connect(self.radiusbox, SIGNAL("valueChanged(double)"),self.ellipsesLayer.update)
+
+	#self.exitbutton = QPushButton(self)
+	#self.exitbutton.setText("Exit")
+	#self.exitbutton.setGeometry(QRect(HRES-150,VRES-165,90,27))
+	#self.connect(self.exitbutton, SIGNAL("clicked()"),self.exit)
 
     def ClearEllipses (self):
 	self.ellipsesLayer.listellip = []
 	self.ellipsesLayer.update()
+
+    #def exit (self):
+	#quit()
+
 
 
 class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclase de QLabel
