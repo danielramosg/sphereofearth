@@ -20,9 +20,6 @@ from tissot import *
 lon0 = 2.170035 #Bcn
 lat0 = 41.386996 #Bcn
 
-HRES = 1280 #screen resolution (hor)
-VRES = 1024 #screen resolution (ver)
-
 class Mywidget (QWidget):
 
     def __init__(self):
@@ -33,10 +30,11 @@ class Mywidget (QWidget):
 	self.ui=Ui_Form()
 	self.ui.setupUi(self)
 
+	dw = QDesktopWidget()
 
 	#self.resize(1050,650)
 	#self.tabsize = QRect(0, -8, 1050, 650)
-	self.tabsize = QRect(0, 0, HRES, VRES)	
+	self.tabsize = QRect(0, 0, dw.availableGeometry().width(), dw.availableGeometry().height())	
 	#self.tabsize = QRect(0, 0, 400, 400)
 
 	pj1 = Proj(proj='eqc',ellps='sphere',a=R,b=R)

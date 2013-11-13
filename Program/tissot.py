@@ -22,8 +22,8 @@ from numpy import *
 R=100.
 H=1e-5
 
-HRES = 1280 #screen resolution (hor)
-VRES = 1024 #screen resolution (ver)
+#HRES = 1280 #screen resolution (hor)
+#VRES = 1024 #screen resolution (ver)
 
 def Tissot (x,y,p):
 	# lon, lat coordinates of the point
@@ -89,6 +89,11 @@ class MyTissot(QWidget):
 
 	w = image.width()
 	h = image.height()
+	
+	dw = QDesktopWidget()	
+	HRES = dw.availableGeometry(self).width()
+	VRES = dw.availableGeometry(self).height()
+	
 	#scalefactor = min( 1894.0/w, 912.0/h ) if (1034.0/h)*w > 1395.0 else 1034.0/h
 	scalefactor = min( (HRES-26.)/w, (VRES-168.)/h ) if (1034.0/h)*w > 1395.0 else (VRES-130.)/h	
 	rect = QRect(0,0,scalefactor*w,scalefactor*h)		
