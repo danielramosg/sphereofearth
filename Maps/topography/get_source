@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# Get the source image from NASA.
+# http://visibleearth.nasa.gov/view.php?id=57752
+
+wget http://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57752/land_shallow_topo_8192.tif

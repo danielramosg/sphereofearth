@@ -6,18 +6,27 @@ from PIL import Image
 from pyproj import Proj
 from time import time
 
+from ConfigParser import SafeConfigParser
+params=SafeConfigParser()
+params.read('../../param.ini')
 
-R = 100 # Radio de la Tierra (globo terráqueo) en mm
+src_img = params.get('Source_Image','src_img')
+R = params.getfloat('Maps_Size','radius_of_the_globe')
+resol = params.getfloat('Maps_Size','resolution')
+lon0 =  params.getfloat('Center_of_projections','longitude')
+lat0 =  params.getfloat('Center_of_projections','latitude')
 
-p=Proj(proj='cea', lat_ts = 45, ellps='sphere', a=R, b=R)
 
-im=Image.open('ori_8192_mar.tif')
+print 'Creating Plate-Carree projection.'
+
+p=Proj(proj='eqc', ellps='sphere', a=R, b=R)
+
+im=Image.open(src_img)
 
 srcx, srcy= im.size
 assert srcx == 2*srcy
 
 
-resol=150. #resolucion, dpi #150
 ancho=2*p(180,0)[0]  #anchura de la imagen, mm
 alto=2*p(0,90)[1]  #altura de la imagen, mm 
 
@@ -27,6 +36,7 @@ PX2MM=1./MM2PX
 dimx=int(ancho*MM2PX) 
 dimy=int(alto*MM2PX)
 
+print 'Earth radius: %d mm' % R
 print 'Size: %.2f x %.2f mm (%d x %d pixels at %d dpi)' % (ancho, alto, dimx, dimy, resol)
 
 print "Loading 'plate carree' data..."
@@ -50,8 +60,8 @@ for i in range(dimx):
 		except:
 			resul[i,j]=(255,0,0)
 
-imfinale.save('gallpeters.pdf', 'PDF', resolution=resol)
-
+#imfinale.save('eqc.pdf', 'PDF', resolution=resol)
+imfinale.save('pc.png')
 
 print "Done. Elapsed time: %.2f sec" % (time()-start)
 

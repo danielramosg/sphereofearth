@@ -1,0 +1,13 @@
+#!/usr/bin/env octave
+
+
+load gratpj.dat
+
+x=gratpj(:,1);
+y=gratpj(:,2);
+orient landscape
+
+plot(x,y,'color',[0 0 0])
+
+axis("off","image")
+print -dsvg gratpj.svg

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+# Create images (topography)
+
+python aziequi.py
+python gallpeters.py
+python gnomo.py
+python mercator.py
+python mollweide.py
+python pc.py
+
+mv *.png ../images/

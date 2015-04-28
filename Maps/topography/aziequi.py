@@ -7,23 +7,27 @@ from math import *
 from pyproj import Proj
 from time import time
 
+from ConfigParser import SafeConfigParser
+params=SafeConfigParser()
+params.read('../../param.ini')
 
-R = 100 # Radio de la Tierra (globo terráqueo) en mm
+src_img = params.get('Source_Image','src_img')
+R = params.getfloat('Maps_Size','radius_of_the_globe')
+resol = params.getfloat('Maps_Size','resolution')
+lon0 =  params.getfloat('Center_of_projections','longitude')
+lat0 =  params.getfloat('Center_of_projections','latitude')
 
-#centro de la proyeccion
-lon0 = 2.170035 #Bcn
-lat0 = 41.386996 #Bcn
+
+
+print 'Creating Azimuthal Equidistant projection.'
 
 p=Proj(proj='aeqd', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
 
 
-im=Image.open('ori_8192_mar.tif')
-
+im=Image.open(src_img)
 srcx, srcy= im.size
 assert srcx == 2*srcy
 
-
-resol=150. #resolucion, dpi #150
 ancho=2*pi*R  #anchura de la imagen, mm
 alto=ancho  #altura de la imagen, mm 
 
@@ -33,6 +37,7 @@ PX2MM=1./MM2PX
 dimx=int(ancho*MM2PX) 
 dimy=int(alto*MM2PX)
 
+print 'Earth radius: %d mm' % R
 print 'Size: %.2f x %.2f mm (%d x %d pixels at %d dpi)' % (ancho, alto, dimx, dimy, resol)
 
 
@@ -58,7 +63,8 @@ for i in range(dimx):
 			resul[i,j]=(255,255,255)
 
 
-imfinale.save('aziequi.pdf', 'PDF', resolution=resol)
+#imfinale.save('aziequi.pdf', 'PDF', resolution=resol)
+imfinale.save('aziequi.png')
 
 print "Done. Elapsed time: %.2f sec" % (time()-start)
 

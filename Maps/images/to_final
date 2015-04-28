@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# argument: dpi (e.g. 90)
+
+for i in *.svg
+	do 
+	inkscape --export-dpi $1 --export-png=./final/${i%.svg}.png --file=$i 
+	done
+
+echo ' '
+for i in ./final/*.png
+	do 
+	echo $i
+	identify -format "%wx%h" $i
+	done

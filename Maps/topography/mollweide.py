@@ -6,18 +6,26 @@ from PIL import Image
 from pyproj import Proj
 from time import time
 
+from ConfigParser import SafeConfigParser
+params=SafeConfigParser()
+params.read('../../param.ini')
 
-R = 100 # Radio de la Tierra (globo terráqueo) en mm
+src_img = params.get('Source_Image','src_img')
+R = params.getfloat('Maps_Size','radius_of_the_globe')
+resol = params.getfloat('Maps_Size','resolution')
+lon0 =  params.getfloat('Center_of_projections','longitude')
+lat0 =  params.getfloat('Center_of_projections','latitude')
 
-p=Proj(proj='moll',ellps='sphere', a=R, b=R)
 
-im=Image.open('ori_8192_mar.tif')
+print 'Creating Mollweide projection.'
 
+p=Proj(proj='moll', ellps='sphere', a=R, b=R)
+
+im=Image.open(src_img)
 srcx, srcy= im.size
 assert srcx == 2*srcy
 
 
-resol=150. #resolucion, dpi #150
 ancho=2*p(180,0)[0]  #anchura de la imagen, mm
 alto=2*p(0,90)[1]  #altura de la imagen, mm 
 
@@ -27,9 +35,8 @@ PX2MM=1./MM2PX
 dimx=int(ancho*MM2PX) 
 dimy=int(alto*MM2PX)
 
+print 'Earth radius: %d mm' % R
 print 'Size: %.2f x %.2f mm (%d x %d pixels at %d dpi)' % (ancho, alto, dimx, dimy, resol)
-
-
 
 print "Loading 'plate carree' data..."
 orig=im.load()
@@ -55,8 +62,8 @@ for i in range(dimx):
 		else:
 			resul[i,j]=(255,255,255)
 
-imfinale.save('mollweide.pdf', 'PDF', resolution=resol)
-#imfinale.save('mollweide_peq.jpg')
+#imfinale.save('mollweide.pdf', 'PDF', resolution=resol)
+imfinale.save('mollweide.png')
 
 print "Done. Elapsed time: %.2f sec" % (time()-start)
 

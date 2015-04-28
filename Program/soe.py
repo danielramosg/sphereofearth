@@ -14,11 +14,16 @@ from ui_soe import *
 
 from pyproj import Proj
 
-
 from tissot import *    
 
-lon0 = 2.170035 #Bcn
-lat0 = 41.386996 #Bcn
+from ConfigParser import SafeConfigParser
+params=SafeConfigParser()
+params.read('../param.ini')
+
+#R = params.getfloat('Maps_Size','radius_of_the_globe')
+lon0 =  params.getfloat('Center_of_projections','longitude')
+lat0 =  params.getfloat('Center_of_projections','latitude')
+
 
 class Mywidget (QWidget):
 
