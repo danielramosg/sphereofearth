@@ -19,13 +19,13 @@ from numpy import *
 
 #R=6366197.
 #R=100 * 742/3710.
-R=100.
+#R=100.
 H=1e-5
 
 #HRES = 1280 #screen resolution (hor)
 #VRES = 1024 #screen resolution (ver)
 
-def Tissot (x,y,p):
+def Tissot (x,y,p,R):
 	# lon, lat coordinates of the point
 	(lam, phi) = p(x,y,inverse=True, radians=True)
 	#print 'coords: ', lam, phi
@@ -78,10 +78,13 @@ def Tissot (x,y,p):
 
 class MyTissot(QWidget):
 
-    def __init__(self, parent, image, pr, prtrick = None):
+    def __init__(self, parent, image, resol, R, pr, prtrick = None):
         super(QWidget, self).__init__(parent) #llamar al constructor de la superclase
         
+	self.resol = resol
+	self.R = R
 	self.pr = pr
+	
 	if prtrick is None:
 		self.prtiss = pr
 	else:
@@ -90,20 +93,24 @@ class MyTissot(QWidget):
 	w = image.width()
 	h = image.height()
 	
-	dw = QDesktopWidget()	
-	HRES = dw.availableGeometry(self).width()
-	VRES = dw.availableGeometry(self).height()
-	
-	#scalefactor = min( 1894.0/w, 912.0/h ) if (1034.0/h)*w > 1395.0 else 1034.0/h
-	scalefactor = min( (HRES-26.)/w, (VRES-168.)/h ) if (1034.0/h)*w > 1395.0 else (VRES-130.)/h	
-	rect = QRect(0,0,scalefactor*w,scalefactor*h)		
-	#rect=QRect(0,0,parent.width(),parent.height())
+#	dw = QDesktopWidget()	
+#	HRES = dw.availableGeometry(self).width()
+#	VRES = dw.availableGeometry(self).height()
+	HRES = parent.width()	
+	VRES = parent.height() 
 
-	self.CX = rect.width()/2
+
+	imPX_2_scrPX= min( (HRES-26.)/w, (VRES-168.)/h ) if (1034.0/h)*w > 1395.0 else (VRES-130.)/h	
+	#leave margin for the Clear button and Coordinate label
+	#imPX_2_scrPX = min(float(HRES)/w , float(VRES)/h)	 #image pixels to screen pixels
+	rect = QRect(0,0,w*imPX_2_scrPX , h*imPX_2_scrPX)		
+	scrPX_2_imPX = 1/imPX_2_scrPX
+
+	self.CX = rect.width()/2	#center of the rectangle
 	self.CY = rect.height()/2
-	#self.SC = 30 # must be set manually when created
-	self.SC = 0.5083483258 / scalefactor 
-	#2*pi*R / (width of the pc proj in pixels) . This is the scale of the png images. Scale 1 for printed maps
+
+	imPX_2_mapMM = 1/resol * 25.4 		#image pixels to map milimeters
+	self.SC = scrPX_2_imPX * imPX_2_mapMM	#screen pixels to map milimeters
 
 	self.imageLayer = QLabel(self)
 	self.imageLayer.setScaledContents(True)
@@ -133,17 +140,17 @@ class MyTissot(QWidget):
 	self.radiusbox.setValue(20)
 	self.connect(self.radiusbox, SIGNAL("valueChanged(double)"),self.ellipsesLayer.update)
 
-	#self.exitbutton = QPushButton(self)
-	#self.exitbutton.setText("Exit")
-	#self.exitbutton.setGeometry(QRect(HRES-150,VRES-165,90,27))
-	#self.connect(self.exitbutton, SIGNAL("clicked()"),self.exit)
+#	self.exitbutton = QPushButton(self)
+#	self.exitbutton.setText("Exit")
+#	self.exitbutton.setGeometry(QRect(HRES-150,VRES-165,90,27))
+#	self.connect(self.exitbutton, SIGNAL("clicked()"),self.exit)
 
     def ClearEllipses (self):
 	self.ellipsesLayer.listellip = []
 	self.ellipsesLayer.update()
 
-    #def exit (self):
-	#quit()
+#    def exit (self):
+#	quit()
 
 
 
@@ -171,7 +178,7 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
 	coordstxt = 'Coordinates: (%.2f , %.2f)' % coords
 	self.mytissot.coordlabel.setText(coordstxt)
 
-	self.b, self.a, self.S = Tissot( self.mytissot.SC * (self.lastX - self.mytissot.CX) , self.mytissot.SC * (- self.lastY + self.mytissot.CY) , self.mytissot.prtiss)
+	self.b, self.a, self.S = Tissot( self.mytissot.SC * (self.lastX - self.mytissot.CX) , self.mytissot.SC * (- self.lastY + self.mytissot.CY) , self.mytissot.prtiss,self.mytissot.R)
 	
 	
 	if fabs(self.a - self.b) < 1e-2 :

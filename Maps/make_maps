@@ -1,0 +1,5 @@
+#!/bin/bash
+
+python create_images.py
+rm *_0.png
+mv *.png ../Program
