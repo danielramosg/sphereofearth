@@ -14,11 +14,12 @@ from ui_soe import *
 
 from pyproj import Proj
 
+from projections_multiscale import *
 from tissot import *    
 
 from ConfigParser import SafeConfigParser
 params=SafeConfigParser()
-params.read('../param.ini')
+params.read('param.ini')
 
 R = params.getfloat('Maps_Size','radius_of_the_globe')
 resol = params.getfloat('Maps_Size','resolution')
@@ -49,37 +50,39 @@ class Mywidget (QWidget):
 	self.ui.tab_moll.setGeometry(self.tabsize)
 
 
-	pj1 = Proj(proj='eqc',ellps='sphere',a=R,b=R)
+	#PJ1 - Plate Carree
 	pix1 = QPixmap("platecarre.png")	
-	self.pc = MyTissot(self.ui.tab_pc, pix1, resol, R, pj1)
+	self.pc = MyTissot(self.ui.tab_pc, pix1, resol, PJ1.R, PJ1.p)
 	self.pc.setGeometry(self.tabsize)
 
-	pj2 = Proj(proj='merc',ellps='sphere',a=R,b=R)
+	#PJ2 - Mercator
 	pix2 = QPixmap("mercator.png")
-	self.merc = MyTissot(self.ui.tab_merc, pix2, resol, R, pj2 ) 
+	self.merc = MyTissot(self.ui.tab_merc, pix2, resol, PJ2.R, PJ2.p ) 
 	self.merc.setGeometry(self.tabsize)
 
-	pj3 = Proj(proj='cea', lat_ts = 45, ellps='sphere', a=R, b=R)
+	#PJ3 - Gall-Peters
 	pix3 = QPixmap("gallpeters.png")
-	self.peters = MyTissot(self.ui.tab_peters, pix3, resol, R, pj3)
+	self.peters = MyTissot(self.ui.tab_peters, pix3, resol, PJ3.R, PJ3.p)
 	self.peters.setGeometry(self.tabsize)
 
-	pj4 = Proj(proj='aeqd', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
-	pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=R,b=R)
+	#PJ4 - Azimuthal Equidistant
+	#pj4 = Proj(proj='aeqd', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
+	pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
 	pix4 = QPixmap("aziequi.png")
-	self.aziequi = MyTissot(self.ui.tab_aziequi, pix4, resol, R, pj4 , pj4trick) 
+	self.aziequi = MyTissot(self.ui.tab_aziequi, pix4, resol, PJ4.R, PJ4.p, pj4trick) 
 	#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
 	self.aziequi.setGeometry(self.tabsize)
 	
-	pj5 = Proj(proj='gnom', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
-	pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=R,b=R)
+	#PJ5 - Gnomonic
+	#pj5 = Proj(proj='gnom', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
+	pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
 	pix5 = QPixmap("gnomo.png")
-	self.gnomo = MyTissot(self.ui.tab_gnomo, pix5, resol, R, pj5 , pj5trick) #Same trick.
+	self.gnomo = MyTissot(self.ui.tab_gnomo, pix5, resol, PJ5.R, PJ5.p , pj5trick) #Same trick.
 	self.gnomo.setGeometry(self.tabsize)
 
-	pj6 = Proj(proj='moll',ellps='sphere',a=R,b=R)
+	#PJ6 - Mollweide
 	pix6 = QPixmap("mollweide.png")
-	self.moll = MyTissot(self.ui.tab_moll, pix6, resol, R, pj6)
+	self.moll = MyTissot(self.ui.tab_moll, pix6, resol, PJ6.R, PJ6.p)
 	self.moll.setGeometry(self.tabsize)
 	
 
