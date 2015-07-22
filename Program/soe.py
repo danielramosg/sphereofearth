@@ -51,38 +51,38 @@ class Mywidget (QWidget):
 
 
 	#PJ1 - Plate Carree
-	pix1 = QPixmap("platecarre.png")	
-	self.pc = MyTissot(self.ui.tab_pc, pix1, resol, PJ1.R, PJ1.p)
+	#pix1 = QPixmap("platecarre.png")	
+	self.pc = MyTissot(self.ui.tab_pc, PJ1, resol)
 	self.pc.setGeometry(self.tabsize)
 
 	#PJ2 - Mercator
-	pix2 = QPixmap("mercator.png")
-	self.merc = MyTissot(self.ui.tab_merc, pix2, resol, PJ2.R, PJ2.p ) 
+	#pix2 = QPixmap("mercator.png")
+	self.merc = MyTissot(self.ui.tab_merc, PJ2, resol) 
 	self.merc.setGeometry(self.tabsize)
 
 	#PJ3 - Gall-Peters
 	pix3 = QPixmap("gallpeters.png")
-	self.peters = MyTissot(self.ui.tab_peters, pix3, resol, PJ3.R, PJ3.p)
+	self.peters = MyTissot(self.ui.tab_peters, PJ3, resol)
 	self.peters.setGeometry(self.tabsize)
 
 	#PJ4 - Azimuthal Equidistant
 	#pj4 = Proj(proj='aeqd', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
 	pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
-	pix4 = QPixmap("aziequi.png")
-	self.aziequi = MyTissot(self.ui.tab_aziequi, pix4, resol, PJ4.R, PJ4.p, pj4trick) 
+	#pix4 = QPixmap("aziequi.png")
+	self.aziequi = MyTissot(self.ui.tab_aziequi, PJ4, resol, pj4trick) 
 	#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
 	self.aziequi.setGeometry(self.tabsize)
 	
 	#PJ5 - Gnomonic
 	#pj5 = Proj(proj='gnom', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
 	pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
-	pix5 = QPixmap("gnomo.png")
-	self.gnomo = MyTissot(self.ui.tab_gnomo, pix5, resol, PJ5.R, PJ5.p , pj5trick) #Same trick.
+	#pix5 = QPixmap("gnomo.png")
+	self.gnomo = MyTissot(self.ui.tab_gnomo, PJ5, resol, pj5trick) #Same trick.
 	self.gnomo.setGeometry(self.tabsize)
 
 	#PJ6 - Mollweide
-	pix6 = QPixmap("mollweide.png")
-	self.moll = MyTissot(self.ui.tab_moll, pix6, resol, PJ6.R, PJ6.p)
+	#pix6 = QPixmap("mollweide.png")
+	self.moll = MyTissot(self.ui.tab_moll, PJ6, resol)
 	self.moll.setGeometry(self.tabsize)
 	
 

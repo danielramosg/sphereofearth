@@ -4,10 +4,9 @@
 # Author: Daniel Ramos
 
 
-import sys
+import sys, os
 
 from PyQt4 import QtCore, QtGui
-import sys, os
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
@@ -26,6 +25,8 @@ H=1e-5
 #VRES = 1024 #screen resolution (ver)
 
 def Tissot (x,y,p,R):
+	#p=PJ.p
+	#R=PJ.R	
 	# lon, lat coordinates of the point
 	(lam, phi) = p(x,y,inverse=True, radians=True)
 	#print 'coords: ', lam, phi
@@ -63,7 +64,10 @@ def Tissot (x,y,p,R):
 		btp = atan( b/a * sqrt( fabs( (a**2 - h**2) / (h**2 - b**2) ) ) )
 
 	else :
-		btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
+		try:
+			btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
+		except:
+			print a,b		
 		
 	B = copysign(fabs(bt0)+btp,bt0)
 	
@@ -78,24 +82,22 @@ def Tissot (x,y,p,R):
 
 class MyTissot(QWidget):
 
-    def __init__(self, parent, image, resol, R, pr, prtrick = None):
+    def __init__(self, parent, PJ, resol, prtrick = None): #image,R, pr,
         super(QWidget, self).__init__(parent) #llamar al constructor de la superclase
         
 	self.resol = resol
-	self.R = R
-	self.pr = pr
+	self.PJ = PJ
 	
 	if prtrick is None:
-		self.prtiss = pr
+		self.prtiss = PJ.p
 	else:
 		self.prtiss = prtrick
+	
+	image = QPixmap(PJ.name + '.png')
 
 	w = image.width()
 	h = image.height()
-	
-#	dw = QDesktopWidget()	
-#	HRES = dw.availableGeometry(self).width()
-#	VRES = dw.availableGeometry(self).height()
+
 	HRES = parent.width()	
 	VRES = parent.height() 
 
@@ -174,29 +176,41 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
         self.lastY = event.y()
 	self.point = QPoint(event.x(),event.y())
 	
-	coords = self.mytissot.pr( self.mytissot.SC * (self.lastX - self.mytissot.CX) , self.mytissot.SC * (- self.lastY + self.mytissot.CY), inverse=True )
-	coordstxt = 'Coordinates: (%.2f , %.2f)' % coords
-	self.mytissot.coordlabel.setText(coordstxt)
+	Map_loc = [self.mytissot.SC * (self.lastX - self.mytissot.CX) , self.mytissot.SC * (- self.lastY + self.mytissot.CY)]
+	mask=self.mytissot.PJ.mask
 
-	self.b, self.a, self.S = Tissot( self.mytissot.SC * (self.lastX - self.mytissot.CX) , self.mytissot.SC * (- self.lastY + self.mytissot.CY) , self.mytissot.prtiss,self.mytissot.R)
+	if mask(Map_loc):
+		coords = self.mytissot.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
+		coordstxt = 'Coordinates: (%.2f , %.2f)' % coords
+		self.mytissot.coordlabel.setText(coordstxt)
+
+		self.b, self.a, self.S = Tissot( Map_loc[0], Map_loc[1] , self.mytissot.prtiss,self.mytissot.PJ.R)
 	
+		if fabs(self.a - self.b) < 1e-2 :
+			self.pencolor = Qt.green
+		else:
+			self.pencolor = Qt.red
+
+		if fabs(self.a * self.b - 1.) <1e-2 :
+			self.brushcolor = QColor(0,255,0,50)
+		else:
+			self.brushcolor = QColor(255,0,0,50)
+
+		#r = self.mytissot.radiusbox.value()
+		#self.a = r * self.a	
+		#self.b = r * self.b
+		self.S = -57.29577950 * self.S
 	
-	if fabs(self.a - self.b) < 1e-2 :
-		self.pencolor = Qt.green
 	else:
-		self.pencolor = Qt.red
+#		self.lastX = 0
+#		self.lastY = 0
+#		self.point = QPoint(0,0)
+		self.a = 0
+		self.b = 0
+#		self.S = 0
 
-	if fabs(self.a * self.b - 1.) <1e-2 :
-		self.brushcolor = QColor(0,255,0,50)
-	else:
-		self.brushcolor = QColor(255,0,0,50)
-
-	#r = self.mytissot.radiusbox.value()
-	#self.a = r * self.a	
-	#self.b = r * self.b
-	self.S = -57.29577950 * self.S
-	
 	self.update() #repintar
+
 
     def mousePressEvent(self, event):
 	self.mytissot.ellipsesLayer.listellip.append( [self.point, self.a, self.b, self.S, self.pencolor, self.brushcolor] )
