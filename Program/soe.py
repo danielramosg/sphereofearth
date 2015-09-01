@@ -11,6 +11,7 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ui_soe import *
+from maptab import *
 
 from pyproj import Proj
 
@@ -25,6 +26,8 @@ R = params.getfloat('Maps_Size','radius_of_the_globe')
 resol = params.getfloat('Maps_Size','resolution')
 lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
+lang = params.get('Language','lang')
+
 
 
 class Mywidget (QWidget):
@@ -37,53 +40,77 @@ class Mywidget (QWidget):
 	self.ui=Ui_Form()
 	self.ui.setupUi(self)
 
-	dw = QDesktopWidget()
 
-	self.tabsize = QRect(0, 0, dw.availableGeometry().width(), dw.availableGeometry().height())	
-	#self.tabsize = QRect(0, 0, 400, 400)
-
-	self.ui.tab_pc.setGeometry(self.tabsize)
-	self.ui.tab_merc.setGeometry(self.tabsize)
-	self.ui.tab_peters.setGeometry(self.tabsize)
-	self.ui.tab_aziequi.setGeometry(self.tabsize)
-	self.ui.tab_gnomo.setGeometry(self.tabsize)
-	self.ui.tab_moll.setGeometry(self.tabsize)
-
-
-	#PJ1 - Plate Carree
-	#pix1 = QPixmap("platecarre.png")	
-	self.pc = MyTissot(self.ui.tab_pc, PJ1, resol)
-	self.pc.setGeometry(self.tabsize)
-
-	#PJ2 - Mercator
-	#pix2 = QPixmap("mercator.png")
-	self.merc = MyTissot(self.ui.tab_merc, PJ2, resol) 
-	self.merc.setGeometry(self.tabsize)
-
-	#PJ3 - Gall-Peters
-	pix3 = QPixmap("gallpeters.png")
-	self.peters = MyTissot(self.ui.tab_peters, PJ3, resol)
-	self.peters.setGeometry(self.tabsize)
-
-	#PJ4 - Azimuthal Equidistant
-	#pj4 = Proj(proj='aeqd', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
-	pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
-	#pix4 = QPixmap("aziequi.png")
-	self.aziequi = MyTissot(self.ui.tab_aziequi, PJ4, resol, pj4trick) 
-	#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
-	self.aziequi.setGeometry(self.tabsize)
+	txtfile=open('./txt/'+lang+'/intro.html','r')
+	txt=QString.fromUtf8(txtfile.read())
+	self.ui.text_place.setHtml(txt)
+	txtfile.close()
 	
-	#PJ5 - Gnomonic
-	#pj5 = Proj(proj='gnom', lon_0=lon0, lat_0=lat0, ellps='sphere',a=R,b=R)
-	pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
-	#pix5 = QPixmap("gnomo.png")
-	self.gnomo = MyTissot(self.ui.tab_gnomo, PJ5, resol, pj5trick) #Same trick.
-	self.gnomo.setGeometry(self.tabsize)
+	#PJ1 - Plate Carree
+	self.maptab_pc=Ui_maptab()
+	self.maptab_pc.setupUi(self.ui.tab_pc)
+	
+	self.layo_pc=QHBoxLayout()
+	self.maptab_pc.map_place.setLayout(self.layo_pc)
 
-	#PJ6 - Mollweide
-	#pix6 = QPixmap("mollweide.png")
-	self.moll = MyTissot(self.ui.tab_moll, PJ6, resol)
-	self.moll.setGeometry(self.tabsize)
+	self.map_pc = MyTissot(self.maptab_pc.map_place, self.maptab_pc, PJ1, resol)
+	self.layo_pc.addWidget(self.map_pc)
+
+	#self.maptab_pc.text_place.hide()
+
+#	#PJ2 - Mercator
+	self.maptab_merc=Ui_maptab()
+	self.maptab_merc.setupUi(self.ui.tab_merc)
+	
+	self.layo_merc=QHBoxLayout()
+	self.maptab_merc.map_place.setLayout(self.layo_merc)
+
+	self.map_merc = MyTissot(self.maptab_merc.map_place, self.maptab_merc, PJ2, resol)
+	self.layo_merc.addWidget(self.map_merc)
+
+#	#PJ3 - Gall-Peters
+	self.maptab_peters=Ui_maptab()
+	self.maptab_peters.setupUi(self.ui.tab_peters)
+	
+	self.layo_peters=QHBoxLayout()
+	self.maptab_peters.map_place.setLayout(self.layo_peters)
+
+	self.map_peters = MyTissot(self.maptab_peters.map_place, self.maptab_peters, PJ3, resol)
+	self.layo_peters.addWidget(self.map_peters)
+
+#	#PJ4 - Azimuthal Equidistant
+	self.maptab_aziequi=Ui_maptab()
+	self.maptab_aziequi.setupUi(self.ui.tab_aziequi)
+	
+	self.layo_aziequi=QHBoxLayout()
+	self.maptab_aziequi.map_place.setLayout(self.layo_aziequi)
+
+	pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
+	self.map_aziequi = MyTissot(self.maptab_aziequi.map_place, self.maptab_aziequi, PJ4, resol, pj4trick)
+	self.layo_aziequi.addWidget(self.map_aziequi)
+	#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
+
+#	#PJ5 - Gnomonic
+	self.maptab_gnomo=Ui_maptab()
+	self.maptab_gnomo.setupUi(self.ui.tab_gnomo)
+	
+	self.layo_gnomo=QHBoxLayout()
+	self.maptab_gnomo.map_place.setLayout(self.layo_gnomo)
+
+	pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
+	self.map_gnomo = MyTissot(self.maptab_gnomo.map_place, self.maptab_gnomo, PJ5, resol, pj5trick)
+	self.layo_gnomo.addWidget(self.map_gnomo)
+	#Same trick.
+
+#	#PJ6 - Mollweide
+	self.maptab_moll=Ui_maptab()
+	self.maptab_moll.setupUi(self.ui.tab_moll)
+	
+	self.layo_moll=QHBoxLayout()
+	self.maptab_moll.map_place.setLayout(self.layo_moll)
+
+	self.map_moll = MyTissot(self.maptab_moll.map_place, self.maptab_moll, PJ6, resol)
+	self.layo_moll.addWidget(self.map_moll)
 	
 
 

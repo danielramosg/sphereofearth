@@ -13,3 +13,6 @@
 *.toc
 
 *~
+
+## Do not sync the NASA topographic image, use the get_source script to download it.
+land_shallow_topo_8192.tif

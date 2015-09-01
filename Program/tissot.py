@@ -13,7 +13,10 @@ from PyQt4.QtCore import *
 from math import *
 from numpy import *
 
-
+from ConfigParser import SafeConfigParser
+params=SafeConfigParser()
+params.read('param.ini')
+lang = params.get('Language','lang')
 
 
 #R=6366197.
@@ -64,11 +67,9 @@ def Tissot (x,y,p,R):
 		btp = atan( b/a * sqrt( fabs( (a**2 - h**2) / (h**2 - b**2) ) ) )
 
 	else :
-		try:
-			btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
-		except:
-			print a,b		
+		btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
 		
+
 	B = copysign(fabs(bt0)+btp,bt0)
 	
 	#print 'bt0 = %.8f , btp = %.8f , sign = %d' % (bt0,btp,copysign(1,bt0))	
@@ -79,77 +80,72 @@ def Tissot (x,y,p,R):
 
 
 
-
 class MyTissot(QWidget):
 
-    def __init__(self, parent, PJ, resol, prtrick = None): #image,R, pr,
+    def __init__(self, parent, cnx, PJ, resol, prtrick = None): #image,R, pr,
         super(QWidget, self).__init__(parent) #llamar al constructor de la superclase
         
 	self.resol = resol
 	self.PJ = PJ
-	
+	self.cnx = cnx # object to connect i/o	
+
 	if prtrick is None:
 		self.prtiss = PJ.p
 	else:
 		self.prtiss = prtrick
 	
-	image = QPixmap(PJ.name + '.png')
+	image = QPixmap('./img/' + PJ.name + '.png')
 
-	w = image.width()
-	h = image.height()
-
-	HRES = parent.width()	
-	VRES = parent.height() 
-
-
-	imPX_2_scrPX= min( (HRES-26.)/w, (VRES-168.)/h ) if (1034.0/h)*w > 1395.0 else (VRES-130.)/h	
-	#leave margin for the Clear button and Coordinate label
-	#imPX_2_scrPX = min(float(HRES)/w , float(VRES)/h)	 #image pixels to screen pixels
-	rect = QRect(0,0,w*imPX_2_scrPX , h*imPX_2_scrPX)		
-	scrPX_2_imPX = 1/imPX_2_scrPX
-
-	self.CX = rect.width()/2	#center of the rectangle
-	self.CY = rect.height()/2
-
-	imPX_2_mapMM = 1/resol * 25.4 		#image pixels to map milimeters
-	self.SC = scrPX_2_imPX * imPX_2_mapMM	#screen pixels to map milimeters
+	self.imw = image.width()
+	self.imh = image.height()
 
 	self.imageLayer = QLabel(self)
+	self.ellipsesLayer = EllipsesLayer(self)
+	self.mouseLayer = MouseLayer(self)
+
 	self.imageLayer.setScaledContents(True)
 	self.imageLayer.setPixmap(image)
-        self.imageLayer.setGeometry(rect)
-        self.ellipsesLayer = EllipsesLayer(self)
-        self.ellipsesLayer.setGeometry(rect)
-        self.mouseLayer = MouseLayer(self)
-        self.mouseLayer.setGeometry(rect)
         self.mouseLayer.setMouseTracking(True)
         self.mouseLayer.setScaledContents(True)
+
+	self.resizeEvent(self)
         
-	self.clearbutton = QPushButton(self)
-	self.clearbutton.setText("Clear")
-        self.clearbutton.setGeometry(QRect(HRES-150,VRES-130,90,27))
-	self.connect(self.clearbutton, SIGNAL("clicked()"),self.ClearEllipses)
+	self.connect(self.cnx.clearbutton, SIGNAL("clicked()"),self.ClearEllipses)
+	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.ellipsesLayer.update)
 
-	self.coordlabel = QLabel(self)
-	self.coordlabel.setGeometry(QRect(HRES-250,VRES-100,300,27))
-	self.coordlabel.setText('Coordinates:')
-
-	self.radiuslab = QLabel(self)
-	self.radiuslab.setGeometry(QRect(HRES-250,VRES-130,25,27))
-	self.radiuslab.setText('r=') 
-	self.radiusbox = QDoubleSpinBox(self)
-	self.radiusbox.setGeometry(QRect(HRES-225,VRES-130,65,27))
-	self.radiusbox.setValue(20)
-	self.connect(self.radiusbox, SIGNAL("valueChanged(double)"),self.ellipsesLayer.update)
+	txtfile=open('./txt/' + lang +'/' + PJ.name + '.html','r')
+	txt=QString.fromUtf8(txtfile.read())
+	self.cnx.text_place.setHtml(txt)
+	txtfile.close()
 
 #	self.exitbutton = QPushButton(self)
 #	self.exitbutton.setText("Exit")
 #	self.exitbutton.setGeometry(QRect(HRES-150,VRES-165,90,27))
 #	self.connect(self.exitbutton, SIGNAL("clicked()"),self.exit)
 
+	
     def ClearEllipses (self):
 	self.ellipsesLayer.listellip = []
 	self.ellipsesLayer.update()
+
+    def resizeEvent(self,event):
+	HRES = self.width()	
+	VRES = self.height() 
+
+	imPX_2_scrPX = min(float(HRES)/self.imw , float(VRES)/self.imh)	 #image pixels to screen pixels
+	
+	rect = QRect(0,0,self.imw*imPX_2_scrPX , self.imh*imPX_2_scrPX)	
+	scrPX_2_imPX = 1/imPX_2_scrPX
+
+	self.CX = rect.width()/2	#center of the rectangle
+	self.CY = rect.height()/2
+
+	imPX_2_mapMM = 1/self.resol * 25.4 		#image pixels to map milimeters
+	self.SC = scrPX_2_imPX * imPX_2_mapMM	#screen pixels to map milimeters
+
+        self.imageLayer.setGeometry(rect)
+        self.ellipsesLayer.setGeometry(rect)
+	self.mouseLayer.setGeometry(rect)
 
 #    def exit (self):
 #	quit()
@@ -182,7 +178,7 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
 	if mask(Map_loc):
 		coords = self.mytissot.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
 		coordstxt = 'Coordinates: (%.2f , %.2f)' % coords
-		self.mytissot.coordlabel.setText(coordstxt)
+		self.mytissot.cnx.coordlabel.setText(coordstxt)
 
 		self.b, self.a, self.S = Tissot( Map_loc[0], Map_loc[1] , self.mytissot.prtiss,self.mytissot.PJ.R)
 	
@@ -216,6 +212,7 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
 	self.mytissot.ellipsesLayer.listellip.append( [self.point, self.a, self.b, self.S, self.pencolor, self.brushcolor] )
 	self.mytissot.ellipsesLayer.update()
 	#print "pressed", self.point, self.a, self.b, self.S
+	print self.geometry()
 
     #método sobreescrito llamado cuando hay evento paint, e.g. al llamar update() o repaint() 
     #siempre hay que pintar con el painter dentro de paintEvent()
@@ -229,7 +226,8 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
 	painter.translate(self.point) # cambio de coord
 	painter.rotate(self.S) # rotación resp el nuevo origen
 	
-	r = self.mytissot.radiusbox.value()
+	r = self.mytissot.cnx.radiusbox.value()
+#	r=20
         painter.drawEllipse(QPointF(0,0), r*self.a , r*self.b )
         painter.end()
         super(MouseLayer, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
@@ -245,7 +243,8 @@ class EllipsesLayer(QLabel): # Clase de la imagen con las elipses clicadas  #sub
 
     def paintEvent(self, event): 
 	painter = QPainter()
-	r = self.mytissot.radiusbox.value()
+	r = self.mytissot.cnx.radiusbox.value()
+#	r=20
 	for Ellip in self.listellip:
 		painter.begin(self)
 		painter.setPen(Ellip[4]) 

@@ -121,7 +121,7 @@ def merge_map_grat(PJ,gratpj,pdf=False):
 	if pdf:
 		plt.savefig('./Posters/' + PJ.name + '.pdf',dpi=resol, bbox_inches='tight', pad_inches=0)
 	else:
-		plt.savefig(PJ.name + '.png',dpi=resol, bbox_inches='tight', pad_inches=0)
+		plt.savefig('./img/' + PJ.name + '.png',dpi=resol, bbox_inches='tight', pad_inches=0)
 
 	os.remove(PJ.name + '_0.png')
 
