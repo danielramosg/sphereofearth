@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'soe.ui'
 #
-# Created: Mon Aug 31 23:11:57 2015
+# Created: Tue Sep  1 13:12:32 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -224,7 +224,7 @@ class Ui_Form(object):
         self.label_3.setSizePolicy(sizePolicy)
         self.label_3.setMaximumSize(QtCore.QSize(300, 259))
         self.label_3.setText(_fromUtf8(""))
-        self.label_3.setPixmap(QtGui.QPixmap(_fromUtf8("img/map.jpg")))
+        self.label_3.setPixmap(QtGui.QPixmap(_fromUtf8("img/695px-World_Map_1689.JPG")))
         self.label_3.setScaledContents(True)
         self.label_3.setObjectName(_fromUtf8("label_3"))
         self.gridLayout.addWidget(self.label_3, 4, 0, 1, 1)

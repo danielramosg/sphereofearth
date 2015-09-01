@@ -588,7 +588,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap>img/map.jpg</pixmap>
+            <pixmap>img/695px-World_Map_1689.JPG</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -606,7 +606,6 @@
       <attribute name="title">
        <string>Plate Carrée</string>
       </attribute>
-      <zorder>pushButton</zorder>
      </widget>
      <widget class="QWidget" name="tab_merc">
       <property name="sizePolicy">
