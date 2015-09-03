@@ -26,6 +26,9 @@ All the program is a bunch of python scripts. The only requirement is a working 
     - $ sudo apt-get install python python-numpy python-pyproj python-qt4
     - $ python soe.py
 
+To run in fullscreen mode (exhibitions) use
+    - $ python soe.py --fullscreen
+
 - Install on Windows (preferred method).
     - Use the installer SoE_installer.exe
 

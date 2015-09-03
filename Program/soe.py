@@ -117,5 +117,23 @@ class Mywidget (QWidget):
 app = QApplication(sys.argv)
 wd =  Mywidget()
 #wd.show()
-wd.showFullScreen()
+#wd.showFullScreen()
+
+if len(sys.argv)==2:
+	try:
+		ar=sys.argv[1]
+	except:
+		sys.exit()
+else:
+	ar=None
+
+
+if ar=="--fullscreen":
+	wd.showFullScreen()
+elif ar==None:
+	wd.show()
+else:
+	print "Option not valid"
+	sys.exit()
+
 app.exec_() 
