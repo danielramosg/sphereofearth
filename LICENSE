@@ -1,0 +1,68 @@
+The Sphere of the Earth
+=======================
+
+Educational and museographic project for science museums and exhibitions, about cartography, maps and the geometry of the sphere.
+
+Author:		Daniel Ramos
+Email:		daniel.ramos@imaginary.org
+Repository:	https://github.com/danielramosg/sphereofearth
+Copyright (C) 2013 - 2015  Daniel Ramos
+
+
+License of the program:
+-----------------------
+
+The Sphere of the Earth. Interactive program.
+Copyright (C) 2013 - 2015  Daniel Ramos
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+License of the images:
+----------------------
+
+* Topographic data: NASA satellite imagery. 
+Credit: NASA Goddard Space Flight Center Image by Reto Stöckli (land surface, shallow water, clouds). Enhancements by Robert Simmon (ocean color, compositing, 3D globes, animation). Data and technical support: MODIS Land Group; MODIS Science Data Support Team; MODIS Atmosphere Group; MODIS Ocean Group Additional data: USGS EROS Data Center (topography); USGS Terrestrial Remote Sensing Flagstaff Field Center (Antarctica); Defense Meteorological Satellite Program (city lights).
+Source image: http://visibleearth.nasa.gov/view.php?id=57752
+
+* Blue marble: Photograph taken from Apollo 17 on Dec 7th 1972.
+Credit: Image courtesy NASA Johnson Space Center 
+Source image: http://visibleearth.nasa.gov/view.php?id=55418
+
+NASA copyright guidelines: http://www.nasa.gov/audience/formedia/features/MP_Photo_Guidelines.html
+
+* Historic map: World map by Gerard van Schagen, Amsterdam 1689.
+Credit: Public domain.
+Source image: https://en.wikipedia.org/wiki/Map#/media/File:World_Map_1689.JPG
+
+* Map projections (Posters):
+Can be reproduced by the scripts included in the Program. No copyright applies.
+
+
+License of the texts and documentation:
+---------------------------------------
+
+This includes both the pdf documentation (technical documentation, activities) and on-screen information of the program.
+
+This work is licensed under the Creative Commons Attribution 4.0 International License. To view a copy of this license, visit https://creativecommons.org/licenses/by/4.0/.
+
+
+
+
+
+
+
+
+
+
