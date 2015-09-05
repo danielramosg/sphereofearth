@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'soe.ui'
 #
-# Created: Tue Sep  1 13:12:32 2015
+# Created: Sat Sep  5 19:49:18 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,8 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(968, 673)
+        Form.resize(1000, 673)
+        Form.setMinimumSize(QtCore.QSize(1000, 0))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -194,12 +195,12 @@ class Ui_Form(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
         self.text_place = QtGui.QTextEdit(self.tab_intro)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Expanding)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.text_place.sizePolicy().hasHeightForWidth())
         self.text_place.setSizePolicy(sizePolicy)
-        self.text_place.setMinimumSize(QtCore.QSize(500, 0))
+        self.text_place.setMinimumSize(QtCore.QSize(600, 0))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
