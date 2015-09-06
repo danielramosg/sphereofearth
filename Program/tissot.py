@@ -34,7 +34,7 @@ from numpy import *
 from ConfigParser import SafeConfigParser
 params=SafeConfigParser()
 params.read('param.ini')
-lang = params.get('Language','lang')
+#lang = params.get('Language','lang')
 
 
 #R=6366197.
@@ -131,10 +131,7 @@ class MyTissot(QWidget):
 	self.connect(self.cnx.clearbutton, SIGNAL("clicked()"),self.ClearEllipses)
 	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.ellipsesLayer.update)
 
-	txtfile=open('./txt/' + lang +'/' + PJ.name + '.html','r')
-	txt=QString.fromUtf8(txtfile.read())
-	self.cnx.text_place.setHtml(txt)
-	txtfile.close()
+	
 
 #	self.exitbutton = QPushButton(self)
 #	self.exitbutton.setText("Exit")
@@ -230,7 +227,7 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
 	self.mytissot.ellipsesLayer.listellip.append( [self.point, self.a, self.b, self.S, self.pencolor, self.brushcolor] )
 	self.mytissot.ellipsesLayer.update()
 	#print "pressed", self.point, self.a, self.b, self.S
-	print self.geometry()
+	#print self.geometry()
 
     #método sobreescrito llamado cuando hay evento paint, e.g. al llamar update() o repaint() 
     #siempre hay que pintar con el painter dentro de paintEvent()

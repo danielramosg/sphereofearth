@@ -43,7 +43,10 @@ R = params.getfloat('Maps_Size','radius_of_the_globe')
 resol = params.getfloat('Maps_Size','resolution')
 lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
-lang = params.get('Language','lang')
+#lang = params.get('Language','lang')
+
+Languages = {QString(u'English'):"en", QString(u'Español'):"es"}
+PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6]
 
 
 
@@ -58,76 +61,51 @@ class Mywidget (QWidget):
 	self.ui.setupUi(self)
 
 
-	txtfile=open('./txt/'+lang+'/intro.html','r')
+	self.maptabs=[0]
+	for i in range(1,7):
+		maptab=Ui_maptab()
+		maptab.setupUi(self.ui.tabWidget.widget(i))
+	
+		layo=QHBoxLayout()
+		maptab.map_place.setLayout(layo)
+
+		if i==4:
+			pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
+			pjmap = MyTissot(maptab.map_place, maptab, PJ4, resol, pj4trick)
+			#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) 			produces the same Tissot ellipses but it's much more stable numerically.
+		elif i==5:
+			pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
+			pjmap= MyTissot(maptab.map_place, maptab, PJ5, resol, pj5trick)
+			#Same trick.
+		else:
+			pjmap = MyTissot(maptab.map_place, maptab, PJS[i], resol)
+
+		layo.addWidget(pjmap)
+
+		self.maptabs.append(maptab)
+	#self.maptabs[1].text_place.hide()
+
+	self.setTexts()
+	self.connect(self.ui.langbox, SIGNAL("currentIndexChanged(int)"), self.setTexts)
+	
+
+
+
+    def setTexts(self):
+	self.lang=Languages[self.ui.langbox.currentText()]
+
+	txtfile=open('./txt/'+self.lang+'/intro.html','r')
 	txt=QString.fromUtf8(txtfile.read())
 	self.ui.text_place.setHtml(txt)
 	txtfile.close()
-	
-	#PJ1 - Plate Carree
-	self.maptab_pc=Ui_maptab()
-	self.maptab_pc.setupUi(self.ui.tab_pc)
-	
-	self.layo_pc=QHBoxLayout()
-	self.maptab_pc.map_place.setLayout(self.layo_pc)
 
-	self.map_pc = MyTissot(self.maptab_pc.map_place, self.maptab_pc, PJ1, resol)
-	self.layo_pc.addWidget(self.map_pc)
+	for i in range(1,7):
+		txtfile=open('./txt/' + self.lang +'/' + PJS[i].name + '.html','r')
+		txt=QString.fromUtf8(txtfile.read())
+		self.maptabs[i].text_place.setHtml(txt)
+		txtfile.close()
 
-	#self.maptab_pc.text_place.hide()
 
-#	#PJ2 - Mercator
-	self.maptab_merc=Ui_maptab()
-	self.maptab_merc.setupUi(self.ui.tab_merc)
-	
-	self.layo_merc=QHBoxLayout()
-	self.maptab_merc.map_place.setLayout(self.layo_merc)
-
-	self.map_merc = MyTissot(self.maptab_merc.map_place, self.maptab_merc, PJ2, resol)
-	self.layo_merc.addWidget(self.map_merc)
-
-#	#PJ3 - Gall-Peters
-	self.maptab_peters=Ui_maptab()
-	self.maptab_peters.setupUi(self.ui.tab_peters)
-	
-	self.layo_peters=QHBoxLayout()
-	self.maptab_peters.map_place.setLayout(self.layo_peters)
-
-	self.map_peters = MyTissot(self.maptab_peters.map_place, self.maptab_peters, PJ3, resol)
-	self.layo_peters.addWidget(self.map_peters)
-
-#	#PJ4 - Azimuthal Equidistant
-	self.maptab_aziequi=Ui_maptab()
-	self.maptab_aziequi.setupUi(self.ui.tab_aziequi)
-	
-	self.layo_aziequi=QHBoxLayout()
-	self.maptab_aziequi.map_place.setLayout(self.layo_aziequi)
-
-	pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
-	self.map_aziequi = MyTissot(self.maptab_aziequi.map_place, self.maptab_aziequi, PJ4, resol, pj4trick)
-	self.layo_aziequi.addWidget(self.map_aziequi)
-	#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
-
-#	#PJ5 - Gnomonic
-	self.maptab_gnomo=Ui_maptab()
-	self.maptab_gnomo.setupUi(self.ui.tab_gnomo)
-	
-	self.layo_gnomo=QHBoxLayout()
-	self.maptab_gnomo.map_place.setLayout(self.layo_gnomo)
-
-	pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
-	self.map_gnomo = MyTissot(self.maptab_gnomo.map_place, self.maptab_gnomo, PJ5, resol, pj5trick)
-	self.layo_gnomo.addWidget(self.map_gnomo)
-	#Same trick.
-
-#	#PJ6 - Mollweide
-	self.maptab_moll=Ui_maptab()
-	self.maptab_moll.setupUi(self.ui.tab_moll)
-	
-	self.layo_moll=QHBoxLayout()
-	self.maptab_moll.map_place.setLayout(self.layo_moll)
-
-	self.map_moll = MyTissot(self.maptab_moll.map_place, self.maptab_moll, PJ6, resol)
-	self.layo_moll.addWidget(self.map_moll)
 	
 
 
