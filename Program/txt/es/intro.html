@@ -8,40 +8,37 @@
 
 <h1>¿Qué es un mapa?</h1>
 
-<p>A <i>map projection</i> is a flat representation of the surface of the Earth. There are infinitely many ways of representing the Earth on a
-plane, but all of them will distort its appearance in one way or another. Depending on the purpose of our map, we may need to preserve
-faithfully some properties of the Earth at the expenses of losing others. For instance, on a navigational map it is important to keep track
-of the angle between our route and the North, since we can compare it with the direction of the North on the compass. If we need to display
-for instance climate regions of the Earth, it will be much more useful to use a map that does not distort areas.</p>
-
-
-<h2>Can we measure the distortion?</h2>
-
-<p>The distortion of a map is a complicated magnitude that cannot be completelly measured by a single number. Instead, the French
-mathematician Nicolas Auguste Tissot invented in 1859 a graphical method to display the distortion produced at any point on a map. 
+<p>Una <i>proyección cartográfica</i> es una representación plana de la superficie de la Tierra. Existe una infinitud de maneras de representar la Tierra sobre un plano, pero todas ellas distorsionan su aspecto de algún modo. No existe ninguna proyección perfecta, y la elección de una u otra dependerá del propósito de nuestro mapa.
 </p>
+
+<p> Con este programa, podemos explorar y comparar la distorsión de diferentes proyecciones. Seleccionamos un mapa, y al mover el cursor veremos unas elipses. Estas elipses visualizan la distrsión del mapa.
+</p>
+
+<h2>¿Se puede medir la distorsión?</h2>
+
+<p>La distorsión de un mapa es una magnitud compleja que no puede medirse con un simple número. En su lugar, el matemático y cartógrafo francés Nicolas Auguste Tissot ideó en 1859 un método gráfico para mostrar la distorsión que se produce en cada punto de un mapa.
+</p>
+
 <p>
-Imagine a small circle around a point on the Earth. If we project this circle onto the map, it will no longer appear as a circle, beacuse of the
-distortion. If the circle is small enough (an infinitesimal circle), it will be projected onto an ellipse (an infinitesimal ellipse). We
-can display this ellipse magnified so we can see it on the map. This ellipse is called a <i>Tissot's indicatrix</i> for the map, and its properties (axes directions, eccentricity, area...) give several informations about the distortion.</p>
+Imaginemos un pequeño círculo alrededor de un punto de la Tierra. Si proyectamos este círculo sobre el mapa, ya no parecerá un círculo, debido a la distorsión. Si el círculo es suficientemente pequeño (un círculo infinitesimal), se proyectará en una elipse (una elipse infinitesimal). Podemos mostrar esa elipse ampliada para poder verla sobre el mapa. Esta elipse se denomina <i>Indicatriz de Tissot</i> del mapa.</p>
 
 <br>
 <p>
 <center>
 <img src="txt/en/df.svg" width="600" > <br>
-Small tangent circles appear as ellipses.
+Pequeños círculos tangentes aparecen como elipses.
 </center>
 </p>
 <br>
 
+<p> Las propiedades de las elipses de Tissot (ejes, excentricidad, área...) nos dan diversa información sobre la distorsión. Por ejemplo, si la elipse es en realidad un círculo, significa que la forma no se ha distorsionado en ese punto (el borde aparece en verde en el programa); si su área se corresponde con la del círculo que representa, significa que el tamaño no se ha distorsionado en ese punto (el interior aparece verde).</p>
+
 <p>
-Mathematically, a map projection is a mapping from the sphere to the plane. Tissot ellipses are the image under the differential map of (small) circles in the tangent planes.
+Matemáticamente, una proyección cartográfica es una aplicación entre la esfera y el plano. Las elipses de Tissot son la imagen bajo la aplicación diferencial de círculos en planos tangentes.
 </p>
 
 
-<p> On this program, you can select one of six maps in the upper tabs. When you put the pointer over the map, the Tissot's
-ellipse for that point is drawn over the map. Click over the map to leave the ellipse printed. You can choose the size of the ellipses and
-clear all of them.</p>
+
 </body>
 
 
