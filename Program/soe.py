@@ -43,7 +43,7 @@ R = params.getfloat('Maps_Size','radius_of_the_globe')
 resol = params.getfloat('Maps_Size','resolution')
 lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
-#lang = params.get('Language','lang')
+
 
 Languages = {QString(u'English'):"en", QString(u'Español'):"es"}
 PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6]
@@ -94,6 +94,11 @@ class Mywidget (QWidget):
     def setTexts(self):
 	self.lang=Languages[self.ui.langbox.currentText()]
 
+	translator.load("soe_"+self.lang)
+	self.ui.retranslateUi(self)
+	for i in range(1,7):
+		self.maptabs[i].retranslateUi(None)
+
 	txtfile=open('./txt/'+self.lang+'/intro.html','r')
 	txt=QString.fromUtf8(txtfile.read())
 	self.ui.text_place.setHtml(txt)
@@ -110,9 +115,16 @@ class Mywidget (QWidget):
 
 
 app = QApplication(sys.argv)
+
+translator= QTranslator()
+#translator.load("soe_es")
+#translator.load("soe_en")
+app.installTranslator(translator)
+
 wd =  Mywidget()
 #wd.show()
 #wd.showFullScreen()
+
 
 if len(sys.argv)==2:
 	try:

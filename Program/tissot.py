@@ -31,11 +31,6 @@ from PyQt4.QtCore import *
 from math import *
 from numpy import *
 
-from ConfigParser import SafeConfigParser
-params=SafeConfigParser()
-params.read('param.ini')
-#lang = params.get('Language','lang')
-
 
 #R=6366197.
 #R=100 * 742/3710.
@@ -192,7 +187,7 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
 
 	if mask(Map_loc):
 		coords = self.mytissot.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
-		coordstxt = 'Coordinates: (%.2f , %.2f)' % coords
+		coordstxt = '(%.2f , %.2f)' % coords
 		self.mytissot.cnx.coordlabel.setText(coordstxt)
 
 		self.b, self.a, self.S = Tissot( Map_loc[0], Map_loc[1] , self.mytissot.prtiss,self.mytissot.PJ.R)

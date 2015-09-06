@@ -1,0 +1,11 @@
+
+Taducciones
+
+* Crear el archivo .pro
+
+* Generar los archivos .ts de traducciones
+$ pylupdate4 soe.pro
+
+* Editar los arrchivos ts con Qt Linguist
+
+* Release (menú en Qt Linguist)
