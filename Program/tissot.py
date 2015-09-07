@@ -144,7 +144,11 @@ class MyTissot(QWidget):
 
 	imPX_2_scrPX = min(float(HRES)/self.imw , float(VRES)/self.imh)	 #image pixels to screen pixels
 	
-	rect = QRect(0,0,self.imw*imPX_2_scrPX , self.imh*imPX_2_scrPX)	
+	rectW = self.imw*imPX_2_scrPX
+	rectH = self.imh*imPX_2_scrPX
+
+	rect = QRect(HRES/2-rectW/2,VRES/2-rectH/2,rectW,rectH)	
+	#rect = QRect(0,0,self.imw*imPX_2_scrPX , self.imh*imPX_2_scrPX)	
 	scrPX_2_imPX = 1/imPX_2_scrPX
 
 	self.CX = rect.width()/2	#center of the rectangle
@@ -156,6 +160,7 @@ class MyTissot(QWidget):
         self.imageLayer.setGeometry(rect)
         self.ellipsesLayer.setGeometry(rect)
 	self.mouseLayer.setGeometry(rect)
+	self.ClearEllipses()
 
 #    def exit (self):
 #	quit()
