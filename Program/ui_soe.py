@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'soe.ui'
 #
-# Created: Sun Sep  6 15:18:11 2015
+# Created: Tue Sep  8 00:38:18 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -165,12 +165,35 @@ class Ui_Form(object):
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
         Form.setPalette(palette)
-        self.verticalLayout = QtGui.QVBoxLayout(Form)
-        self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
+        self.horizontalLayout = QtGui.QHBoxLayout(Form)
+        self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.gridLayout_2 = QtGui.QGridLayout()
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         spacerItem = QtGui.QSpacerItem(83, 27, QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem, 0, 1, 1, 1)
+        self.gridLayout_2.addItem(spacerItem, 0, 0, 1, 1)
+        self.textEdit_2 = QtGui.QTextEdit(Form)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.textEdit_2.sizePolicy().hasHeightForWidth())
+        self.textEdit_2.setSizePolicy(sizePolicy)
+        self.textEdit_2.setMinimumSize(QtCore.QSize(0, 55))
+        self.textEdit_2.setMaximumSize(QtCore.QSize(16777215, 55))
+        self.textEdit_2.setFrameShape(QtGui.QFrame.NoFrame)
+        self.textEdit_2.setReadOnly(True)
+        self.textEdit_2.setTextInteractionFlags(QtCore.Qt.NoTextInteraction)
+        self.textEdit_2.setObjectName(_fromUtf8("textEdit_2"))
+        self.gridLayout_2.addWidget(self.textEdit_2, 0, 1, 2, 1)
+        self.langbox = QtGui.QComboBox(Form)
+        self.langbox.setObjectName(_fromUtf8("langbox"))
+        self.langbox.addItem(_fromUtf8(""))
+        self.langbox.addItem(_fromUtf8(""))
+        self.gridLayout_2.addWidget(self.langbox, 0, 2, 1, 1)
+        self.infobutton = QtGui.QPushButton(Form)
+        self.infobutton.setCheckable(True)
+        self.infobutton.setChecked(True)
+        self.infobutton.setObjectName(_fromUtf8("infobutton"))
+        self.gridLayout_2.addWidget(self.infobutton, 1, 2, 1, 1)
         self.tabWidget = QtGui.QTabWidget(Form)
         self.tabWidget.setAutoFillBackground(True)
         self.tabWidget.setObjectName(_fromUtf8("tabWidget"))
@@ -319,32 +342,24 @@ class Ui_Form(object):
         self.verticalLayout_2.addLayout(self.horizontalLayout_3)
         self.horizontalLayout_4.addLayout(self.verticalLayout_2)
         self.tabWidget.addTab(self.tab_about, _fromUtf8(""))
-        self.gridLayout_2.addWidget(self.tabWidget, 1, 0, 1, 4)
-        self.langbox = QtGui.QComboBox(Form)
-        self.langbox.setObjectName(_fromUtf8("langbox"))
-        self.langbox.addItem(_fromUtf8(""))
-        self.langbox.addItem(_fromUtf8(""))
-        self.gridLayout_2.addWidget(self.langbox, 0, 3, 1, 1)
-        self.textEdit_2 = QtGui.QTextEdit(Form)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.textEdit_2.sizePolicy().hasHeightForWidth())
-        self.textEdit_2.setSizePolicy(sizePolicy)
-        self.textEdit_2.setMinimumSize(QtCore.QSize(0, 55))
-        self.textEdit_2.setMaximumSize(QtCore.QSize(16777215, 55))
-        self.textEdit_2.setFrameShape(QtGui.QFrame.NoFrame)
-        self.textEdit_2.setObjectName(_fromUtf8("textEdit_2"))
-        self.gridLayout_2.addWidget(self.textEdit_2, 0, 2, 1, 1)
-        self.verticalLayout.addLayout(self.gridLayout_2)
+        self.gridLayout_2.addWidget(self.tabWidget, 2, 0, 1, 3)
+        self.horizontalLayout.addLayout(self.gridLayout_2)
 
         self.retranslateUi(Form)
-        self.tabWidget.setCurrentIndex(0)
         self.langbox.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "The Sphere of the Earth", None))
+        self.textEdit_2.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p align=\"center\" style=\" margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:28pt; font-weight:600;\">The Sphere of the Earth</span></p></body></html>", None))
+        self.langbox.setItemText(0, _translate("Form", "English", None))
+        self.langbox.setItemText(1, _translate("Form", "Español", None))
+        self.infobutton.setText(_translate("Form", "Info", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_intro), _translate("Form", "What is a map?", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_pc), _translate("Form", "Plate Carrée", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_merc), _translate("Form", "Mercator", None))
@@ -369,11 +384,4 @@ class Ui_Form(object):
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">www.mmaca.cat</span></p>\n"
 "<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">www.imaginary.org</span></p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_about), _translate("Form", "About", None))
-        self.langbox.setItemText(0, _translate("Form", "English", None))
-        self.langbox.setItemText(1, _translate("Form", "Español", None))
-        self.textEdit_2.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:28pt; font-weight:600;\">The Sphere of the Earth</span></p></body></html>", None))
 

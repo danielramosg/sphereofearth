@@ -81,9 +81,10 @@ class Mywidget (QWidget):
 			pjmap = MyTissot(maptab.map_place, maptab, PJS[i], resol)
 
 		layo.addWidget(pjmap)
+		self.connect(self.ui.infobutton,SIGNAL("clicked(bool)"),maptab.text_place.setVisible)
 
 		self.maptabs.append(maptab)
-	#self.maptabs[1].text_place.hide()
+
 
 	self.setTexts()
 	self.connect(self.ui.langbox, SIGNAL("currentIndexChanged(int)"), self.setTexts)
