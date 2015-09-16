@@ -45,7 +45,7 @@ lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
 
 
-Languages = {QString(u'English'):"en", QString(u'Español'):"es"}
+Languages = {QString(u'English'):"en", QString(u'Español'):"es", QString(u'Nederlands'):"nl"}
 PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6]
 
 
@@ -59,7 +59,7 @@ class Mywidget (QWidget):
 
 	self.ui=Ui_Form()
 	self.ui.setupUi(self)
-
+	self.ui.langbox.setCurrentIndex(0) #Sets the default language. 0=English, 1=Spanish, 2=Dutch
 
 	self.maptabs=[0]
 	for i in range(1,7):
@@ -72,7 +72,7 @@ class Mywidget (QWidget):
 		if i==4:
 			pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
 			pjmap = MyTissot(maptab.map_place, maptab, PJ4, resol, pj4trick)
-			#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) 			produces the same Tissot ellipses but it's much more stable numerically.
+			#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
 		elif i==5:
 			pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
 			pjmap= MyTissot(maptab.map_place, maptab, PJ5, resol, pj5trick)
@@ -88,7 +88,7 @@ class Mywidget (QWidget):
 
 	self.setTexts()
 	self.connect(self.ui.langbox, SIGNAL("currentIndexChanged(int)"), self.setTexts)
-	
+
 
 
 

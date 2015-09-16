@@ -6,6 +6,28 @@ Taducciones
 * Generar los archivos .ts de traducciones
 $ pylupdate4 soe.pro
 
-* Editar los arrchivos ts con Qt Linguist
+* Editar los archivos ts con Qt Linguist
 
 * Release (menú en Qt Linguist)
+
+
+How to integrate translations:
+
+1) Add the panels texts folder to txt/
+E.g.	txt/nl
+
+2) Edit the soe.ui file to add a language to the selector. Update soe_ui.py.
+$ pyuic4 soe.ui -o ui_soe.py
+
+3) Edit the soe.pro file to add the ts file. Generate the ts file
+E.g. 	soe_nl.ts
+$ pylupdate4 soe.pro
+
+4) Edit the files with Qt Linguist. Release to create qm files.
+
+5) Edit the soe.py file:
+	5.1) Add the language to the Languages dictionary (variable)
+		QString(u'Nederlands'):"nl"
+
+	5.2) Change the default language
+	 	self.ui.langbox.setCurrentIndex(2)
