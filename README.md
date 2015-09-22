@@ -24,7 +24,7 @@ Install
 All the program is a bunch of python scripts. The only requirement is a working python installation together with appropriate libraries.
 
 - Install on Linux (Ubuntu): Type the following commands in a terminal
-    - $ sudo apt-get install python python-numpy python-pyproj python-qt4
+    - $ sudo apt-get install python python-numpy python-pyproj python-qt4 python-scitools python-pil
     - $ python soe.py
 
 - To run in fullscreen mode (exhibitions) use
@@ -39,6 +39,8 @@ All the program is a bunch of python scripts. The only requirement is a working 
     - http://sourceforge.net/projects/numpy/files/NumPy/1.7.0b2/numpy-1.7.0b2-win32-superpack-python2.7.exe/download
     - http://pyproj.googlecode.com/files/pyproj-1.9.2.win32-py2.7.exe
     - http://sourceforge.net/projects/pyqt/files/PyQt4/PyQt-4.9.5/PyQt-Py2.7-x86-gpl-4.9.5-1.exe
+    - https://scitools.googlecode.com/files/SciTools-0.9.0.win32.exe
+    - http://effbot.org/downloads/PIL-1.1.7.win32-py2.7.exe
     - Double click on the file soe.py , select “Open with...” and select the program python.exe just installed.
 
 
