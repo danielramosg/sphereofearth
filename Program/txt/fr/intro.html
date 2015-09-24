@@ -1,0 +1,39 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
+
+<body>
+
+<h1>Qu'est-ce qu'une carte ?</h1>
+
+<p>Une <i>projection cartographique</i> est une représentation en deux dimensions de la surface de la Terre. Il y a une infinité de façon de représenter la surface de la Terre sur un plan, mais chacune d'elles distendent son apparence d'une façon ou d'une autre. Il n'y a pas de projection parfaite, et choisir une plutôt qu'une autre dépend de l'objectif recherché.</p>
+
+<p>Grâce à ce programme, vous pouvez explorer et comparer les déformations de certaines projections cartographiques. Après avoir sélectionné une carte, déplacez le pointeur sur la carte et vous verrez apparaître des ellipses. Ces ellipses visualisent les déformations de la carte.</p>
+
+<h2>Peut-on mesurer la déformation ?</h2>
+
+<p>La déformation d'une carte est une grandeur complexe qui ne peut être retranscrite par une simple valeur. Néanmoins, le mathématicien et cartographe français Nicolas Auguste Tissot a inventé en 1859 une méthode graphique permettant d'afficher la déformation produite à chaque point d'une carte.</p>
+
+<p>Imaginez un petit cercle autour d'un point sur Terre. Si nous projetons ce cercle sur une carte, à cause de la déformation, il n'apparaîtra plus comme un cercle. Si ce cercle est suffisamment petit (un cercle infinitésimal), sa projection sera une ellipse (une ellipse infinitésimale). Nous pouvons afficher une version agrandie de cette ellipse afin de pouvoir l'observer sur la carte. Cette ellipse est appelée <i>indicatrice de Tissot</i> de la carte.</p>
+
+<br>
+<p>
+<center>
+<img src="txt/en/df.svg" width="600" > <br>
+Petits cercle tangents apparaissant comme des ellipses.
+</center>
+</p>
+<br>
+
+<p> Les propriétés des ellipses de Tissot (direction axiale, excentricité, aire...) sont autant d'informations sur la déformation. Par exemple, si l'ellipse est un cercle, cela signifie que la forme n'est pas déformée en ce point (dans ce programme, le bord de l'ellipse devient alors vert) ; si l'aire de l'ellipse correspond à l'aire du cercle qu'elle représente, ceci signifie que la taille n'est pas déformée en ce point (l'intérieur de l'ellipse devient alors vert).</p>
+
+<p>Mathématiquement, une projection cartographique est une fonction d'une sphère dans le plan. Les ellipses de Tissot sont l'image par la fonction différentielle de cercles qui se trouvent sur plans tangents.</p>
+
+
+
+</body>
+
+
+</html> 

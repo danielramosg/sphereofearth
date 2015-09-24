@@ -508,6 +508,11 @@ p, li { white-space: pre-wrap; }
        </item>
        <item>
         <property name="text">
+         <string>Français</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
          <string>Nederlands</string>
         </property>
        </item>

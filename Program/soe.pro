@@ -7,6 +7,7 @@ maptab.ui
 
 TRANSLATIONS = soe_en.ts\
 soe_es.ts\
+soe_fr.ts\
 soe_nl.ts
 
 CODECFORTR = UTF-8

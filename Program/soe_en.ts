@@ -3,52 +3,52 @@
 <context>
     <name>Form</name>
     <message>
-        <location filename="ui_soe.py" line="355"/>
+        <location filename="ui_soe.py" line="356"/>
         <source>The Sphere of the Earth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="365"/>
+        <location filename="ui_soe.py" line="367"/>
         <source>What is a map?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="366"/>
+        <location filename="ui_soe.py" line="368"/>
         <source>Plate Carr&#xc3;&#xa9;e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="367"/>
+        <location filename="ui_soe.py" line="369"/>
         <source>Mercator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="368"/>
+        <location filename="ui_soe.py" line="370"/>
         <source>Gall-Peters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="369"/>
+        <location filename="ui_soe.py" line="371"/>
         <source>Azimuthal Equidistant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="370"/>
+        <location filename="ui_soe.py" line="372"/>
         <source>Gnomonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="371"/>
+        <location filename="ui_soe.py" line="373"/>
         <source>Mollweide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="388"/>
+        <location filename="ui_soe.py" line="390"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="372"/>
+        <location filename="ui_soe.py" line="374"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -68,17 +68,17 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="361"/>
+        <location filename="ui_soe.py" line="362"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="362"/>
+        <location filename="ui_soe.py" line="363"/>
         <source>Espa&#xc3;&#xb1;ol</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="356"/>
+        <location filename="ui_soe.py" line="357"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -87,13 +87,18 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="364"/>
+        <location filename="ui_soe.py" line="366"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="363"/>
+        <location filename="ui_soe.py" line="365"/>
         <source>Nederlands</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui_soe.py" line="364"/>
+        <source>Fran&#xc3;&#xa7;ais</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

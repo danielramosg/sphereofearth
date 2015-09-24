@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'soe.ui'
 #
-# Created: Wed Sep 16 14:14:49 2015
+# Created: Thu Sep 24 18:21:36 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -189,6 +189,7 @@ class Ui_Form(object):
         self.langbox.addItem(_fromUtf8(""))
         self.langbox.addItem(_fromUtf8(""))
         self.langbox.addItem(_fromUtf8(""))
+        self.langbox.addItem(_fromUtf8(""))
         self.gridLayout_2.addWidget(self.langbox, 0, 2, 1, 1)
         self.infobutton = QtGui.QPushButton(Form)
         self.infobutton.setCheckable(True)
@@ -360,7 +361,8 @@ class Ui_Form(object):
 "<p align=\"center\" style=\" margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:28pt; font-weight:600;\">The Sphere of the Earth</span></p></body></html>", None))
         self.langbox.setItemText(0, _translate("Form", "English", None))
         self.langbox.setItemText(1, _translate("Form", "Español", None))
-        self.langbox.setItemText(2, _translate("Form", "Nederlands", None))
+        self.langbox.setItemText(2, _translate("Form", "Français", None))
+        self.langbox.setItemText(3, _translate("Form", "Nederlands", None))
         self.infobutton.setText(_translate("Form", "Info", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_intro), _translate("Form", "What is a map?", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_pc), _translate("Form", "Plate Carrée", None))

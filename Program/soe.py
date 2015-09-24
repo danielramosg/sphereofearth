@@ -45,7 +45,7 @@ lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
 
 
-Languages = {QString(u'English'):"en", QString(u'Español'):"es", QString(u'Nederlands'):"nl"}
+Languages = {QString(u'English'):"en", QString(u'Español'):"es", QString(u'Français'):"fr", QString(u'Nederlands'):"nl"}
 PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6]
 
 
@@ -59,7 +59,7 @@ class Mywidget (QWidget):
 
 	self.ui=Ui_Form()
 	self.ui.setupUi(self)
-	self.ui.langbox.setCurrentIndex(0) #Sets the default language. 0=English, 1=Spanish, 2=Dutch
+	self.ui.langbox.setCurrentIndex(0) #Sets the default language. 0=English, 1=Spanish, 2=French, 3=Dutch
 
 	self.maptabs=[0]
 	for i in range(1,7):
