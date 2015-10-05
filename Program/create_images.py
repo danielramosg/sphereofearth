@@ -71,12 +71,14 @@ def print_size(PJ):
 	print 'Size: %.2f x %.2f mm (%d x %d pixels at %d dpi)' % (PJ.width, PJ.height, dimx, dimy, resol)
 	print ''
 
-def make_map(PJ):
+
+def make_map(PJ,grat,pdf=False):
 	start=time()
 	topo_map(PJ)
 	gratpj = project_graticule(PJ,grat)
-	merge_map_grat(PJ,gratpj,outposter)
+	merge_map_grat(PJ,gratpj,pdf)
 	print "Done. Elapsed time: %.2f sec\n" % (time()-start)
+
 
 
 tottime=time()
@@ -86,7 +88,7 @@ grat = standard_graticule()
 for i in (PJ1,PJ2,PJ3,PJ4,PJ5,PJ6):	#Only PJ4 (Aziequi) and PJ5 (Gnomo) depend on the local coordinates.
 	#print i.name 
 	#print_size(i)
-	make_map(i)
+	make_map(i,grat,outposter)
 
 
 print "Finished. Total elapsed time: %.2f sec\n" % (time()-tottime)

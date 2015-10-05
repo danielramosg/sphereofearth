@@ -148,5 +148,13 @@ def merge_map_grat(PJ,gratpj,pdf=False):
 	os.remove(PJ.name + '_0.png')
 
 
+def make_map(PJ,grat,pdf=False):
+	start=time()
+	topo_map(PJ)
+	gratpj = project_graticule(PJ,grat)
+	merge_map_grat(PJ,gratpj,pdf)
+	print "Done. Elapsed time: %.2f sec\n" % (time()-start)
+
+
 
 
