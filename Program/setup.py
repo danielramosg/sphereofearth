@@ -3,10 +3,6 @@
 import ConfigParser
 import sys, os
 
-from mapping_routines import *
-
-
-grat = standard_graticule()
 
 param_preamble = """
 ###############################################
@@ -100,7 +96,7 @@ The program The Sphere of the Earth contains six maps. Two of these maps (Azimut
 
 	#os.system('python create_images.py program')
 
-	from projections_multiscale import *	
+	from projections_multiscale import PJ1,PJ2,PJ3,PJ4,PJ5,PJ6	
 
 	for i in (PJ4,PJ5):	#Only PJ4 (Aziequi) and PJ5 (Gnomo) depend on the local coordinates.
 		make_map(i,grat)
@@ -114,7 +110,7 @@ def menu_all_maps():
 
 This will generate all six maps for the program.
 """
-	params = SafeConfigParser()
+	params = ConfigParser.SafeConfigParser()
 	params.read(r'param.ini')
 	name = params.get('Center_of_projections','loc_name')
 	lon =  params.getfloat('Center_of_projections','longitude')
@@ -126,7 +122,7 @@ This will generate all six maps for the program.
 		print "Operation cancelled."
 		return 1
 
-	from projections_multiscale import *	
+	from projections_multiscale import PJ1,PJ2,PJ3,PJ4,PJ5,PJ6	
 
 	tottime=time()
 
@@ -137,6 +133,8 @@ This will generate all six maps for the program.
 	return 0
 
 
+## MAIN SCRIPT ##
+
 
 menu_txt = """
 Choose an option:
@@ -145,7 +143,6 @@ Choose an option:
 3. Exit
 """
 # Add more options?
-# n. Download the base map from the NASA website (requires internet connection).
 # n. Generate pdf posters.
 # n. Restore param.ini
 
@@ -160,15 +157,49 @@ WARNING: this script will overwrite any changes made manually to param.ini.
 #print "The current center location is: \n%s (lat: %f, lon: %f)" % (name, lat, lon)
 
 
-if raw_input("Install the software dependencies?(y/n) --> ") =='y':
-	os.system("sudo apt-get install python python-numpy python-pyproj python-qt4 python-scitools python-pil")
-else:
-	print "Skip."
+print "Checking dependencies..."
+try:
+	import numpy, pyproj, PyQt4, matplotlib.pyplot, PIL
+	print "Done."
+except ImportError:
+	print "There are missing dependencies."
+	import platform
+	if platform.linux_distribution()[0] == 'Ubuntu':
+		if raw_input("Install the software dependencies automatically?(y/n) --> ") =='y':
+			os.system("sudo apt-get install python python-numpy python-pyproj python-qt4 python-scitools python-pil")
+		else:
+			print "Dependencies not installed."
+			sys.exit()
+	else:
+		print "You need to install manually the following modules: numpy, pyproj, PyQt4, scitools, PIL."
+		sys.exit()
 
-if raw_input("Download the topographic image from NASA website?(y/n) --> ") =='y':
-	os.system("wget http://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57752/land_shallow_topo_8192.tif")
+
+print "Checking topographic data..."
+
+params = ConfigParser.SafeConfigParser()
+params.read(r'param.ini')
+src_img = params.get('Source_Image','src_img')
+if not os.path.isfile(src_img):
+	print "Topographic data not found."
+	if raw_input("Download the topographic image from NASA website?(y/n) --> ") =='y':
+		print "Downloading..."
+		import urllib2
+		pg = urllib2.urlopen("http://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57752/land_shallow_topo_8192.tif")
+		f = open('land_shallow_topo_8192.tif','w')
+		f.write(pg.read())
+		f.close()
+		print "Done."
+	else:
+		print "Download or create a base map and configure your settings in param.ini."
+		sys.exit()
 else:
-	print "Skip."
+	print "Done."
+
+from mapping_routines import *
+
+grat = standard_graticule()
+print "Done."
 
 while 1:
 	try:
