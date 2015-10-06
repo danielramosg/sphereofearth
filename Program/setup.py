@@ -154,10 +154,21 @@ print """
 ## Setup of The Sphere of the Earth ##
 ######################################
 
-This script will help you to configure the program The Sphere of the Earth. You can also configure further parameters by editing the file param.ini.
+This script will help you to configure the program The Sphere of the Earth, including the center location and re-generating the maps. You can also configure further parameters by editing the file param.ini.
 WARNING: this script will overwrite any changes made manually to param.ini.
 """
 #print "The current center location is: \n%s (lat: %f, lon: %f)" % (name, lat, lon)
+
+
+if raw_input("Install the software dependencies?(y/n) --> ") =='y':
+	os.system("sudo apt-get install python python-numpy python-pyproj python-qt4 python-scitools python-pil")
+else:
+	print "Skip."
+
+if raw_input("Download the topographic image from NASA website?(y/n) --> ") =='y':
+	os.system("wget http://eoimages.gsfc.nasa.gov/images/imagerecords/57000/57752/land_shallow_topo_8192.tif")
+else:
+	print "Skip."
 
 while 1:
 	try:
