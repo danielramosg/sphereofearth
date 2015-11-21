@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.0" language="fr_FR">
+<!DOCTYPE TS><TS version="2.0" language="fr_FR" sourcelanguage="">
 <context>
     <name>Form</name>
     <message>
-        <location filename="ui_soe.py" line="356"/>
+        <location filename="ui_soe.py" line="352"/>
         <source>The Sphere of the Earth</source>
         <translation>La Sphère de la Terre</translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="357"/>
+        <location filename="ui_soe.py" line="353"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -22,72 +21,52 @@ p, li { white-space: pre-wrap; }
 &lt;p align=&quot;center&quot; style=&quot; margin-top:18px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:28pt; font-weight:600;&quot;&gt;La Sphère de la Terre&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="362"/>
-        <source>English</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui_soe.py" line="363"/>
-        <source>EspaÃ±ol</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui_soe.py" line="364"/>
-        <source>FranÃ§ais</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui_soe.py" line="365"/>
-        <source>Nederlands</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="ui_soe.py" line="366"/>
+        <location filename="ui_soe.py" line="358"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="367"/>
+        <location filename="ui_soe.py" line="359"/>
         <source>What is a map?</source>
         <translation>Qu&apos;est-ce qu&apos;une carte?</translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="368"/>
-        <source>Plate CarrÃ©e</source>
+        <location filename="ui_soe.py" line="360"/>
+        <source>Plate Carr&#xc3;&#xa9;e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="369"/>
+        <location filename="ui_soe.py" line="361"/>
         <source>Mercator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="370"/>
+        <location filename="ui_soe.py" line="362"/>
         <source>Gall-Peters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="371"/>
+        <location filename="ui_soe.py" line="363"/>
         <source>Azimuthal Equidistant</source>
         <translation>Azimutale équidistante</translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="372"/>
+        <location filename="ui_soe.py" line="364"/>
         <source>Gnomonic</source>
         <translation>Gnomonique</translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="373"/>
+        <location filename="ui_soe.py" line="365"/>
         <source>Mollweide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="390"/>
+        <location filename="ui_soe.py" line="382"/>
         <source>About</source>
         <translation>À propos</translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="374"/>
+        <location filename="ui_soe.py" line="366"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -110,34 +89,29 @@ p, li { white-space: pre-wrap; }
 <context>
     <name>maptab</name>
     <message>
-        <location filename="maptab.ui" line="14"/>
-        <source>Form</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="maptab.ui" line="55"/>
+        <location filename="maptab.py" line="85"/>
         <source>r=</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="maptab.py" line="93"/>
+        <location filename="maptab.py" line="86"/>
         <source>Clear</source>
         <translation>Effacer</translation>
     </message>
     <message>
         <location filename="maptab.ui" line="82"/>
         <source>Coordinates: </source>
-        <translation>Coordonnées:</translation>
+        <translation type="obsolete">Coordonnées:</translation>
     </message>
     <message>
-        <location filename="maptab.py" line="92"/>
-        <source>r =</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="maptab.py" line="94"/>
+        <location filename="maptab.py" line="87"/>
         <source>Coordinates:</source>
         <translation>Coordonnées:</translation>
+    </message>
+    <message>
+        <location filename="maptab.py" line="88"/>
+        <source> </source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

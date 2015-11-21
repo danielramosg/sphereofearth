@@ -1,0 +1,18 @@
+How to integrate translations:
+
+1) Add the panels texts folder to txt/
+E.g.	txt/nl
+
+2) Edit the soe.pro file to add the ts file to the list (e.g. soe_nl.ts). Generate the ts file
+$ pylupdate4 soe.pro
+
+3) Edit the files with Qt Linguist. Release (in the menu) to create qm files.
+
+4) Edit the soe.py file:
+	4.1) Add the language code to the Languages list (preferred order: alphabetical for the endonyms)
+
+	4.2) Add the language endonym to the LangName dictionary
+		"nl":QString(u'Nederlands')
+
+	4.3) Change the default language
+	 	self.ui.langbox.setCurrentIndex(2)

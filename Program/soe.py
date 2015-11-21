@@ -45,7 +45,8 @@ lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
 
 
-Languages = {QString(u'English'):"en", QString(u'Español'):"es", QString(u'Français'):"fr", QString(u'Nederlands'):"nl"}
+Languages = ["ca","en","es","fr","nl"] #Avaliable languages, ordered.
+LangNames = {"ca":QString(u'Català'), "en":QString(u'English'), "es":QString(u'Español'), "fr":QString(u'Français'), "nl":QString(u'Nederlands')}
 PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6]
 
 
@@ -59,7 +60,9 @@ class Mywidget (QWidget):
 
 	self.ui=Ui_Form()
 	self.ui.setupUi(self)
-	self.ui.langbox.setCurrentIndex(0) #Sets the default language. 0=English, 1=Spanish, 2=French, 3=Dutch
+	for lng in Languages:
+		self.ui.langbox.insertItem(99,LangNames[lng])
+	self.ui.langbox.setCurrentIndex(1) #Sets the default language, the index is that of Languages list.
 
 	self.maptabs=[0]
 	for i in range(1,7):
@@ -93,7 +96,7 @@ class Mywidget (QWidget):
 
 
     def setTexts(self):
-	self.lang=Languages[self.ui.langbox.currentText()]
+	self.lang=Languages[self.ui.langbox.currentIndex()]
 
 	translator.load("soe_"+self.lang)
 	self.ui.retranslateUi(self)
