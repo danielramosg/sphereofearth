@@ -120,12 +120,24 @@ class Mywidget (QWidget):
 
 app = QApplication(sys.argv)
 
+#app.setStyleSheet("QWidget { font: bold }")
+
 translator= QTranslator()
 #translator.load("soe_es")
 #translator.load("soe_en")
 app.installTranslator(translator)
 
+#qfontdb = QFontDatabase()
+#qfontdb.addApplicationFont("Ubuntu-M.ttf")
+
+#stylesheet = QtCore.QFile("soestyle.qss")
+#if stylesheet.open(QtCore.QIODevice.ReadOnly | QtCore.QIODevice.Text) :
+#	app.setStyleSheet(stylesheet.readAll().data())
+
+
 wd =  Mywidget()
+#wd.setFont(qfontdb.font("Ubuntu", "Normal", 12))
+#wd.setFont(QFont("Times", 12, QFont.Bold))
 #wd.show()
 #wd.showFullScreen()
 
