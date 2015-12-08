@@ -28,70 +28,8 @@ from PyQt4 import QtCore, QtGui
 from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
-from math import *
-from numpy import *
-
-
-#R=6366197.
-#R=100 * 742/3710.
-#R=100.
-H=1e-5
-
-#HRES = 1280 #screen resolution (hor)
-#VRES = 1024 #screen resolution (ver)
-
-def Tissot (x,y,p,R):
-	#p=PJ.p
-	#R=PJ.R	
-	# lon, lat coordinates of the point
-	(lam, phi) = p(x,y,inverse=True, radians=True)
-	#print 'coords: ', lam, phi
-
-	# partial derivatives
-	(x0,y0) = p(lam - H/2. , phi , radians=True)
-	(x1,y1) = p(lam + H/2. , phi , radians=True)
-	dxdl = (x1 - x0)/H
-	dydl = (y1 - y0)/H
-	(x0,y0) = p(lam , phi - H/2. , radians=True) 
-	(x1,y1) = p(lam , phi + H/2. , radians=True)
-	dxdp = (x1 - x0)/H
-	dydp = (y1 - y0)/H	
-	#print 'dxdp= %.4f dydp= %.4f dxdl= %.4f dydl= %.4f ' % (dxdp, dydp, dxdl, dydl)
-
-	# parameters for the ellipse
-	h = 1/R * sqrt(fabs( dxdp**2 + dydp**2 )) 
-	k = 1/(R*cos(phi)) * sqrt(fabs( dxdl**2 + dydl**2 ))
-	stp = 1/(R**2*h*k*cos(phi)) * (dydp*dxdl - dxdp*dydl)
-	ap = sqrt(fabs(h**2 + k**2 + 2.*h*k*stp))
-	bp = sqrt(fabs(h**2 + k**2 - 2.*h*k*stp))
-	a = (ap+bp)/2.
-	b = (ap-bp)/2.	
-	
-
-	if fabs(dydp)>1e-6 :	
-		bt0 = atan2(-dxdp,dydp)
-	else:
-		bt0 = pi/2.
-
-
-	if fabs(a-b)<1e-6 : 
-		btp = 0
-	elif fabs(h-b) >1e-6 :
-		btp = atan( b/a * sqrt( fabs( (a**2 - h**2) / (h**2 - b**2) ) ) )
-
-	else :
-		btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
-		
-
-	B = copysign(fabs(bt0)+btp,bt0)
-	
-	#print 'bt0 = %.8f , btp = %.8f , sign = %d' % (bt0,btp,copysign(1,bt0))	
-	#print 'h= %.4f k= %.4f stp= %.4f ap= %.4f bp= %.4f btp= %.4f bt0= %.4f' % (h,k,stp,ap,bp,btp,bt0)
-	
-	return a,b,B
-
-
-
+from soemath import *
+import numpy as np
 
 class MyTissot(QWidget):
 
@@ -115,6 +53,8 @@ class MyTissot(QWidget):
 	self.imageLayer = QLabel(self)
 	self.ellipsesLayer = EllipsesLayer(self)
 	self.mouseLayer = MouseLayer(self)
+	self.geodesiclayer = GeodesicLayer(self)
+
 
 	self.imageLayer.setScaledContents(True)
 	self.imageLayer.setPixmap(image)
@@ -126,6 +66,7 @@ class MyTissot(QWidget):
 	self.connect(self.cnx.clearbutton, SIGNAL("clicked()"),self.ClearEllipses)
 	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.ellipsesLayer.update)
 
+	self.geodesiclayer.update()
 	
 
 #	self.exitbutton = QPushButton(self)
@@ -160,7 +101,18 @@ class MyTissot(QWidget):
         self.imageLayer.setGeometry(rect)
         self.ellipsesLayer.setGeometry(rect)
 	self.mouseLayer.setGeometry(rect)
+	self.geodesiclayer.setGeometry(rect)
+	self.mouseLayer.raise_()
 	self.ClearEllipses()
+	
+    def Map_2_Screen(self,ptMap):
+	aa = np.array(ptMap)
+	return ( (aa / self.SC) - np.array([-self.CX,self.CY]) ) * np.array([1,-1])
+
+    def Screen_2_Map(self,ptScreen):
+	bb = np.array(ptScreen)
+	return self.SC * ( bb * np.array([1,-1]) + np.array([-self.CX,self.CY]) ) 
+	
 
 #    def exit (self):
 #	quit()
@@ -186,8 +138,9 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
         self.lastX= event.x()
         self.lastY = event.y()
 	self.point = QPoint(event.x(),event.y())
-	
-	Map_loc = [self.mytissot.SC * (self.lastX - self.mytissot.CX) , self.mytissot.SC * (- self.lastY + self.mytissot.CY)]
+
+	Map_loc = self.mytissot.Screen_2_Map([self.lastX, self.lastY])
+
 	mask=self.mytissot.PJ.mask
 
 	if mask(Map_loc):
@@ -272,6 +225,38 @@ class EllipsesLayer(QLabel): # Clase de la imagen con las elipses clicadas  #sub
 
         super(EllipsesLayer, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
 	#print 'EllipsesLayer actualizada'
+
+
+class GeodesicLayer(QLabel): # Class containing the geodesic path 
+
+    def __init__(self, window):
+        super(GeodesicLayer, self).__init__(window) 
+        self.mytissot = window 
+	self.pointA = (0,0) #already in lon, lat
+	self.pointB = (50,70) #this is a test.
+
+    def paintEvent(self, event): 
+	painter = QPainter()
+	
+	n=100
+	
+	geo = GeodesicArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],n)
+	#print geo
+	geo_map = np.array(self.mytissot.PJ.p(geo[:,0],geo[:,1])).transpose()
+	geo_scr = self.mytissot.Map_2_Screen(geo_map)
+
+	qpoints = QPolygonF()
+	for p in geo_scr:
+		qpoints.append(QPointF(*p))
+
+	painter.begin(self)
+	painter.setPen(QPen(QColor(Qt.yellow), 2))
+	painter.setRenderHint(QPainter.Antialiasing,True)
+	painter.drawPolyline(qpoints)
+	painter.end()
+
+        super(GeodesicLayer, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
+	#print 'GeodesicLayer actualizada'
 
 
 
