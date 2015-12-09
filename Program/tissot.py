@@ -53,7 +53,7 @@ class MyTissot(QWidget):
 	self.imageLayer = QLabel(self)
 	self.ellipsesLayer = EllipsesLayer(self)
 	self.mouseLayer = MouseLayer(self)
-	self.geodesiclayer = GeodesicLayer(self)
+	self.geodesicLayer = GeodesicLayer(self)
 
 
 	self.imageLayer.setScaledContents(True)
@@ -66,7 +66,7 @@ class MyTissot(QWidget):
 	self.connect(self.cnx.clearbutton, SIGNAL("clicked()"),self.ClearEllipses)
 	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.ellipsesLayer.update)
 
-	self.geodesiclayer.update()
+	self.geodesicLayer.update()
 	
 
 #	self.exitbutton = QPushButton(self)
@@ -101,8 +101,9 @@ class MyTissot(QWidget):
         self.imageLayer.setGeometry(rect)
         self.ellipsesLayer.setGeometry(rect)
 	self.mouseLayer.setGeometry(rect)
-	self.geodesiclayer.setGeometry(rect)
-	self.mouseLayer.raise_()
+	self.geodesicLayer.setGeometry(rect)
+	#self.mouseLayer.raise_()
+	self.geodesicLayer.raise_()
 	self.ClearEllipses()
 	
     def Map_2_Screen(self,ptMap):
@@ -135,7 +136,7 @@ class MouseLayer(QLabel): # Clase de la imagen con interaccion de raton #subclas
 
     #método sobreescrito llamado cuando hay eventos mouseMove
     def mouseMoveEvent(self, event):
-        self.lastX= event.x()
+        self.lastX = event.x()
         self.lastY = event.y()
 	self.point = QPoint(event.x(),event.y())
 
@@ -232,8 +233,24 @@ class GeodesicLayer(QLabel): # Class containing the geodesic path
     def __init__(self, window):
         super(GeodesicLayer, self).__init__(window) 
         self.mytissot = window 
-	self.pointA = (0,0) #already in lon, lat
+	self.pointA = (-40,30) #already in lon, lat
 	self.pointB = (50,70) #this is a test.
+	self.flip = 0
+
+    def mousePressEvent(self,event):
+	pt_scr = [event.x(),event.y()]
+	pt_map = self.mytissot.Screen_2_Map(pt_scr)
+	pt_geo = self.mytissot.PJ.p(pt_map[0],pt_map[1],inverse=True)
+	
+	if self.flip == 0:
+		self.pointA = pt_geo
+	else:
+		self.pointB = pt_geo
+		self.update()
+	self.flip = self.flip +1
+	self.flip = self.flip % 2
+	
+
 
     def paintEvent(self, event): 
 	painter = QPainter()
