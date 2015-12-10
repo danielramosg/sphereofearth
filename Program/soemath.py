@@ -82,7 +82,7 @@ def Tissot (x,y,p,R):
 
 
 
-def GeodesicArc (lam1,phi1,lam2,phi2,numpoints):
+def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree):
 	"""Returns the geodesic arc in the sphere joining the point (lam1,phi1) and (lam2,phi2) with numpoints points. lam=lon, phi=lat """
 	l1 = lam1 * pi/180 #computations in radians
 	p1 = phi1 * pi/180
@@ -107,8 +107,11 @@ def GeodesicArc (lam1,phi1,lam2,phi2,numpoints):
 	#print M
 
 	d = acos(x)
-	#print "Distance(A,B) = %f"% d
-	
+	ddeg = d * 57.29577951308232087794
+	#print "Distance(A,B) = %f"% ddeg
+
+	numpoints = int(ddeg*pointsperdegree) # each point in the path is one minute of geodesic from the previous.
+	print "Numpoints: ", numpoints
 	geo0 = np.linspace(0,d,numpoints)
 	geo0xyz = np.column_stack((np.cos(geo0),np.sin(geo0),np.zeros(numpoints)))
 	#print geo0xyz
@@ -119,8 +122,9 @@ def GeodesicArc (lam1,phi1,lam2,phi2,numpoints):
 	pp = np.arcsin(geoxyzb[:,2])
 	geolpb = np.column_stack((ll,pp))
 	geolp = geolpb + np.array([l1,0])
-	geolpdeg = geolp * 180/pi
-	return geolpdeg
+	geolpdeg = geolp * 57.29577951308232087794
+
+	return ddeg , geolpdeg
 
 
 

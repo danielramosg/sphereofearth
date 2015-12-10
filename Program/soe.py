@@ -74,14 +74,14 @@ class Mywidget (QWidget):
 
 		if i==4:
 			pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
-			pjmap = MyTissot(maptab.map_place, maptab, PJ4, resol, pj4trick)
+			pjmap = SoeMap(maptab.map_place, maptab, PJ4, resol, pj4trick)
 			#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
 		elif i==5:
 			pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
-			pjmap= MyTissot(maptab.map_place, maptab, PJ5, resol, pj5trick)
+			pjmap= SoeMap(maptab.map_place, maptab, PJ5, resol, pj5trick)
 			#Same trick.
 		else:
-			pjmap = MyTissot(maptab.map_place, maptab, PJS[i], resol)
+			pjmap = SoeMap(maptab.map_place, maptab, PJS[i], resol)
 
 		layo.addWidget(pjmap)
 		self.connect(self.ui.infobutton,SIGNAL("clicked(bool)"),maptab.text_place.setVisible)
