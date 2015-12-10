@@ -45,7 +45,7 @@ class SoeMap(QWidget):
 
     def __init__(self, parent, cnx, PJ, resol, prtrick = None): #image,R, pr,
         super(QWidget, self).__init__(parent) #llamar al constructor de la superclase
-        
+
 	self.resol = resol
 	self.PJ = PJ
 	self.cnx = cnx # object to connect i/o	
@@ -72,8 +72,12 @@ class SoeMap(QWidget):
         
 	self.connect(self.cnx.clearbutton, SIGNAL("clicked()"),self.tissotLayer_bg.ClearEllipses)
 	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.tissotLayer_bg.update)
+	self.connect(self.cnx.unitbox, SIGNAL("valueChanged(double)"),self.geodesicLayer.update)
 
-	self.geodesicLayer.update()
+	self.connect(self.cnx.tissot_select, SIGNAL("clicked()"),self.tissotLayer_fg.raise_)
+	self.connect(self.cnx.geod_select, SIGNAL("clicked()"),self.geodesicLayer.raise_)	
+
+	#self.geodesicLayer.update()
 	
 
 #	self.exitbutton = QPushButton(self)
@@ -132,6 +136,7 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
         super(TissotLayer_fg, self).__init__(parent) #llamar al constructor de la superclase
 	self.thismap = parent
 
+	self.setCursor(Qt.CrossCursor)
 	self.setMouseTracking(True)
         self.lastX = 0
         self.lastY = 0
@@ -154,7 +159,17 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 
 	if mask(Map_loc):
 		coords = self.thismap.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
-		coordstxt = '(%.2f , %.2f)' % coords
+
+		if coords[0] >= 0.:
+			lsign = 'E'
+		else:
+			lsign = 'W'
+		if coords[1] >= 0. :
+			psign = 'N'
+		else:
+			psign = 'S'
+		coordstxt = '%.2f %s   %.2f %s' % (fabs(coords[1]), psign, fabs(coords[0]), lsign)
+
 		self.thismap.cnx.coordlabel.setText(coordstxt)
 
 		self.b, self.a, self.S = Tissot( Map_loc[0], Map_loc[1] , self.thismap.prtiss,self.thismap.PJ.R)
@@ -241,8 +256,10 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
     def __init__(self, window):
         super(GeodesicLayer, self).__init__(window) 
         self.thismap = window 
-	self.pointA = (-40,30) #already in lon, lat
-	self.pointB = (50,70) #this is a test.
+
+	self.setCursor(Qt.CrossCursor)
+	self.pointA = None #already in lon, lat
+	self.pointB = None
 	self.flip = 0
 
     def mousePressEvent(self,event):
@@ -259,28 +276,32 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 	self.flip = self.flip % 2
 	
     def paintEvent(self, event): 
+	if self.pointB == None:
+		return None
 	painter = QPainter()
 	
-	ppdeg = 1 # points per deg
+	ppdeg = 2 # points per deg
 	
 	d , geo = GeodesicArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg)
 	#print geo
-	print d
+	#print d
 
-	realscale = 111.111111111 # 111.11 = 20000 km / 180 deg. 
-	dist = d*realscale
-	print "Distance: %d km"% dist
+	dist = d * 111.111111111 # 111.11 = 20000 km / 180 deg. 
+	disttxt = '%s  km' % '{:,}'.format(int(dist)).replace(',',' ')
+	self.thismap.cnx.distlabel.setText(disttxt)	
+	#print "Distance: %d km"% dist
 	
-	# 1000 km = 1000 * 180/20000 * ppdeg = 9 * ppdeg points in the path
-	cpts = int (9 * ppdeg)
-	print "cpts: ",cpts
+	unit = self.thismap.cnx.unitbox.value()
+	cpts = int (unit * 0.009 * ppdeg) #numper of points in the path per Unit of the geodesic ruler, 0.009 = 180/20000
+
+	#print "cpts: ",cpts
 	geo_map = np.array(self.thismap.PJ.p(geo[:,0],geo[:,1])).transpose()
 	geo_scr = self.thismap.Map_2_Screen(geo_map)
 
 	
 
 	numpoints = len(geo_scr) #int(d*ppdeg)
-#	print "new numpoints: ", numpoints
+	#print "numpoints: ", numpoints
 	
 	path = [QPainterPath(), QPainterPath()]
 
@@ -288,7 +309,6 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 #	print geo_scr[numpoints-1]
 
 	path[0].moveTo(QPointF(*geo_scr[0]))
-	c_old = 0
 	for i in range(numpoints) :
 		qp = QPointF(*geo_scr[i])
 		c = (i // cpts) % 2
@@ -299,10 +319,6 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 		else:
 			path[c].lineTo(qp)
 			path[(c+1)%2].moveTo(qp)
-
-
-		
-
 
 	painter.begin(self)
 	painter.setRenderHint(QPainter.Antialiasing,True)

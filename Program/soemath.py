@@ -111,7 +111,7 @@ def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree):
 	#print "Distance(A,B) = %f"% ddeg
 
 	numpoints = int(ddeg*pointsperdegree) # each point in the path is one minute of geodesic from the previous.
-	print "Numpoints: ", numpoints
+	#print "Numpoints: ", numpoints
 	geo0 = np.linspace(0,d,numpoints)
 	geo0xyz = np.column_stack((np.cos(geo0),np.sin(geo0),np.zeros(numpoints)))
 	#print geo0xyz
