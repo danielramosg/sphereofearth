@@ -176,9 +176,9 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 		self.b, self.a, self.S = Tissot( Map_loc[0], Map_loc[1] , self.thismap.prtiss,self.thismap.PJ.R)
 	
 		if fabs(self.a - self.b) < 1e-2 :
-			self.pencolor = Qt.green
+			self.pencolor = QPen(Qt.green,1.2)
 		else:
-			self.pencolor = Qt.red
+			self.pencolor = QPen(Qt.red,1.2)
 
 		if fabs(self.a * self.b - 1.) <1e-2 :
 			self.brushcolor = QColor(0,255,0,50)
@@ -209,12 +209,11 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
     					#siempre hay que pintar con el painter dentro de paintEvent()
 	if not self.underMouse():
 		return None
-        painter = QPainter()
+        painter = QPainter()	
         painter.begin(self) #pintar en este objeto MyQLabel
+	painter.setRenderHint(QPainter.Antialiasing,True)
         painter.setPen(self.pencolor) #trazo
         painter.setBrush(self.brushcolor) #relleno
-	painter.setRenderHint(QPainter.Antialiasing,True)
-
 	painter.translate(self.point) # cambio de coord
 	painter.rotate(self.S) # rotación resp el nuevo origen
 	
@@ -245,9 +244,9 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
 #	r=20
 	for Ellip in self.listellip:
 		painter.begin(self)
+		painter.setRenderHint(QPainter.Antialiasing,True)
 		painter.setPen(Ellip[4]) 
 		painter.setBrush(Ellip[5])
-		painter.setRenderHint(QPainter.Antialiasing,True)
 		painter.translate( Ellip[0] ) # cambio de coord
 		painter.rotate( Ellip[3] ) # rotación resp el nuevo origen
 		painter.drawEllipse( QPointF(0,0), r*Ellip[1] , r*Ellip[2])
