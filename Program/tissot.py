@@ -277,23 +277,42 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 	geo_map = np.array(self.thismap.PJ.p(geo[:,0],geo[:,1])).transpose()
 	geo_scr = self.thismap.Map_2_Screen(geo_map)
 
-	path = QPainterPath()
-	path.moveTo(QPointF(*geo_scr[0]))
+	
 
-#	numpoints = len(geo_scr) #int(d*ppdeg)
+	numpoints = len(geo_scr) #int(d*ppdeg)
 #	print "new numpoints: ", numpoints
-	for p in geo_scr[1:] :
-		qp = QPointF(*p)
-		if (path.currentPosition() - qp).manhattanLength() < 50 : 
-			path.lineTo(qp)
+	
+	path = [QPainterPath(), QPainterPath()]
+
+#	print geo_scr.shape
+#	print geo_scr[numpoints-1]
+
+	path[0].moveTo(QPointF(*geo_scr[0]))
+	c_old = 0
+	for i in range(numpoints) :
+		qp = QPointF(*geo_scr[i])
+		c = (i // cpts) % 2
+
+		if ((path[c].currentPosition() - qp).manhattanLength() > 50) : # if there is a jump in the projection 
+			path[c].moveTo(qp)  
+			path[(c+1)%2].moveTo(qp)
 		else:
-			path.moveTo(qp)  # if there is a jump in the projection 
+			path[c].lineTo(qp)
+			path[(c+1)%2].moveTo(qp)
+
+
+		
 
 
 	painter.begin(self)
 	painter.setRenderHint(QPainter.Antialiasing,True)
-	painter.setPen(QPen(QColor(Qt.yellow), 2))
-	painter.drawPath(path)
+	painter.setPen(QPen(QColor(Qt.yellow), 3))
+	painter.drawPath(path[0])
+	painter.drawPath(path[1])
+	painter.setPen(QPen(QColor(Qt.white), 2))
+	painter.drawPath(path[0])
+	painter.setPen(QPen(QColor(Qt.black), 2))
+	painter.drawPath(path[1])
 	painter.end()
 
         super(GeodesicLayer, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
