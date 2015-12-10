@@ -136,7 +136,7 @@
         </widget>
        </item>
        <item row="0" column="5">
-        <widget class="QPushButton" name="clearbutton_2">
+        <widget class="QPushButton" name="geod_clear">
          <property name="text">
           <string>Clear</string>
          </property>
@@ -195,7 +195,7 @@
         </widget>
        </item>
        <item row="1" column="5">
-        <widget class="QPushButton" name="clearbutton">
+        <widget class="QPushButton" name="tissot_clear">
          <property name="text">
           <string>Clear</string>
          </property>
@@ -211,7 +211,7 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>400</width>
+           <width>150</width>
            <height>0</height>
           </size>
          </property>

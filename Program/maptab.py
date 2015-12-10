@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'maptab.ui'
 #
-# Created: Thu Dec 10 18:53:07 2015
+# Created: Thu Dec 10 19:40:49 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -81,9 +81,9 @@ class Ui_maptab(object):
         self.distlabel.setText(_fromUtf8(""))
         self.distlabel.setObjectName(_fromUtf8("distlabel"))
         self.gridLayout.addWidget(self.distlabel, 0, 2, 1, 1)
-        self.clearbutton_2 = QtGui.QPushButton(maptab)
-        self.clearbutton_2.setObjectName(_fromUtf8("clearbutton_2"))
-        self.gridLayout.addWidget(self.clearbutton_2, 0, 5, 1, 1)
+        self.geod_clear = QtGui.QPushButton(maptab)
+        self.geod_clear.setObjectName(_fromUtf8("geod_clear"))
+        self.gridLayout.addWidget(self.geod_clear, 0, 5, 1, 1)
         self.unitbox = QtGui.QDoubleSpinBox(maptab)
         self.unitbox.setSuffix(_fromUtf8(" km"))
         self.unitbox.setDecimals(0)
@@ -106,16 +106,16 @@ class Ui_maptab(object):
         self.radiusbox.setProperty("value", 20.0)
         self.radiusbox.setObjectName(_fromUtf8("radiusbox"))
         self.gridLayout.addWidget(self.radiusbox, 1, 4, 1, 1)
-        self.clearbutton = QtGui.QPushButton(maptab)
-        self.clearbutton.setObjectName(_fromUtf8("clearbutton"))
-        self.gridLayout.addWidget(self.clearbutton, 1, 5, 1, 1)
+        self.tissot_clear = QtGui.QPushButton(maptab)
+        self.tissot_clear.setObjectName(_fromUtf8("tissot_clear"))
+        self.gridLayout.addWidget(self.tissot_clear, 1, 5, 1, 1)
         self.coordlabel = QtGui.QLabel(maptab)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.coordlabel.sizePolicy().hasHeightForWidth())
         self.coordlabel.setSizePolicy(sizePolicy)
-        self.coordlabel.setMinimumSize(QtCore.QSize(400, 0))
+        self.coordlabel.setMinimumSize(QtCore.QSize(150, 0))
         self.coordlabel.setText(_fromUtf8(""))
         self.coordlabel.setObjectName(_fromUtf8("coordlabel"))
         self.gridLayout.addWidget(self.coordlabel, 1, 2, 1, 1)
@@ -130,8 +130,8 @@ class Ui_maptab(object):
         self.label.setText(_translate("maptab", "Coordinates:", None))
         self.label_3.setText(_translate("maptab", "Distance:", None))
         self.label_4.setText(_translate("maptab", "Unit:", None))
-        self.clearbutton_2.setText(_translate("maptab", "Clear", None))
+        self.geod_clear.setText(_translate("maptab", "Clear", None))
         self.tissot_select.setText(_translate("maptab", "Tissot\'s Indicatrix", None))
         self.label_2.setText(_translate("maptab", "Radius:", None))
-        self.clearbutton.setText(_translate("maptab", "Clear", None))
+        self.tissot_clear.setText(_translate("maptab", "Clear", None))
 

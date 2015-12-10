@@ -70,8 +70,9 @@ class SoeMap(QWidget):
       
 	self.resizeEvent(self)
         
-	self.connect(self.cnx.clearbutton, SIGNAL("clicked()"),self.tissotLayer_bg.ClearEllipses)
+	self.connect(self.cnx.tissot_clear, SIGNAL("clicked()"),self.tissotLayer_bg.Clear)
 	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.tissotLayer_bg.update)
+	self.connect(self.cnx.geod_clear, SIGNAL("clicked()"),self.geodesicLayer.Clear)
 	self.connect(self.cnx.unitbox, SIGNAL("valueChanged(double)"),self.geodesicLayer.update)
 
 	self.connect(self.cnx.tissot_select, SIGNAL("clicked()"),self.tissotLayer_fg.raise_)
@@ -113,7 +114,7 @@ class SoeMap(QWidget):
 
 	#self.tissotLayer_fg.raise_()
 	self.geodesicLayer.raise_()
-	self.tissotLayer_bg.ClearEllipses()
+	self.tissotLayer_bg.Clear()
 	
     def Map_2_Screen(self,ptMap):
 	aa = np.array(ptMap)
@@ -202,9 +203,12 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 	#print "pressed", self.point, self.a, self.b, self.S
 	#print self.geometry()
 
-    #método sobreescrito llamado cuando hay evento paint, e.g. al llamar update() o repaint() 
-    #siempre hay que pintar con el painter dentro de paintEvent()
+    		
     def paintEvent(self, event):
+					#método sobreescrito llamado cuando hay evento paint, e.g. al llamar update() o repaint() 
+    					#siempre hay que pintar con el painter dentro de paintEvent()
+	if not self.underMouse():
+		return None
         painter = QPainter()
         painter.begin(self) #pintar en este objeto MyQLabel
         painter.setPen(self.pencolor) #trazo
@@ -220,6 +224,8 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
         painter.end()
         super(TissotLayer_fg, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
 	
+    def leaveEvent(self,event):
+	self.update()
 
 
 class TissotLayer_bg(QWidget): # This class contains the images with clicked ellipses
@@ -229,7 +235,7 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
         self.thismap = parent
 	self.listellip = []   # list of ellipses to be drawn, in format [Qpoint, a, b, S, color]
 
-    def ClearEllipses (self):
+    def Clear (self):
 	self.listellip = []
 	self.update()
 
@@ -258,9 +264,14 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
         self.thismap = window 
 
 	self.setCursor(Qt.CrossCursor)
-	self.pointA = None #already in lon, lat
+	self.pointA = None #points in lon, lat
 	self.pointB = None
 	self.flip = 0
+
+    def Clear(self):
+	self.pointA = None
+	self.pointB = None
+	self.update()
 
     def mousePressEvent(self,event):
 	pt_scr = [event.x(),event.y()]
@@ -269,16 +280,29 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 	
 	if self.flip == 0:
 		self.pointA = pt_geo
+		#self.pointB = None
 	else:
 		self.pointB = pt_geo
 		self.update()
 	self.flip = self.flip +1
 	self.flip = self.flip % 2
 	
-    def paintEvent(self, event): 
-	if self.pointB == None:
-		return None
+    def paintEvent(self, event):
 	painter = QPainter()
+
+#	for point in (self.pointA , self.pointB):
+#		if point != None:
+#			point_map = self.thismap.PJ.p(point[0],point[1])
+#			point_scr = self.thismap.Map_2_Screen(point_map)
+#			painter.begin(self)
+#			painter.setRenderHint(QPainter.Antialiasing,True)
+#			painter.setPen(QPen(QColor(Qt.red), 4))
+#			painter.drawPoint(QPointF(point_scr[0],point_scr[1]))
+#			painter.end()
+
+	if self.pointA == None or self.pointB == None :
+		return None
+
 	
 	ppdeg = 2 # points per deg
 	
