@@ -82,8 +82,8 @@ def Tissot (x,y,p,R):
 
 
 
-def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree):
-	"""Returns the geodesic arc in the sphere joining the point (lam1,phi1) and (lam2,phi2) with numpoints points. lam=lon, phi=lat """
+def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree,complete):
+	"""Returns the geodesic arc in the sphere joining the point (lam1,phi1) and (lam2,phi2). lam=lon, phi=lat """
 	l1 = lam1 * pi/180 #computations in radians
 	p1 = phi1 * pi/180
 	l2 = lam2 * pi/180
@@ -107,8 +107,12 @@ def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree):
 	#print M
 
 	d = acos(x)
+
+	if complete:
+		d = 6.2831853071795864770
+
 	ddeg = d * 57.29577951308232087794
-	#print "Distance(A,B) = %f"% ddeg
+	#print "Distance(A,B) = %f"% ddeg	
 
 	numpoints = int(ddeg*pointsperdegree) # each point in the path is one minute of geodesic from the previous.
 	#print "Numpoints: ", numpoints
@@ -128,6 +132,29 @@ def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree):
 
 
 
+def LoxodromeArc (lam1,phi1,lam2,phi2,pointsdensity,complete):
+	"""Returns the loxodrome arc in the sphere joining the point (lam1,phi1) and (lam2,phi2). lam=lon, phi=lat """
+
+	p=Proj(proj='merc', ellps='sphere', a=100, b=100)
+
+	x1,y1 = p(lam1,phi1)
+	x2,y2 = p(lam2,phi2)
+
+	d = fabs(x2-x1) + fabs(y2-y1)
+	numpoints = int(d*pointsdensity) 
+#	print "Numpoints lox: ", numpoints
+
+	if not complete:
+		t = np.linspace(0,1,numpoints)
+	else:
+		t = np.linspace(-10,10,10*numpoints)	
+	
+	lox0 = np.column_stack(( x1+t*(x2-x1)  , y1 + t* (y2-y1) ))
+	
+	lox = np.array(p(lox0[:,0],lox0[:,1],inverse=True)).transpose()
+
+
+	return lox
 
 
 

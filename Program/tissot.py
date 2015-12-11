@@ -64,6 +64,7 @@ class SoeMap(QWidget):
 	self.tissotLayer_bg = TissotLayer_bg(self)
 	self.tissotLayer_fg = TissotLayer_fg(self)
 	self.geodesicLayer = GeodesicLayer(self)
+	self.loxodromeLayer = LoxodromeLayer(self)
 
 	self.imageLayer.setScaledContents(True)
 	self.imageLayer.setPixmap(image)
@@ -79,7 +80,7 @@ class SoeMap(QWidget):
 	self.connect(self.cnx.geod_select, SIGNAL("clicked()"),self.geodesicLayer.raise_)	
 
 	#self.geodesicLayer.update()
-	
+	self.loxodromeLayer.update()
 
 #	self.exitbutton = QPushButton(self)
 #	self.exitbutton.setText("Exit")
@@ -111,9 +112,12 @@ class SoeMap(QWidget):
         self.tissotLayer_bg.setGeometry(rect)
         self.tissotLayer_fg.setGeometry(rect)
 	self.geodesicLayer.setGeometry(rect)
+	self.loxodromeLayer.setGeometry(rect)
 
 	#self.tissotLayer_fg.raise_()
-	self.geodesicLayer.raise_()
+	#self.geodesicLayer.raise_()
+	self.loxodromeLayer.raise_()
+
 	self.tissotLayer_bg.Clear()
 	
     def Map_2_Screen(self,ptMap):
@@ -305,7 +309,7 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 	
 	ppdeg = 2 # points per deg
 	
-	d , geo = GeodesicArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg)
+	d , geo = GeodesicArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=False)
 	#print geo
 	#print d
 
@@ -359,6 +363,69 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 
 
 
+class LoxodromeLayer(QWidget): # Class containing the geodesic path 
+
+    def __init__(self, window):
+        super(LoxodromeLayer, self).__init__(window) 
+        self.thismap = window 
+
+	self.setCursor(Qt.CrossCursor)
+	self.pointA = (0,0) #points in lon, lat
+	self.pointB = (30,40)
+	self.flip = 0
+
+    def Clear(self):
+	self.pointA = None
+	self.pointB = None
+	self.update()
+
+    def mousePressEvent(self,event):
+	pt_scr = [event.x(),event.y()]
+	pt_map = self.thismap.Screen_2_Map(pt_scr)
+	pt_geo = self.thismap.PJ.p(pt_map[0],pt_map[1],inverse=True)
+	
+	if self.flip == 0:
+		self.pointA = pt_geo
+		#self.pointB = None
+	else:
+		self.pointB = pt_geo
+		self.update()
+	self.flip = self.flip +1
+	self.flip = self.flip % 2
+	
+    def paintEvent(self, event):
+	painter = QPainter()
+
+	if self.pointA == None or self.pointB == None :
+		return None
+	
+	ppdeg = 2 # points per deg
+	
+	lox = LoxodromeArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=False)
+
+	lox_map = np.array(self.thismap.PJ.p(lox[:,0],lox[:,1])).transpose()
+	lox_scr = self.thismap.Map_2_Screen(lox_map)
+	
+	numpoints = len(lox_scr) #int(d*ppdeg)
+#	print "numpoints: ", numpoints
+	
+	path = QPainterPath()
+	path.moveTo(QPointF(*lox_scr[0]))
+	for p in lox_scr[1:] :
+		qp = QPointF(*p)
+		if (path.currentPosition() - qp).manhattanLength() < 50 : 
+			path.lineTo(qp)
+		else:
+			path.moveTo(qp)  # if there is a jump in the projection 
+
+	painter.begin(self)
+	painter.setRenderHint(QPainter.Antialiasing,True)
+	painter.setPen(QPen(QColor(Qt.cyan), 1.5))
+	painter.drawPath(path)
+	painter.end()
+
+        super(LoxodromeLayer, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
+	#print 'LoxodromeLayer actualizada'
 
 
 
