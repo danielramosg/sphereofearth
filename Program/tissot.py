@@ -66,6 +66,8 @@ class SoeMap(QWidget):
 	self.geodesicLayer = GeodesicLayer(self)
 	self.loxodromeLayer = LoxodromeLayer(self)
 
+	self.tissotLayer_fg.raise_()
+
 	self.imageLayer.setScaledContents(True)
 	self.imageLayer.setPixmap(image)
       
@@ -74,13 +76,21 @@ class SoeMap(QWidget):
 	self.connect(self.cnx.tissot_clear, SIGNAL("clicked()"),self.tissotLayer_bg.Clear)
 	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.tissotLayer_bg.update)
 	self.connect(self.cnx.geod_clear, SIGNAL("clicked()"),self.geodesicLayer.Clear)
+	self.connect(self.cnx.loxo_clear, SIGNAL("clicked()"),self.loxodromeLayer.Clear)
 	self.connect(self.cnx.unitbox, SIGNAL("valueChanged(double)"),self.geodesicLayer.update)
+	self.connect(self.cnx.geod_extend, SIGNAL("toggled(bool)"),self.geodesicLayer.update)
+	self.connect(self.cnx.loxo_extend, SIGNAL("toggled(bool)"),self.loxodromeLayer.update)
+	
 
+
+	self.connect(self.cnx.geod_select, SIGNAL("clicked()"),self.geodesicLayer.raise_)
+	self.connect(self.cnx.loxo_select, SIGNAL("clicked()"),self.loxodromeLayer.raise_)		
 	self.connect(self.cnx.tissot_select, SIGNAL("clicked()"),self.tissotLayer_fg.raise_)
-	self.connect(self.cnx.geod_select, SIGNAL("clicked()"),self.geodesicLayer.raise_)	
+
+
 
 	#self.geodesicLayer.update()
-	self.loxodromeLayer.update()
+	#self.loxodromeLayer.update()
 
 #	self.exitbutton = QPushButton(self)
 #	self.exitbutton.setText("Exit")
@@ -116,7 +126,7 @@ class SoeMap(QWidget):
 
 	#self.tissotLayer_fg.raise_()
 	#self.geodesicLayer.raise_()
-	self.loxodromeLayer.raise_()
+	#self.loxodromeLayer.raise_()
 
 	self.tissotLayer_bg.Clear()
 	
@@ -308,8 +318,9 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 
 	
 	ppdeg = 2 # points per deg
-	
-	d , geo = GeodesicArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=False)
+	ext = self.thismap.cnx.geod_extend.isChecked()
+
+	d , geo = GeodesicArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=ext)
 	#print geo
 	#print d
 
@@ -370,8 +381,8 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
         self.thismap = window 
 
 	self.setCursor(Qt.CrossCursor)
-	self.pointA = (0,0) #points in lon, lat
-	self.pointB = (30,40)
+	self.pointA = None #points in lon, lat
+	self.pointB = None
 	self.flip = 0
 
     def Clear(self):
@@ -400,8 +411,9 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
 		return None
 	
 	ppdeg = 2 # points per deg
-	
-	lox = LoxodromeArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=False)
+	ext = self.thismap.cnx.loxo_extend.isChecked()
+
+	lox = LoxodromeArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=ext)
 
 	lox_map = np.array(self.thismap.PJ.p(lox[:,0],lox[:,1])).transpose()
 	lox_scr = self.thismap.Map_2_Screen(lox_map)

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1208</width>
-    <height>555</height>
+    <width>1593</width>
+    <height>592</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,7 +27,6 @@
        <property name="frameShape">
         <enum>QFrame::NoFrame</enum>
        </property>
-       <zorder></zorder>
       </widget>
      </item>
      <item row="0" column="2">
@@ -59,7 +58,7 @@
        </property>
        <property name="sizeHint" stdset="0">
         <size>
-         <width>13</width>
+         <width>28</width>
          <height>20</height>
         </size>
        </property>
@@ -67,9 +66,6 @@
      </item>
      <item row="1" column="1">
       <layout class="QGridLayout" name="gridLayout">
-       <property name="horizontalSpacing">
-        <number>20</number>
-       </property>
        <item row="0" column="0">
         <widget class="QRadioButton" name="geod_select">
          <property name="mouseTracking">
@@ -82,21 +78,18 @@
           <string>Geodesic</string>
          </property>
          <property name="checked">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Coordinates:</string>
-         </property>
-         <property name="alignment">
-          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <bool>false</bool>
          </property>
         </widget>
        </item>
        <item row="0" column="1">
+        <widget class="QCheckBox" name="geod_extend">
+         <property name="text">
+          <string>Extend</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
         <widget class="QLabel" name="label_3">
          <property name="text">
           <string>Distance:</string>
@@ -107,6 +100,19 @@
         </widget>
        </item>
        <item row="0" column="3">
+        <widget class="QLabel" name="distlabel">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
         <widget class="QLabel" name="label_4">
          <property name="text">
           <string>Unit:</string>
@@ -116,33 +122,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QLabel" name="distlabel">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>400</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="5">
-        <widget class="QPushButton" name="geod_clear">
-         <property name="text">
-          <string>Clear</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
         <widget class="QDoubleSpinBox" name="unitbox">
          <property name="suffix">
           <string notr="true"> km</string>
@@ -164,7 +144,44 @@
          </property>
         </widget>
        </item>
+       <item row="0" column="6">
+        <widget class="QPushButton" name="geod_clear">
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
        <item row="1" column="0">
+        <widget class="QRadioButton" name="loxo_select">
+         <property name="mouseTracking">
+          <bool>false</bool>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::TabFocus</enum>
+         </property>
+         <property name="text">
+          <string>Loxodrome</string>
+         </property>
+         <property name="checked">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QCheckBox" name="loxo_extend">
+         <property name="text">
+          <string>Extend</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="6">
+        <widget class="QPushButton" name="loxo_clear">
+         <property name="text">
+          <string>Clear</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
         <widget class="QRadioButton" name="tissot_select">
          <property name="focusPolicy">
           <enum>Qt::TabFocus</enum>
@@ -172,36 +189,22 @@
          <property name="text">
           <string>Tissot's Indicatrix</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
-       <item row="1" column="3">
-        <widget class="QLabel" name="label_2">
+       <item row="2" column="2">
+        <widget class="QLabel" name="label">
          <property name="text">
-          <string>Radius:</string>
+          <string>Coordinates:</string>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
          </property>
         </widget>
        </item>
-       <item row="1" column="4">
-        <widget class="QDoubleSpinBox" name="radiusbox">
-         <property name="decimals">
-          <number>1</number>
-         </property>
-         <property name="value">
-          <double>20.000000000000000</double>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="5">
-        <widget class="QPushButton" name="tissot_clear">
-         <property name="text">
-          <string>Clear</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
+       <item row="2" column="3">
         <widget class="QLabel" name="coordlabel">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -217,6 +220,33 @@
          </property>
          <property name="text">
           <string/>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="4">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Radius:</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="5">
+        <widget class="QDoubleSpinBox" name="radiusbox">
+         <property name="decimals">
+          <number>1</number>
+         </property>
+         <property name="value">
+          <double>20.000000000000000</double>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="6">
+        <widget class="QPushButton" name="tissot_clear">
+         <property name="text">
+          <string>Clear</string>
          </property>
         </widget>
        </item>
