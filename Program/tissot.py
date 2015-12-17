@@ -78,9 +78,10 @@ def Tissot (x,y,p,R):
 		btp = 0
 	elif fabs(h-b) >1e-6 :
 		btp = atan( b/a * sqrt( fabs( (a**2 - h**2) / (h**2 - b**2) ) ) )
-
-	else :
+	elif fabs(a-k) >1e-6 :
 		btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
+	else:
+		btp =pi/2.
 		
 
 	B = copysign(fabs(bt0)+btp,bt0)
