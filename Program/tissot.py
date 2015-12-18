@@ -183,7 +183,7 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 			psign = 'N'
 		else:
 			psign = 'S'
-		coordstxt = '%.2f %s   %.2f %s' % (fabs(coords[1]), psign, fabs(coords[0]), lsign)
+		coordstxt = u"%.2f\u00B0 %s   %.2f\u00B0 %s" % (fabs(coords[1]), psign, fabs(coords[0]), lsign)
 
 		self.thismap.cnx.coordlabel.setText(coordstxt)
 
