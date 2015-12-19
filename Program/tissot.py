@@ -205,13 +205,16 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 		self.S = -57.29577950 * self.S
 	
 	else:
-		self.a = 0
-		self.b = 0
+		self.a = None
+		self.b = None
 
 	self.update() #repintar
 
 
     def mousePressEvent(self, event):
+	if self.a == None or self.b == None:
+		return None
+
 	self.thismap.tissotLayer_bg.listellip.append( [self.point, self.a, self.b, self.S, self.pencolor, self.brushcolor] )
 	self.thismap.tissotLayer_bg.update()
 	#print "pressed", self.point, self.a, self.b, self.S
@@ -223,6 +226,9 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
     					#siempre hay que pintar con el painter dentro de paintEvent()
 	if not self.underMouse():
 		return None
+	if self.a == None or self.b == None:
+		return None
+
         painter = QPainter()	
         painter.begin(self) #pintar en este objeto MyQLabel
 	painter.setRenderHint(QPainter.Antialiasing,True)
@@ -257,6 +263,8 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
 	r = self.thismap.cnx.radiusbox.value()
 #	r=20
 	for Ellip in self.listellip:
+		if Ellip[1] == None or Ellip[2] == None: #redundant, shouldn't be True.
+			continue
 		painter.begin(self)
 		painter.setRenderHint(QPainter.Antialiasing,True)
 		painter.setPen(Ellip[4]) 
