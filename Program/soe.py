@@ -44,6 +44,8 @@ resol = params.getfloat('Maps_Size','resolution')
 lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
 
+NUMVERSION = '1.2.0-a'
+
 
 Languages = ["ca","en","es","fr","nl"] #Avaliable languages, ordered.
 LangNames = {"ca":QString(u'Català'), "en":QString(u'English'), "es":QString(u'Español'), "fr":QString(u'Français'), "nl":QString(u'Nederlands')}
@@ -114,7 +116,11 @@ class Mywidget (QWidget):
 		self.maptabs[i].text_place.setHtml(txt)
 		txtfile.close()
 
-
+	txtfile=open('./txt/'+self.lang+'/about.html','r')
+	txt=QString.fromUtf8(txtfile.read().replace('\NumVersion',NUMVERSION))
+	self.ui.text_about.setLineWrapMode(QTextEdit.NoWrap)
+	self.ui.text_about.setHtml(txt)
+	txtfile.close()
 	
 
 

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'soe.ui'
 #
-# Created: Wed Nov 25 21:44:24 2015
+# Created: Sun Dec 20 00:00:07 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -290,55 +290,11 @@ class Ui_Form(object):
         self.tab_about.setObjectName(_fromUtf8("tab_about"))
         self.horizontalLayout_4 = QtGui.QHBoxLayout(self.tab_about)
         self.horizontalLayout_4.setObjectName(_fromUtf8("horizontalLayout_4"))
-        self.verticalLayout_2 = QtGui.QVBoxLayout()
-        self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
-        self.horizontalLayout_2 = QtGui.QHBoxLayout()
-        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
-        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem4)
-        self.logo_mmaca = QtGui.QLabel(self.tab_about)
-        self.logo_mmaca.setMinimumSize(QtCore.QSize(161, 101))
-        self.logo_mmaca.setMaximumSize(QtCore.QSize(161, 101))
-        self.logo_mmaca.setText(_fromUtf8(""))
-        self.logo_mmaca.setPixmap(QtGui.QPixmap(_fromUtf8("img/logo_mmaca.png")))
-        self.logo_mmaca.setScaledContents(True)
-        self.logo_mmaca.setObjectName(_fromUtf8("logo_mmaca"))
-        self.horizontalLayout_2.addWidget(self.logo_mmaca)
-        self.logo_imaginary = QtGui.QLabel(self.tab_about)
-        self.logo_imaginary.setMinimumSize(QtCore.QSize(303, 101))
-        self.logo_imaginary.setMaximumSize(QtCore.QSize(303, 101))
-        self.logo_imaginary.setText(_fromUtf8(""))
-        self.logo_imaginary.setPixmap(QtGui.QPixmap(_fromUtf8("img/logo_imaginary.png")))
-        self.logo_imaginary.setScaledContents(True)
-        self.logo_imaginary.setObjectName(_fromUtf8("logo_imaginary"))
-        self.horizontalLayout_2.addWidget(self.logo_imaginary)
-        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_2.addItem(spacerItem5)
-        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
-        self.horizontalLayout_3 = QtGui.QHBoxLayout()
-        self.horizontalLayout_3.setObjectName(_fromUtf8("horizontalLayout_3"))
-        spacerItem6 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem6)
-        self.textEdit = QtGui.QTextEdit(self.tab_about)
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255, 0))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        self.textEdit.setPalette(palette)
-        self.textEdit.setFrameShape(QtGui.QFrame.NoFrame)
-        self.textEdit.setReadOnly(True)
-        self.textEdit.setObjectName(_fromUtf8("textEdit"))
-        self.horizontalLayout_3.addWidget(self.textEdit)
-        spacerItem7 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout_3.addItem(spacerItem7)
-        self.verticalLayout_2.addLayout(self.horizontalLayout_3)
-        self.horizontalLayout_4.addLayout(self.verticalLayout_2)
+        self.text_about = QtGui.QTextEdit(self.tab_about)
+        self.text_about.setAccessibleDescription(_fromUtf8(""))
+        self.text_about.setReadOnly(True)
+        self.text_about.setObjectName(_fromUtf8("text_about"))
+        self.horizontalLayout_4.addWidget(self.text_about)
         self.tabWidget.addTab(self.tab_about, _fromUtf8(""))
         self.gridLayout_2.addWidget(self.tabWidget, 2, 0, 1, 3)
         self.horizontalLayout.addLayout(self.gridLayout_2)
@@ -363,21 +319,5 @@ class Ui_Form(object):
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_aziequi), _translate("Form", "Azimuthal Equidistant", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_gnomo), _translate("Form", "Gnomonic", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_moll), _translate("Form", "Mollweide", None))
-        self.textEdit.setHtml(_translate("Form", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:\'Ubuntu\'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">The Sphere of the Earth.</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">Version 1.1.0 </span></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:200;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:200;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">Author: </span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">Daniel Ramos </span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">daniel.ramos@imaginary.org</span></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:200;\"><br /></p>\n"
-"<p align=\"center\" style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:200;\"><br /></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">www.mmaca.cat</span></p>\n"
-"<p align=\"center\" style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:200;\">www.imaginary.org</span></p></body></html>", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_about), _translate("Form", "About", None))
 
