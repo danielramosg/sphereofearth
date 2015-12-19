@@ -28,8 +28,8 @@
 # - imageLayer
 # - tissotLayer_fg
 # - tissotLayer_bg
-# - geodesicLayer_fg
-# - geodesicLayer_bg
+# - geodesicLayer
+# - loxodromeLayer
 
 
 import sys, os
