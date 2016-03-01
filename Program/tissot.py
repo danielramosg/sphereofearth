@@ -332,7 +332,7 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 	#print geo
 	#print d
 
-	dist = d * 111.111111111 # 111.11 = 20000 km / 180 deg. 
+	dist = d * 20000 / 180. # 20000 km = 180 deg. 
 	disttxt = '%s  km' % '{:,}'.format(int(dist)).replace(',',' ')
 	self.thismap.cnx.distlabel.setText(disttxt)	
 	#print "Distance: %d km"% dist
