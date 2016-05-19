@@ -78,7 +78,8 @@ def Tissot (x,y,p,R):
 	
 	#print 'bt0 = %.8f , btp = %.8f , sign = %d' % (bt0,btp,copysign(1,bt0))	
 	#print 'h= %.4f k= %.4f stp= %.4f ap= %.4f bp= %.4f btp= %.4f bt0= %.4f' % (h,k,stp,ap,bp,btp,bt0)
-	
+	B = -57.29577950 * B
+
 	return a,b,B
 
 

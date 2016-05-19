@@ -202,7 +202,7 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 		#r = self.thismap.radiusbox.value()
 		#self.a = r * self.a	
 		#self.b = r * self.b
-		self.S = -57.29577950 * self.S
+		#self.S = -57.29577950 * self.S
 	
 	else:
 		self.a = None
@@ -238,8 +238,11 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 	painter.rotate(self.S) # rotación resp el nuevo origen
 	
 	r = self.thismap.cnx.radiusbox.value()
+	print "Value a, b"	
+	print self.a, self.b
 #	r=20
-        painter.drawEllipse(QPointF(0,0), r*self.a , r*self.b )
+	f = r * self.thismap.PJ.R / 6371 * 1/self.thismap.SC # r realKM * R mapMM / EarthRadiusinKM * 1/scrPX_2_mapMM
+        painter.drawEllipse(QPointF(0,0), f*self.a , f*self.b )
         painter.end()
         super(TissotLayer_fg, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
 	
@@ -261,6 +264,7 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
     def paintEvent(self, event): 
 	painter = QPainter()
 	r = self.thismap.cnx.radiusbox.value()
+	f = r * self.thismap.PJ.R / 6371 * 1/self.thismap.SC # r realKM * R mapMM / EarthRadiusinKM * 1/scrPX_2_mapMM
 #	r=20
 	for Ellip in self.listellip:
 		if Ellip[1] == None or Ellip[2] == None: #redundant, shouldn't be True.
@@ -271,7 +275,7 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
 		painter.setBrush(Ellip[5])
 		painter.translate( Ellip[0] ) # cambio de coord
 		painter.rotate( Ellip[3] ) # rotación resp el nuevo origen
-		painter.drawEllipse( QPointF(0,0), r*Ellip[1] , r*Ellip[2])
+		painter.drawEllipse( QPointF(0,0), f*Ellip[1] , f*Ellip[2])
 		painter.end()
 
         super(TissotLayer_bg, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario

@@ -220,11 +220,23 @@
            </item>
            <item row="2" column="5">
             <widget class="QDoubleSpinBox" name="radiusbox">
+             <property name="suffix">
+              <string notr="true"> km</string>
+             </property>
              <property name="decimals">
-              <number>1</number>
+              <number>0</number>
+             </property>
+             <property name="minimum">
+              <double>0.000000000000000</double>
+             </property>
+             <property name="maximum">
+              <double>20000.000000000000000</double>
+             </property>
+             <property name="singleStep">
+              <double>100.000000000000000</double>
              </property>
              <property name="value">
-              <double>20.000000000000000</double>
+              <double>1000.000000000000000</double>
              </property>
             </widget>
            </item>

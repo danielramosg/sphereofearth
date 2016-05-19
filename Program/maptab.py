@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'maptab.ui'
 #
-# Created: Sat Dec 19 15:02:17 2015
+# Created: Thu May 19 21:44:53 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -120,8 +120,12 @@ class Ui_maptab(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout.addWidget(self.label_2, 2, 4, 1, 1)
         self.radiusbox = QtGui.QDoubleSpinBox(maptab)
-        self.radiusbox.setDecimals(1)
-        self.radiusbox.setProperty("value", 20.0)
+        self.radiusbox.setSuffix(_fromUtf8(" km"))
+        self.radiusbox.setDecimals(0)
+        self.radiusbox.setMinimum(0.0)
+        self.radiusbox.setMaximum(20000.0)
+        self.radiusbox.setSingleStep(100.0)
+        self.radiusbox.setProperty("value", 1000.0)
         self.radiusbox.setObjectName(_fromUtf8("radiusbox"))
         self.gridLayout.addWidget(self.radiusbox, 2, 5, 1, 1)
         self.tissot_clear = QtGui.QPushButton(maptab)
