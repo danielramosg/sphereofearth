@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # The Sphere of the Earth.
-# Copyright (C) 2013 - 2015  Daniel Ramos
+# Copyright (C) 2013 - 2016  Daniel Ramos
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by

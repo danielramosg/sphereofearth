@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # The Sphere of the Earth.
-# Copyright (C) 2013 - 2015  Daniel Ramos
+# Copyright (C) 2013 - 2016  Daniel Ramos
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class SoeMap(QWidget):
 
     def __init__(self, parent, cnx, PJ, resol, prtrick = None): #image,R, pr,
         super(QWidget, self).__init__(parent) #llamar al constructor de la superclase
-
+	self.parent = parent
 	self.resol = resol
 	self.PJ = PJ
 	self.cnx = cnx # object to connect i/o	
@@ -60,6 +60,8 @@ class SoeMap(QWidget):
 	self.imw = image.width()
 	self.imh = image.height()
 
+	self.setMinimumSize(30,30)
+
 	self.imageLayer = QLabel(self)
 	self.tissotLayer_bg = TissotLayer_bg(self)
 	self.tissotLayer_fg = TissotLayer_fg(self)
@@ -70,7 +72,7 @@ class SoeMap(QWidget):
 
 	self.imageLayer.setScaledContents(True)
 	self.imageLayer.setPixmap(image)
-      
+	
 	self.resizeEvent(self)
         
 	self.connect(self.cnx.tissot_clear, SIGNAL("clicked()"),self.tissotLayer_bg.Clear)
@@ -81,13 +83,9 @@ class SoeMap(QWidget):
 	self.connect(self.cnx.geod_extend, SIGNAL("toggled(bool)"),self.geodesicLayer.update)
 	self.connect(self.cnx.loxo_extend, SIGNAL("toggled(bool)"),self.loxodromeLayer.update)
 	
-
-
 	self.connect(self.cnx.geod_select, SIGNAL("clicked()"),self.geodesicLayer.raise_)
 	self.connect(self.cnx.loxo_select, SIGNAL("clicked()"),self.loxodromeLayer.raise_)		
 	self.connect(self.cnx.tissot_select, SIGNAL("clicked()"),self.tissotLayer_fg.raise_)
-
-
 
 	#self.geodesicLayer.update()
 	#self.loxodromeLayer.update()
@@ -109,7 +107,7 @@ class SoeMap(QWidget):
 	rectH = self.imh*imPX_2_scrPX
 
 	rect = QRect(HRES/2-rectW/2,VRES/2-rectH/2,rectW,rectH)	
-	#rect = QRect(0,0,self.imw*imPX_2_scrPX , self.imh*imPX_2_scrPX)	
+
 	scrPX_2_imPX = 1/imPX_2_scrPX
 
 	self.CX = rect.width()/2	#center of the rectangle
@@ -124,12 +122,6 @@ class SoeMap(QWidget):
 	self.geodesicLayer.setGeometry(rect)
 	self.loxodromeLayer.setGeometry(rect)
 
-	#self.tissotLayer_fg.raise_()
-	#self.geodesicLayer.raise_()
-	#self.loxodromeLayer.raise_()
-
-	self.tissotLayer_bg.Clear()
-	
     def Map_2_Screen(self,ptMap):
 	aa = np.array(ptMap)
 	return ( (aa / self.SC) - np.array([-self.CX,self.CY]) ) * np.array([1,-1])
@@ -141,6 +133,38 @@ class SoeMap(QWidget):
 
 #    def exit (self):
 #	quit()
+
+
+def TissotEllipse(lon, lat, Map):
+	"""Given longitude and latitude of a point on a given SoeMap, return the parameters of the Tissot ellipse"""
+
+	if lon == None or lat == None:
+		return None,None,None,None,None,None
+
+	xy = Map.PJ.p(lon,lat)
+	r = Map.cnx.radiusbox.value()
+	f = r * Map.PJ.R / 6371 * 1/Map.SC # r realKM * R mapMM / EarthRadiusinKM * 1/scrPX_2_mapMM
+
+	if Map.PJ.mask(xy):
+		a,b,S = Tissot(xy[0],xy[1],Map.prtiss,Map.PJ.R)
+		
+		if fabs(a - b) < 1e-2 :
+			pencolor = QPen(Qt.green,1.2)
+		else:
+			pencolor = QPen(Qt.red,1.2)
+
+		if fabs(a * b - 1.) <1e-2 :
+			brushcolor = QColor(0,255,0,50)
+		else:
+			brushcolor = QColor(255,0,0,50)
+		
+		a = f * a
+		b = f * b
+
+	else:
+		xy,a,b,S,pencolor,brushcolor = None,None,None,None,None,None
+
+	return xy,a,b,S,pencolor,brushcolor
 
 
 
@@ -170,43 +194,25 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 
 	Map_loc = self.thismap.Screen_2_Map([self.lastX, self.lastY])
 
-	mask=self.thismap.PJ.mask
 
-	if mask(Map_loc):
-		coords = self.thismap.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
+	if self.thismap.PJ.mask(Map_loc):
+		self.coords = self.thismap.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
 
-		if coords[0] >= 0.:
+		if self.coords[0] >= 0.:
 			lsign = 'E'
 		else:
 			lsign = 'W'
-		if coords[1] >= 0. :
+		if self.coords[1] >= 0. :
 			psign = 'N'
 		else:
 			psign = 'S'
-		coordstxt = u"%.2f\u00B0 %s   %.2f\u00B0 %s" % (fabs(coords[1]), psign, fabs(coords[0]), lsign)
 
+		coordstxt = u"%.2f\u00B0 %s   %.2f\u00B0 %s" % (fabs(self.coords[1]), psign, fabs(self.coords[0]), lsign)
 		self.thismap.cnx.coordlabel.setText(coordstxt)
-
-		self.b, self.a, self.S = Tissot( Map_loc[0], Map_loc[1] , self.thismap.prtiss,self.thismap.PJ.R)
-	
-		if fabs(self.a - self.b) < 1e-2 :
-			self.pencolor = QPen(Qt.green,1.2)
-		else:
-			self.pencolor = QPen(Qt.red,1.2)
-
-		if fabs(self.a * self.b - 1.) <1e-2 :
-			self.brushcolor = QColor(0,255,0,50)
-		else:
-			self.brushcolor = QColor(255,0,0,50)
-
-		#r = self.thismap.radiusbox.value()
-		#self.a = r * self.a	
-		#self.b = r * self.b
-		#self.S = -57.29577950 * self.S
-	
 	else:
-		self.a = None
-		self.b = None
+		self.coords = None,None
+
+	foo, self.b, self.a, self.S, self.pencolor, self.brushcolor = TissotEllipse( self.coords[0], self.coords[1] , self.thismap)
 
 	self.update() #repintar
 
@@ -215,15 +221,14 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 	if self.a == None or self.b == None:
 		return None
 
-	self.thismap.tissotLayer_bg.listellip.append( [self.point, self.a, self.b, self.S, self.pencolor, self.brushcolor] )
+	self.thismap.parent.listellip.append( self.coords )
 	self.thismap.tissotLayer_bg.update()
-	#print "pressed", self.point, self.a, self.b, self.S
-	#print self.geometry()
-
+	
     		
     def paintEvent(self, event):
 					#método sobreescrito llamado cuando hay evento paint, e.g. al llamar update() o repaint() 
     					#siempre hay que pintar con el painter dentro de paintEvent()
+
 	if not self.underMouse():
 		return None
 	if self.a == None or self.b == None:
@@ -237,12 +242,7 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 	painter.translate(self.point) # cambio de coord
 	painter.rotate(self.S) # rotación resp el nuevo origen
 	
-	r = self.thismap.cnx.radiusbox.value()
-	print "Value a, b"	
-	print self.a, self.b
-#	r=20
-	f = r * self.thismap.PJ.R / 6371 * 1/self.thismap.SC # r realKM * R mapMM / EarthRadiusinKM * 1/scrPX_2_mapMM
-        painter.drawEllipse(QPointF(0,0), f*self.a , f*self.b )
+        painter.drawEllipse(QPointF(0,0), self.a , self.b )
         painter.end()
         super(TissotLayer_fg, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
 	
@@ -255,31 +255,32 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
     def __init__(self, parent):
         super(TissotLayer_bg, self).__init__(parent) 
         self.thismap = parent
-	self.listellip = []   # list of ellipses to be drawn, in format [Qpoint, a, b, S, color]
 
     def Clear (self):
-	self.listellip = []
+	self.thismap.parent.listellip = []
 	self.update()
 
     def paintEvent(self, event): 
 	painter = QPainter()
-	r = self.thismap.cnx.radiusbox.value()
-	f = r * self.thismap.PJ.R / 6371 * 1/self.thismap.SC # r realKM * R mapMM / EarthRadiusinKM * 1/scrPX_2_mapMM
-#	r=20
-	for Ellip in self.listellip:
-		if Ellip[1] == None or Ellip[2] == None: #redundant, shouldn't be True.
-			continue
-		painter.begin(self)
-		painter.setRenderHint(QPainter.Antialiasing,True)
-		painter.setPen(Ellip[4]) 
-		painter.setBrush(Ellip[5])
-		painter.translate( Ellip[0] ) # cambio de coord
-		painter.rotate( Ellip[3] ) # rotación resp el nuevo origen
-		painter.drawEllipse( QPointF(0,0), f*Ellip[1] , f*Ellip[2])
-		painter.end()
+	for coor in self.thismap.parent.listellip:
+		xy,b,a,S,pen,brush = TissotEllipse( coor[0], coor[1] , self.thismap)
+		if xy == None:
+			pass
+		else:
+			pt = self.thismap.Map_2_Screen(xy)
+			point = QPoint(pt[0],pt[1])
+		
+			painter.begin(self)
+			painter.setRenderHint(QPainter.Antialiasing,True)
+			painter.setPen(pen) 
+			painter.setBrush(brush)
+			painter.translate( point ) # cambio de coord
+			painter.rotate( S ) # rotación resp el nuevo origen
+			painter.drawEllipse( QPointF(0,0), a , b )
+			painter.end()
 
         super(TissotLayer_bg, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
-	#print 'TissotLayer_bg actualizada'
+	# print 'TissotLayer_bg actualizada'
 
 
 class GeodesicLayer(QWidget): # Class containing the geodesic path 
@@ -289,13 +290,13 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
         self.thismap = window 
 
 	self.setCursor(Qt.CrossCursor)
-	self.pointA = None #points in lon, lat
-	self.pointB = None
+	#self.pointA = None #points in lon, lat
+	#self.pointB = None
 	self.flip = 0
 
     def Clear(self):
-	self.pointA = None
-	self.pointB = None
+	self.thismap.parent.geoptA = None
+	self.thismap.parent.geoptB = None
 	self.update()
 
     def mousePressEvent(self,event):
@@ -304,10 +305,10 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 	pt_geo = self.thismap.PJ.p(pt_map[0],pt_map[1],inverse=True)
 	
 	if self.flip == 0:
-		self.pointA = pt_geo
-		#self.pointB = None
+		self.thismap.parent.geoptA = pt_geo
+		#self.thismap.parent.geoptB = None
 	else:
-		self.pointB = pt_geo
+		self.thismap.parent.geoptB = pt_geo
 		self.update()
 	self.flip = self.flip +1
 	self.flip = self.flip % 2
@@ -315,7 +316,7 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
     def paintEvent(self, event):
 	painter = QPainter()
 
-#	for point in (self.pointA , self.pointB):
+#	for point in (self.thismap.parent.geoptA , self.thismap.parent.geoptB):
 #		if point != None:
 #			point_map = self.thismap.PJ.p(point[0],point[1])
 #			point_scr = self.thismap.Map_2_Screen(point_map)
@@ -325,14 +326,14 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 #			painter.drawPoint(QPointF(point_scr[0],point_scr[1]))
 #			painter.end()
 
-	if self.pointA == None or self.pointB == None :
+	if self.thismap.parent.geoptA == None or self.thismap.parent.geoptB == None :
 		return None
 
 	
 	ppdeg = 2 # points per deg
 	ext = self.thismap.cnx.geod_extend.isChecked()
 
-	d , geo = GeodesicArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=ext)
+	d , geo = GeodesicArc(self.thismap.parent.geoptA[0],self.thismap.parent.geoptA[1],self.thismap.parent.geoptB[0],self.thismap.parent.geoptB[1],ppdeg, complete=ext)
 	#print geo
 	#print d
 
@@ -393,13 +394,13 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
         self.thismap = window 
 
 	self.setCursor(Qt.CrossCursor)
-	self.pointA = None #points in lon, lat
-	self.pointB = None
+	#self.pointA = None #points in lon, lat
+	#self.pointB = None
 	self.flip = 0
 
     def Clear(self):
-	self.pointA = None
-	self.pointB = None
+	self.thismap.parent.loxptA = None
+	self.thismap.parent.loxptB = None
 	self.update()
 
     def mousePressEvent(self,event):
@@ -408,10 +409,10 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
 	pt_geo = self.thismap.PJ.p(pt_map[0],pt_map[1],inverse=True)
 	
 	if self.flip == 0:
-		self.pointA = pt_geo
-		#self.pointB = None
+		self.thismap.parent.loxptA = pt_geo
+		#self.thismap.parent.loxptB = None
 	else:
-		self.pointB = pt_geo
+		self.thismap.parent.loxptB = pt_geo
 		self.update()
 	self.flip = self.flip +1
 	self.flip = self.flip % 2
@@ -419,13 +420,13 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
     def paintEvent(self, event):
 	painter = QPainter()
 
-	if self.pointA == None or self.pointB == None :
+	if self.thismap.parent.loxptA == None or self.thismap.parent.loxptB == None :
 		return None
 	
 	ppdeg = 2 # points per deg
 	ext = self.thismap.cnx.loxo_extend.isChecked()
 
-	lox = LoxodromeArc(self.pointA[0],self.pointA[1],self.pointB[0],self.pointB[1],ppdeg, complete=ext)
+	lox = LoxodromeArc(self.thismap.parent.loxptA[0],self.thismap.parent.loxptA[1],self.thismap.parent.loxptB[0],self.thismap.parent.loxptB[1],ppdeg, complete=ext)
 
 	lox_map = np.array(self.thismap.PJ.p(lox[:,0],lox[:,1])).transpose()
 	lox_scr = self.thismap.Map_2_Screen(lox_map)

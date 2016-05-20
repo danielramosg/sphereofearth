@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # The Sphere of the Earth.
-# Copyright (C) 2013 - 2015  Daniel Ramos
+# Copyright (C) 2013 - 2016  Daniel Ramos
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -28,7 +28,6 @@ from PyQt4.QtGui import *
 from PyQt4.QtCore import *
 
 from ui_soe import *
-from maptab import *
 
 from pyproj import Proj
 
@@ -66,35 +65,42 @@ class Mywidget (QWidget):
 		self.ui.langbox.insertItem(99,LangNames[lng])
 	self.ui.langbox.setCurrentIndex(1) #Sets the default language, the index is that of Languages list.
 
-	self.maptabs=[0]
+
+	self.listellip = []   # list of points where ellipses are to be drawn, in format [lon,lat]
+	self.geoptA = None
+	self.geoptB = None
+	self.loxptA = None
+	self.loxptB = None
+
+	self.maps=[0]
 	for i in range(1,7):
-		maptab=Ui_maptab()
-		maptab.setupUi(self.ui.tabWidget.widget(i))
-	
+		placement = self.ui.tab_maps.widget(i-1)
+		
 		layo=QHBoxLayout()
-		maptab.map_place.setLayout(layo)
+		#layo.setGeometry(QRect(0,0,100,100))
+		placement.setLayout(layo)
 
 		if i==4:
 			pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
-			pjmap = SoeMap(maptab.map_place, maptab, PJ4, resol, pj4trick)
+			pjmap = SoeMap(self, self.ui, PJ4, resol, pj4trick)
 			#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
 		elif i==5:
 			pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
-			pjmap= SoeMap(maptab.map_place, maptab, PJ5, resol, pj5trick)
+			pjmap= SoeMap(self, self.ui, PJ5, resol, pj5trick)
 			#Same trick.
 		else:
-			pjmap = SoeMap(maptab.map_place, maptab, PJS[i], resol)
+			pjmap = SoeMap(self, self.ui, PJS[i], resol)
 
 		layo.addWidget(pjmap)
-		self.connect(self.ui.infobutton,SIGNAL("clicked(bool)"),maptab.text_place.setVisible)
+		self.maps.append(pjmap)
+		
 
-		self.maptabs.append(maptab)
-
-
+	self.updateMap()
 	self.setTexts()
+	self.connect(self.ui.infobutton,SIGNAL("clicked(bool)"),self.ui.text_place.setVisible)
 	self.connect(self.ui.langbox, SIGNAL("currentIndexChanged(int)"), self.setTexts)
-
-
+	self.connect(self.ui.tab_maps, SIGNAL("currentChanged(int)"), self.setTexts)
+	self.connect(self.ui.tab_maps, SIGNAL("currentChanged(int)"), self.updateMap)
 
 
     def setTexts(self):
@@ -102,19 +108,17 @@ class Mywidget (QWidget):
 
 	translator.load("soe_"+self.lang)
 	self.ui.retranslateUi(self)
-	for i in range(1,7):
-		self.maptabs[i].retranslateUi(None)
 
 	txtfile=open('./txt/'+self.lang+'/intro.html','r')
 	txt=QString.fromUtf8(txtfile.read())
-	self.ui.text_place.setHtml(txt)
+	self.ui.text_intro.setHtml(txt)
 	txtfile.close()
 
-	for i in range(1,7):
-		txtfile=open('./txt/' + self.lang +'/' + PJS[i].name + '.html','r')
-		txt=QString.fromUtf8(txtfile.read())
-		self.maptabs[i].text_place.setHtml(txt)
-		txtfile.close()
+	currentmap = self.ui.tab_maps.currentIndex() + 1
+	txtfile=open('./txt/' + self.lang +'/' + PJS[currentmap].name + '.html','r')
+	txt=QString.fromUtf8(txtfile.read())
+	self.ui.text_place.setHtml(txt)
+	txtfile.close()
 
 	txtfile=open('./txt/'+self.lang+'/about.html','r')
 	txt=QString.fromUtf8(txtfile.read().replace('\NumVersion',NUMVERSION))
@@ -122,7 +126,10 @@ class Mywidget (QWidget):
 	self.ui.text_about.setHtml(txt)
 	txtfile.close()
 	
-
+    def updateMap(self):
+	currentmap = self.ui.tab_maps.currentIndex() + 1
+	self.maps[currentmap].tissotLayer_bg.update()
+	
 
 app = QApplication(sys.argv)
 
@@ -142,6 +149,7 @@ app.installTranslator(translator)
 
 
 wd =  Mywidget()
+
 #wd.setFont(qfontdb.font("Ubuntu", "Normal", 12))
 #wd.setFont(QFont("Times", 12, QFont.Bold))
 #wd.show()
