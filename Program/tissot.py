@@ -41,6 +41,7 @@ from PyQt4.QtCore import *
 from soemath import *
 import numpy as np
 
+
 class SoeMap(QWidget):
 
     def __init__(self, parent, cnx, PJ, resol, prtrick = None): #image,R, pr,
@@ -55,7 +56,13 @@ class SoeMap(QWidget):
 	else:
 		self.prtiss = prtrick
 	
-	image = QPixmap('./img/' + PJ.name + '.png')
+	# determine if application is a script file or frozen exe
+	if getattr(sys, 'frozen', False):     # "bundled" on a executable
+		application_path = os.path.dirname(sys.executable)
+	elif __file__:     # "live" script, running using an interpreter
+		application_path = os.path.dirname(__file__)
+		
+	image = QPixmap(os.path.join(application_path,'img',PJ.name + '.png'))
 
 	self.imw = image.width()
 	self.imh = image.height()
@@ -101,8 +108,12 @@ class SoeMap(QWidget):
 	HRES = self.width()	
 	VRES = self.height() 
 
-	imPX_2_scrPX = min(float(HRES)/self.imw , float(VRES)/self.imh)	 #image pixels to screen pixels
-	
+	try:
+		imPX_2_scrPX = min(float(HRES)/self.imw , float(VRES)/self.imh)	 #image pixels to screen pixels
+	except:
+		imPX_2_scrPX = 1
+		print "Warning: imPX_2_scrPX raised an exception (division by zero)"
+		
 	rectW = self.imw*imPX_2_scrPX
 	rectH = self.imh*imPX_2_scrPX
 

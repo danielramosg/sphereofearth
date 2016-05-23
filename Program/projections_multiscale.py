@@ -22,15 +22,23 @@
 
 
 
-import sys
+import sys, os
 
 from math import *
 from pyproj import Proj
 import types
 
+# determine if application is a script file or frozen exe
+if getattr(sys, 'frozen', False):     # "bundled" on a executable
+	application_path = os.path.dirname(sys.executable)
+elif __file__:     # "live" script, running using an interpreter
+	application_path = os.path.dirname(__file__)
+
+config_path = os.path.join(application_path, 'param.ini')
+
 from ConfigParser import SafeConfigParser
 params=SafeConfigParser()
-params.read('param.ini')
+params.read(config_path)
 
 #src_img = params.get('Source_Image','src_img')
 R0 = params.getfloat('Maps_Size','radius_of_the_globe')

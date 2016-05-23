@@ -34,16 +34,24 @@ from pyproj import Proj
 from projections_multiscale import *
 from tissot import *    
 
+# determine if application is a script file or frozen exe
+if getattr(sys, 'frozen', False):     # "bundled" on a executable
+	application_path = os.path.dirname(sys.executable)
+elif __file__:     # "live" script, running using an interpreter
+	application_path = os.path.dirname(__file__)
+
+config_path = os.path.join(application_path, 'param.ini')
+
 from ConfigParser import SafeConfigParser
 params=SafeConfigParser()
-params.read('param.ini')
-
+params.read(config_path)	
+	
 R = params.getfloat('Maps_Size','radius_of_the_globe')
 resol = params.getfloat('Maps_Size','resolution')
 lon0 =  params.getfloat('Center_of_projections','longitude')
 lat0 =  params.getfloat('Center_of_projections','latitude')
 
-NUMVERSION = '1.2.0-a'
+NUMVERSION = '1.2.0'
 
 
 Languages = ["ca","en","es","fr","nl"] #Avaliable languages, ordered.
@@ -106,23 +114,25 @@ class Mywidget (QWidget):
     def setTexts(self):
 	self.lang=Languages[self.ui.langbox.currentIndex()]
 
-	translator.load("soe_"+self.lang)
+	translator.load(os.path.join(application_path,"soe_"+self.lang))
 	self.ui.retranslateUi(self)
 
-	txtfile=open('./txt/'+self.lang+'/intro.html','r')
+	txtfile=open(os.path.join(application_path,'txt',self.lang,'intro.html'),'r')
 	txt=QString.fromUtf8(txtfile.read())
+	self.ui.text_intro.document().setMetaInformation(QTextDocument.DocumentUrl,application_path+'/')
 	self.ui.text_intro.setHtml(txt)
 	txtfile.close()
 
 	currentmap = self.ui.tab_maps.currentIndex() + 1
-	txtfile=open('./txt/' + self.lang +'/' + PJS[currentmap].name + '.html','r')
+	txtfile=open(os.path.join(application_path,'txt',self.lang,PJS[currentmap].name + '.html'),'r')
 	txt=QString.fromUtf8(txtfile.read())
 	self.ui.text_place.setHtml(txt)
 	txtfile.close()
 
-	txtfile=open('./txt/'+self.lang+'/about.html','r')
+	txtfile=open(os.path.join(application_path,'txt',self.lang,'about.html'),'r')
 	txt=QString.fromUtf8(txtfile.read().replace('\NumVersion',NUMVERSION))
 	self.ui.text_about.setLineWrapMode(QTextEdit.NoWrap)
+	self.ui.text_about.document().setMetaInformation(QTextDocument.DocumentUrl,application_path+'/')
 	self.ui.text_about.setHtml(txt)
 	txtfile.close()
 	
