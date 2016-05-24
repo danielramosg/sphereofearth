@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'soe.ui'
 #
-# Created: Mon May 23 03:05:21 2016
+# Created: Tue May 24 21:51:12 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -354,6 +354,19 @@ class Ui_Form(object):
         self.tissot_clear = QtGui.QPushButton(self.tab_projs)
         self.tissot_clear.setObjectName(_fromUtf8("tissot_clear"))
         self.gridLayout_3.addWidget(self.tissot_clear, 2, 6, 1, 1)
+        self.label_2 = QtGui.QLabel(self.tab_projs)
+        self.label_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.gridLayout_3.addWidget(self.label_2, 1, 2, 1, 1)
+        self.azimlabel = QtGui.QLabel(self.tab_projs)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.azimlabel.sizePolicy().hasHeightForWidth())
+        self.azimlabel.setSizePolicy(sizePolicy)
+        self.azimlabel.setText(_fromUtf8(""))
+        self.azimlabel.setObjectName(_fromUtf8("azimlabel"))
+        self.gridLayout_3.addWidget(self.azimlabel, 1, 3, 1, 1)
         self.horizontalLayout_2.addLayout(self.gridLayout_3)
         spacerItem2 = QtGui.QSpacerItem(17, 58, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem2)
@@ -389,7 +402,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         self.langbox.setCurrentIndex(-1)
-        self.tabWidget.setCurrentIndex(0)
+        self.tabWidget.setCurrentIndex(1)
         self.tab_maps.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
@@ -420,6 +433,7 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "Coordinates:", None))
         self.label_6.setText(_translate("Form", "Radius:", None))
         self.tissot_clear.setText(_translate("Form", "Clear", None))
+        self.label_2.setText(_translate("Form", "Azimuth:", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_projs), _translate("Form", "Map projections", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_about), _translate("Form", "About", None))
 

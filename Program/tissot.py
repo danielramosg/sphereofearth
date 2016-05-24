@@ -427,6 +427,7 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
     def Clear(self):
 	self.thismap.parent.loxptA = None
 	self.thismap.parent.loxptB = None
+	self.thismap.cnx.azimlabel.setText('')
 	self.update()
 
     def mousePressEvent(self,event):
@@ -452,7 +453,10 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
 	ppdeg = 2 # points per deg
 	ext = self.thismap.cnx.loxo_extend.isChecked()
 
-	lox = LoxodromeArc(self.thismap.parent.loxptA[0],self.thismap.parent.loxptA[1],self.thismap.parent.loxptB[0],self.thismap.parent.loxptB[1],ppdeg, complete=ext)
+	az, lox = LoxodromeArc(self.thismap.parent.loxptA[0],self.thismap.parent.loxptA[1],self.thismap.parent.loxptB[0],self.thismap.parent.loxptB[1],ppdeg, complete=ext)
+
+	aztxt = u"%.2f\u00B0" % az
+	self.thismap.cnx.azimlabel.setText(aztxt)
 
 	lox_map = np.array(self.thismap.PJ.p(lox[:,0],lox[:,1])).transpose()
 	lox_scr = self.thismap.Map_2_Screen(lox_map)

@@ -142,6 +142,8 @@ def LoxodromeArc (lam1,phi1,lam2,phi2,pointsdensity,complete):
 	x1,y1 = p(lam1,phi1)
 	x2,y2 = p(lam2,phi2)
 
+	azimuth = atan2(x2-x1,y2-y1) * 57.29577951308232087794 % 360
+
 	d = fabs(x2-x1) + fabs(y2-y1)
 	numpoints = int(d*pointsdensity) 
 #	print "Numpoints lox: ", numpoints
@@ -155,8 +157,8 @@ def LoxodromeArc (lam1,phi1,lam2,phi2,pointsdensity,complete):
 	
 	lox = np.array(p(lox0[:,0],lox0[:,1],inverse=True)).transpose()
 
-
-	return lox
+	#print "Azimuth: ", azimuth
+	return azimuth, lox
 
 
 

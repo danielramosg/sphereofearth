@@ -3,57 +3,57 @@
 <context>
     <name>Form</name>
     <message>
-        <location filename="ui_soe.py" line="427"/>
+        <location filename="ui_soe.py" line="410"/>
         <source>The Sphere of the Earth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="434"/>
+        <location filename="ui_soe.py" line="417"/>
         <source>What is a map?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="435"/>
+        <location filename="ui_soe.py" line="418"/>
         <source>Plate Carr&#xc3;&#xa9;e</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="436"/>
+        <location filename="ui_soe.py" line="419"/>
         <source>Mercator</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="437"/>
+        <location filename="ui_soe.py" line="420"/>
         <source>Gall-Peters</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="438"/>
+        <location filename="ui_soe.py" line="421"/>
         <source>Azimuthal Equidistant</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="439"/>
+        <location filename="ui_soe.py" line="422"/>
         <source>Gnomonic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="440"/>
+        <location filename="ui_soe.py" line="423"/>
         <source>Mollweide</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="454"/>
+        <location filename="ui_soe.py" line="438"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="433"/>
+        <location filename="ui_soe.py" line="416"/>
         <source>Info</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="428"/>
+        <location filename="ui_soe.py" line="411"/>
         <source>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
 p, li { white-space: pre-wrap; }
@@ -62,53 +62,58 @@ p, li { white-space: pre-wrap; }
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="453"/>
+        <location filename="ui_soe.py" line="437"/>
         <source>Map projections</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="441"/>
+        <location filename="ui_soe.py" line="424"/>
         <source>Geodesic</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="447"/>
+        <location filename="ui_soe.py" line="430"/>
         <source>Extend</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="443"/>
+        <location filename="ui_soe.py" line="426"/>
         <source>Distance:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="444"/>
+        <location filename="ui_soe.py" line="427"/>
         <source>Unit:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="452"/>
+        <location filename="ui_soe.py" line="435"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="446"/>
+        <location filename="ui_soe.py" line="429"/>
         <source>Loxodrome</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="449"/>
+        <location filename="ui_soe.py" line="432"/>
         <source>Tissot&apos;s Indicatrix</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="450"/>
+        <location filename="ui_soe.py" line="433"/>
         <source>Coordinates:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui_soe.py" line="451"/>
+        <location filename="ui_soe.py" line="434"/>
         <source>Radius:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui_soe.py" line="436"/>
+        <source>Azimuth:</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
