@@ -75,6 +75,8 @@ class SoeMap(QWidget):
 	self.geodesicLayer = GeodesicLayer(self)
 	self.loxodromeLayer = LoxodromeLayer(self)
 
+	self.coords = None, None
+
 	self.tissotLayer_fg.raise_()
 
 	self.imageLayer.setScaledContents(True)
@@ -140,10 +142,36 @@ class SoeMap(QWidget):
     def Screen_2_Map(self,ptScreen):
 	bb = np.array(ptScreen)
 	return self.SC * ( bb * np.array([1,-1]) + np.array([-self.CX,self.CY]) ) 
+
+    def UpdateCoords(self,cursor):
+	Map_loc = self.Screen_2_Map([cursor.x(), cursor.y()])
+
+	if self.PJ.mask(Map_loc):
+		coords = self.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
+
+		if coords[0] >= 0.:
+			lsign = 'E'
+		else:
+			lsign = 'W'
+		if coords[1] >= 0. :
+			psign = 'N'
+		else:
+			psign = 'S'
+
+		coordstxt = u"%.2f\u00B0 %s   %.2f\u00B0 %s" % (fabs(coords[1]), psign, fabs(coords[0]), lsign)
+		self.cnx.coordlabel.setText(coordstxt)
+
+		self.coords = coords
+	else:
+		self.coords = None,None
+
 	
 
 #    def exit (self):
 #	quit()
+
+
+
 
 
 def TissotEllipse(lon, lat, Map):
@@ -179,7 +207,6 @@ def TissotEllipse(lon, lat, Map):
 
 
 
-
 class TissotLayer_fg(QWidget): # This class contains the mouse interaction of TissotLayer 
 
     def __init__(self, parent):
@@ -188,9 +215,7 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 
 	self.setCursor(Qt.CrossCursor)
 	self.setMouseTracking(True)
-        self.lastX = 0
-        self.lastY = 0
-	self.point = QPoint(0,0)
+ 	self.point = QPoint(0,0)
 	self.a = 0
 	self.b = 0
 	self.S = 0
@@ -199,29 +224,10 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 
 
     def mouseMoveEvent(self, event):	#overwritten method, it is called whenever there are mouseMove events
-        self.lastX = event.x()
-        self.lastY = event.y()
-	self.point = QPoint(event.x(),event.y())
+        self.point = QPoint(event.x(),event.y())
 
-	Map_loc = self.thismap.Screen_2_Map([self.lastX, self.lastY])
-
-
-	if self.thismap.PJ.mask(Map_loc):
-		self.coords = self.thismap.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
-
-		if self.coords[0] >= 0.:
-			lsign = 'E'
-		else:
-			lsign = 'W'
-		if self.coords[1] >= 0. :
-			psign = 'N'
-		else:
-			psign = 'S'
-
-		coordstxt = u"%.2f\u00B0 %s   %.2f\u00B0 %s" % (fabs(self.coords[1]), psign, fabs(self.coords[0]), lsign)
-		self.thismap.cnx.coordlabel.setText(coordstxt)
-	else:
-		self.coords = None,None
+	self.thismap.UpdateCoords(event)
+	self.coords = self.thismap.coords
 
 	foo, self.b, self.a, self.S, self.pencolor, self.brushcolor = TissotEllipse( self.coords[0], self.coords[1] , self.thismap)
 
@@ -301,13 +307,18 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
         self.thismap = window 
 
 	self.setCursor(Qt.CrossCursor)
+	self.setMouseTracking(True)
 	#self.pointA = None #points in lon, lat
 	#self.pointB = None
 	self.flip = 0
 
+    def mouseMoveEvent(self,event):
+	self.thismap.UpdateCoords(event)
+
     def Clear(self):
 	self.thismap.parent.geoptA = None
 	self.thismap.parent.geoptB = None
+	self.thismap.cnx.distlabel.setText('')
 	self.update()
 
     def mousePressEvent(self,event):
@@ -405,9 +416,13 @@ class LoxodromeLayer(QWidget): # Class containing the geodesic path
         self.thismap = window 
 
 	self.setCursor(Qt.CrossCursor)
+	self.setMouseTracking(True)
 	#self.pointA = None #points in lon, lat
 	#self.pointB = None
 	self.flip = 0
+
+    def mouseMoveEvent(self,event):
+	self.thismap.UpdateCoords(event)
 
     def Clear(self):
 	self.thismap.parent.loxptA = None
