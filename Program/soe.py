@@ -71,7 +71,7 @@ class Mywidget (QWidget):
 	self.ui.setupUi(self)
 	for lng in Languages:
 		self.ui.langbox.insertItem(99,LangNames[lng])
-	self.ui.langbox.setCurrentIndex(1) #Sets the default language, the index is that of Languages list.
+	self.ui.langbox.setCurrentIndex(0) #Sets the default language, the index is that of Languages list.
 
 
 	self.listellip = []   # list of points where ellipses are to be drawn, in format [lon,lat]
