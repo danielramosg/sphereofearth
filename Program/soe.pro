@@ -1,9 +1,7 @@
 SOURCES = soe.py\
-ui_soe.py\
-maptab.py
+ui_soe.py
 
-FORMS = soe.ui\
-maptab.ui
+FORMS = soe.ui
 
 TRANSLATIONS = soe_en.ts\
 soe_es.ts\
