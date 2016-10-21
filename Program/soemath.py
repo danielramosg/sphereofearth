@@ -35,7 +35,7 @@ def Tissot (x,y,p,R):
 	#R=PJ.R	
 	# lon, lat coordinates of the point
 	(lam, phi) = p(x,y,inverse=True, radians=True)
-	#print 'coords: ', lam, phi
+#	print 'coords: ', lam, phi
 
 	# partial derivatives
 	(x0,y0) = p(lam - H/2. , phi , radians=True)
@@ -46,42 +46,60 @@ def Tissot (x,y,p,R):
 	(x1,y1) = p(lam , phi + H/2. , radians=True)
 	dxdp = (x1 - x0)/H
 	dydp = (y1 - y0)/H	
-	#print 'dxdp= %.4f dydp= %.4f dxdl= %.4f dydl= %.4f ' % (dxdp, dydp, dxdl, dydl)
+#	print 'dxdp= %.4f dydp= %.4f dxdl= %.4f dydl= %.4f ' % (dxdp, dydp, dxdl, dydl)
 
-	# parameters for the ellipse
-	h = 1/R * sqrt(fabs( dxdp**2 + dydp**2 )) 
-	k = 1/(R*cos(phi)) * sqrt(fabs( dxdl**2 + dydl**2 ))
-	stp = 1/(R**2*h*k*cos(phi)) * (dydp*dxdl - dxdp*dydl)
-	ap = sqrt(fabs(h**2 + k**2 + 2.*h*k*stp))
-	bp = sqrt(fabs(h**2 + k**2 - 2.*h*k*stp))
-	a = (ap+bp)/2.
-	b = (ap-bp)/2.	
-	
+#	# parameters for the ellipse. Synthetic algorithm, see Snyder "Map projections: A working manual".
+#	h = 1/R * sqrt(fabs( dxdp**2 + dydp**2 )) 
+#	k = 1/(R*cos(phi)) * sqrt(fabs( dxdl**2 + dydl**2 ))
+#	stp = 1/(R**2*h*k*cos(phi)) * (dydp*dxdl - dxdp*dydl)
+#	ap = sqrt(fabs(h**2 + k**2 + 2.*h*k*stp))
+#	bp = sqrt(fabs(h**2 + k**2 - 2.*h*k*stp))
+#	a = (ap+bp)/2.
+#	b = (ap-bp)/2.	
+#	
+#	#print "a=%.4f b=%.4f" %(a,b)
 
-	if fabs(dydp)>1e-6 :	
-		bt0 = atan2(-dxdp,dydp)
-	else:
-		bt0 = pi/2.
+#	if fabs(dydp)>1e-6 :	
+#		bt0 = atan2(-dxdp,dydp)
+#	else:
+#		bt0 = pi/2.
 
+#	if fabs(a-b)<1e-6 : 
+#		btp = 0
+#	elif fabs(h-b) >1e-6 :
+#		btp = atan( b/a * sqrt( fabs( (a**2 - h**2) / (h**2 - b**2) ) ) )
+#	elif fabs(a-k) >1e-6 :
+#		btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
+#	else:
+#		btp =pi/2.		
 
-	if fabs(a-b)<1e-6 : 
-		btp = 0
-	elif fabs(h-b) >1e-6 :
-		btp = atan( b/a * sqrt( fabs( (a**2 - h**2) / (h**2 - b**2) ) ) )
-	elif fabs(a-k) >1e-6 :
-		btp = atan( b/a * sqrt( fabs( (k**2 - b**2) / (a**2 - k**2) ) ) )
-	else:
-		btp =pi/2.
-		
+#	B = copysign(fabs(bt0)+btp,bt0)
 
-	B = copysign(fabs(bt0)+btp,bt0)
-	
+#	B = -57.29577950 * B
+#	print "B ", B
+
 	#print 'bt0 = %.8f , btp = %.8f , sign = %d' % (bt0,btp,copysign(1,bt0))	
 	#print 'h= %.4f k= %.4f stp= %.4f ap= %.4f bp= %.4f btp= %.4f bt0= %.4f' % (h,k,stp,ap,bp,btp,bt0)
-	B = -57.29577950 * B
 
-	return a,b,B
+	
+	# parameters for the ellipse. Linear algebra approach.
+	A = np.array([ [1/(R*cos(phi)) * dxdl , 1/R * dxdp] , [1/(R*cos(phi)) * dydl , 1/R * dydp] ])
+	M = np.linalg.inv(np.dot(A,A.transpose()))
+	vps = np.linalg.eig(M)
+	sax0 = 1/sqrt(vps[0][0])
+	sax1 = 1/sqrt(vps[0][1])
+	ang = 57.29577950 * atan2(vps[1][0,1],vps[1][0,0])
 
+#	print "A = ", A
+#	print "M = ", M
+#	print "vaps = ", vps[0]
+#	print "veps = ", vps[1]
+#	print "saxis = ", sax0, sax1 
+#	print "angle = ", ang
+	
+#	return a,b,B
+#	return 1/sqrt(vps[0][0]) , 1/sqrt(vps[0][1]), ang
+	return sax1, sax0, ang
 
 
 def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree,complete):
