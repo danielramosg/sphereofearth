@@ -43,17 +43,12 @@ import numpy as np
 
 class SoeMap(QWidget):
 
-    def __init__(self, parent, cnx, PJ, resol, prtrick = None): #image,R, pr,
+    def __init__(self, parent, cnx, PJ, resol): #image,R, pr,
         super(QWidget, self).__init__(parent) #llamar al constructor de la superclase
 	self.parent = parent
 	self.resol = resol
 	self.PJ = PJ
 	self.cnx = cnx # object to connect i/o	
-
-	if prtrick is None:
-		self.prtiss = PJ.p
-	else:
-		self.prtiss = prtrick
 	
 	# determine if application is a script file or frozen exe
 	if getattr(sys, 'frozen', False):     # "bundled" on a executable
@@ -184,7 +179,7 @@ def TissotEllipse(lon, lat, Map):
 	f = r * Map.PJ.R / 6371 * 1/Map.SC # r realKM * R mapMM / EarthRadiusinKM * 1/scrPX_2_mapMM
 
 	if Map.PJ.mask(xy):
-		a,b,S = Tissot(xy[0],xy[1],Map.prtiss,Map.PJ.R)
+		a,b,S = Tissot(xy[0],xy[1],Map.PJ)
 		
 		if fabs(a - b) < 1e-2 :
 			pencolor = QPen(Qt.green,1.2)
@@ -228,7 +223,7 @@ class TissotLayer_fg(QWidget): # This class contains the mouse interaction of Ti
 	self.thismap.UpdateCoords(event)
 	self.coords = self.thismap.coords
 
-	foo, self.b, self.a, self.S, self.pencolor, self.brushcolor = TissotEllipse( self.coords[0], self.coords[1] , self.thismap)
+	foo, self.a, self.b, self.S, self.pencolor, self.brushcolor = TissotEllipse( self.coords[0], self.coords[1] , self.thismap)
 
 	self.update() #repintar
 
@@ -279,7 +274,7 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
     def paintEvent(self, event): 
 	painter = QPainter()
 	for coor in self.thismap.parent.listellip:
-		xy,b,a,S,pen,brush = TissotEllipse( coor[0], coor[1] , self.thismap)
+		xy,a,b,S,pen,brush = TissotEllipse( coor[0], coor[1] , self.thismap)
 		if xy == None:
 			pass
 		else:

@@ -30,9 +30,9 @@ import numpy as np
 
 H=1e-5 # Derivatives
 
-def Tissot (x,y,p,R):
-	#p=PJ.p
-	#R=PJ.R	
+def Tissot (x,y,PJ):
+	p=PJ.p
+	R=PJ.R	
 	# lon, lat coordinates of the point
 	(lam, phi) = p(x,y,inverse=True, radians=True)
 #	print 'coords: ', lam, phi
@@ -98,8 +98,7 @@ def Tissot (x,y,p,R):
 #	print "angle = ", ang
 	
 #	return a,b,B
-#	return 1/sqrt(vps[0][0]) , 1/sqrt(vps[0][1]), ang
-	return sax1, sax0, ang
+	return sax0, sax1, ang
 
 
 def GeodesicArc (lam1,phi1,lam2,phi2,pointsperdegree,complete):

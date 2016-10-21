@@ -29,8 +29,6 @@ from PyQt4.QtCore import *
 
 from ui_soe import *
 
-from pyproj import Proj
-
 from projections_multiscale import *
 from tissot import *    
 
@@ -87,17 +85,8 @@ class Mywidget (QWidget):
 		layo=QHBoxLayout()
 		#layo.setGeometry(QRect(0,0,100,100))
 		placement.setLayout(layo)
-
-		if i==4:
-			pj4trick =  Proj(proj='aeqd', lat_0=90 , ellps='sphere',a=PJ4.R,b=PJ4.R)
-			pjmap = SoeMap(self, self.ui, PJ4, resol, pj4trick)
-			#Okay, that's a trick. The projection in polar aspect (lat_0=90) instead of the oblique aspect (lon_0=lon0, lat_0=lat0) produces the same Tissot ellipses but it's much more stable numerically.
-		elif i==5:
-			pj5trick = Proj(proj='gnom', lat_0 = 90 , ellps='sphere',a=PJ5.R,b=PJ5.R)
-			pjmap= SoeMap(self, self.ui, PJ5, resol, pj5trick)
-			#Same trick.
-		else:
-			pjmap = SoeMap(self, self.ui, PJS[i], resol)
+			
+		pjmap = SoeMap(self, self.ui, PJS[i], resol)
 
 		layo.addWidget(pjmap)
 		self.maps.append(pjmap)
