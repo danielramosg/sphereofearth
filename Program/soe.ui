@@ -616,38 +616,8 @@ p, li { white-space: pre-wrap; }
                 <enum>QTabWidget::South</enum>
                </property>
                <property name="currentIndex">
-                <number>0</number>
+                <number>-1</number>
                </property>
-               <widget class="QWidget" name="tab_1">
-                <attribute name="title">
-                 <string>Plate Carrée</string>
-                </attribute>
-               </widget>
-               <widget class="QWidget" name="tab_2">
-                <attribute name="title">
-                 <string>Mercator</string>
-                </attribute>
-               </widget>
-               <widget class="QWidget" name="tab_3">
-                <attribute name="title">
-                 <string>Gall-Peters</string>
-                </attribute>
-               </widget>
-               <widget class="QWidget" name="tab_4">
-                <attribute name="title">
-                 <string>Azimuthal Equidistant</string>
-                </attribute>
-               </widget>
-               <widget class="QWidget" name="tab_5">
-                <attribute name="title">
-                 <string>Gnomonic</string>
-                </attribute>
-               </widget>
-               <widget class="QWidget" name="tab_6">
-                <attribute name="title">
-                 <string>Mollweide</string>
-                </attribute>
-               </widget>
               </widget>
              </item>
              <item>

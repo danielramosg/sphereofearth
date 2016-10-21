@@ -2,8 +2,7 @@
 
 # Form implementation generated from reading ui file 'soe.ui'
 #
-# Created: Tue May 24 21:51:12 2016
-#      by: PyQt4 UI code generator 4.10.4
+# Created by: PyQt4 UI code generator 4.11.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -243,24 +242,6 @@ class Ui_Form(object):
         self.tab_maps.setSizePolicy(sizePolicy)
         self.tab_maps.setTabPosition(QtGui.QTabWidget.South)
         self.tab_maps.setObjectName(_fromUtf8("tab_maps"))
-        self.tab_1 = QtGui.QWidget()
-        self.tab_1.setObjectName(_fromUtf8("tab_1"))
-        self.tab_maps.addTab(self.tab_1, _fromUtf8(""))
-        self.tab_2 = QtGui.QWidget()
-        self.tab_2.setObjectName(_fromUtf8("tab_2"))
-        self.tab_maps.addTab(self.tab_2, _fromUtf8(""))
-        self.tab_3 = QtGui.QWidget()
-        self.tab_3.setObjectName(_fromUtf8("tab_3"))
-        self.tab_maps.addTab(self.tab_3, _fromUtf8(""))
-        self.tab_4 = QtGui.QWidget()
-        self.tab_4.setObjectName(_fromUtf8("tab_4"))
-        self.tab_maps.addTab(self.tab_4, _fromUtf8(""))
-        self.tab_5 = QtGui.QWidget()
-        self.tab_5.setObjectName(_fromUtf8("tab_5"))
-        self.tab_maps.addTab(self.tab_5, _fromUtf8(""))
-        self.tab_6 = QtGui.QWidget()
-        self.tab_6.setObjectName(_fromUtf8("tab_6"))
-        self.tab_maps.addTab(self.tab_6, _fromUtf8(""))
         self.verticalLayout.addWidget(self.tab_maps)
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
         self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
@@ -403,7 +384,7 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         self.langbox.setCurrentIndex(-1)
         self.tabWidget.setCurrentIndex(1)
-        self.tab_maps.setCurrentIndex(0)
+        self.tab_maps.setCurrentIndex(-1)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -415,12 +396,6 @@ class Ui_Form(object):
 "<p align=\"center\" style=\" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:28pt; font-weight:600;\">The Sphere of the Earth</span></p></body></html>", None))
         self.infobutton.setText(_translate("Form", "Info", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab_intro), _translate("Form", "What is a map?", None))
-        self.tab_maps.setTabText(self.tab_maps.indexOf(self.tab_1), _translate("Form", "Plate Carrée", None))
-        self.tab_maps.setTabText(self.tab_maps.indexOf(self.tab_2), _translate("Form", "Mercator", None))
-        self.tab_maps.setTabText(self.tab_maps.indexOf(self.tab_3), _translate("Form", "Gall-Peters", None))
-        self.tab_maps.setTabText(self.tab_maps.indexOf(self.tab_4), _translate("Form", "Azimuthal Equidistant", None))
-        self.tab_maps.setTabText(self.tab_maps.indexOf(self.tab_5), _translate("Form", "Gnomonic", None))
-        self.tab_maps.setTabText(self.tab_maps.indexOf(self.tab_6), _translate("Form", "Mollweide", None))
         self.geod_select.setText(_translate("Form", "Geodesic", None))
         self.geod_extend.setText(_translate("Form", "Extend", None))
         self.label_4.setText(_translate("Form", "Distance:", None))

@@ -54,7 +54,7 @@ NUMVERSION = '1.2.0'
 
 Languages = ["ca","en","es","fr","nl"] #Avaliable languages, ordered.
 LangNames = {"ca":QString(u'Català'), "en":QString(u'English'), "es":QString(u'Español'), "fr":QString(u'Français'), "nl":QString(u'Nederlands')}
-PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6]
+PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6,PJ7]
 
 
 
@@ -79,16 +79,9 @@ class Mywidget (QWidget):
 	self.loxptB = None
 
 	self.maps=[0]
-	for i in range(1,7):
-		placement = self.ui.tab_maps.widget(i-1)
-		
-		layo=QHBoxLayout()
-		#layo.setGeometry(QRect(0,0,100,100))
-		placement.setLayout(layo)
-			
+	for i in range(1,8):	
 		pjmap = SoeMap(self, self.ui, PJS[i], resol)
-
-		layo.addWidget(pjmap)
+		self.ui.tab_maps.addTab(pjmap,PJS[i].fullname)
 		self.maps.append(pjmap)
 		
 

@@ -85,7 +85,7 @@ tottime=time()
 
 grat = standard_graticule()
 
-for i in (PJ1,PJ2,PJ3,PJ4,PJ5,PJ6):	#Only PJ4 (Aziequi) and PJ5 (Gnomo) depend on the local coordinates.
+for i in (PJ1,PJ2,PJ3,PJ4,PJ5,PJ6,PJ7):	#Only PJ4 (Aziequi) and PJ5 (Gnomo) depend on the local coordinates.
 	#print i.name 
 	#print_size(i)
 	make_map(i,grat,outposter)

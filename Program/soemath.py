@@ -48,7 +48,7 @@ def Tissot (x,y,PJ):
 	dydp = (y1 - y0)/H	
 #	print 'dxdp= %.4f dydp= %.4f dxdl= %.4f dydl= %.4f ' % (dxdp, dydp, dxdl, dydl)
 
-#	# parameters for the ellipse. Synthetic algorithm, see Snyder "Map projections: A working manual".
+#	# parameters for the ellipse. Synthetic geometry algorithm, see Snyder "Map projections: A working manual".
 #	h = 1/R * sqrt(fabs( dxdp**2 + dydp**2 )) 
 #	k = 1/(R*cos(phi)) * sqrt(fabs( dxdl**2 + dydl**2 ))
 #	stp = 1/(R**2*h*k*cos(phi)) * (dydp*dxdl - dxdp*dydl)
