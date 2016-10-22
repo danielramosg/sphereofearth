@@ -54,8 +54,6 @@ NUMVERSION = '1.2.0'
 
 Languages = ["ca","en","es","fr","nl"] #Avaliable languages, ordered.
 LangNames = {"ca":QString(u'Català'), "en":QString(u'English'), "es":QString(u'Español'), "fr":QString(u'Français'), "nl":QString(u'Nederlands')}
-PJS = [0,PJ1,PJ2,PJ3,PJ4,PJ5,PJ6,PJ7]
-
 
 
 class Mywidget (QWidget):
@@ -79,9 +77,9 @@ class Mywidget (QWidget):
 	self.loxptB = None
 
 	self.maps=[0]
-	for i in range(1,8):	
-		pjmap = SoeMap(self, self.ui, PJS[i], resol)
-		self.ui.tab_maps.addTab(pjmap,PJS[i].fullname)
+	for pj in PJlist:
+		pjmap = SoeMap(self, self.ui, pj, resol)
+		self.ui.tab_maps.addTab(pjmap, pj.fullname)
 		self.maps.append(pjmap)
 		
 
@@ -105,8 +103,8 @@ class Mywidget (QWidget):
 	self.ui.text_intro.setHtml(txt)
 	txtfile.close()
 
-	currentmap = self.ui.tab_maps.currentIndex() + 1
-	txtfile=open(os.path.join(application_path,'txt',self.lang,PJS[currentmap].name + '.html'),'r')
+	currentmap = self.ui.tab_maps.currentIndex()
+	txtfile=open(os.path.join(application_path,'txt',self.lang,PJlist[currentmap].name + '.html'),'r')
 	txt=QString.fromUtf8(txtfile.read())
 	self.ui.text_place.setHtml(txt)
 	txtfile.close()

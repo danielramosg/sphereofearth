@@ -60,7 +60,7 @@ def topo_map(PJ):
 
 	print "Loading source image..."
 	orig=im.load()
-	imfinale=Image.new('RGB',[dimx,dimy])
+	imfinale=Image.new('RGBA',[dimx,dimy])
 	resul=imfinale.load()
 
 	(cx , cy) = (dimx/2 , dimy/2)
@@ -74,11 +74,14 @@ def topo_map(PJ):
 			if PJ.mask([x,y]):
 				z=PJ.p(x,y,inverse=True)
 				x0 , y0 = sx+k*z[0] , sy-k*z[1]
-				try: resul[i,j]=orig[x0 % srcx , y0 % srcy]	
-				except: resul[i,j]=(255,0,0)	
+				try:
+					color=orig[x0 % srcx , y0 % srcy]
+					resul[i,j]=(color[0],color[1],color[2],255)
+				except:
+					resul[i,j]=(255,0,0,255)
 			else:
-				resul[i,j]=(255,255,255)
-	
+				resul[i,j]=(0,0,0,0)
+
 	imfinale.save(PJ.name + '_0.png')
 
 
@@ -143,7 +146,7 @@ def merge_map_grat(PJ,gratpj,pdf=False):
 	if pdf:
 		plt.savefig('./Posters/' + PJ.name + '.pdf',dpi=resol, bbox_inches='tight', pad_inches=0)
 	else:
-		plt.savefig('./img/' + PJ.name + '.png',dpi=resol, bbox_inches='tight', pad_inches=0)
+		plt.savefig('./img/' + PJ.name + '.png',dpi=resol, bbox_inches='tight', pad_inches=0,transparent=True)
 
 	os.remove(PJ.name + '_0.png')
 

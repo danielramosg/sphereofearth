@@ -81,7 +81,7 @@ def Tissot (x,y,PJ):
 	#print 'bt0 = %.8f , btp = %.8f , sign = %d' % (bt0,btp,copysign(1,bt0))	
 	#print 'h= %.4f k= %.4f stp= %.4f ap= %.4f bp= %.4f btp= %.4f bt0= %.4f' % (h,k,stp,ap,bp,btp,bt0)
 
-	
+
 	# parameters for the ellipse. Linear algebra approach.
 	A = np.array([ [1/(R*cos(phi)) * dxdl , 1/R * dxdp] , [1/(R*cos(phi)) * dydl , 1/R * dydp] ])
 	M = np.linalg.inv(np.dot(A,A.transpose()))

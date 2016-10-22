@@ -55,8 +55,20 @@ class SoeMap(QWidget):
 		application_path = os.path.dirname(sys.executable)
 	elif __file__:     # "live" script, running using an interpreter
 		application_path = os.path.dirname(__file__)
-		
-	image = QPixmap(os.path.join(application_path,'img',PJ.name + '.png'))
+
+	imgfilename = os.path.join(application_path,'img',PJ.name + '.png')
+
+	if not os.path.isfile(imgfilename):
+		print "Image for %s projection not found. Creating..." % PJ.name
+		import mapping_routines as mr
+		grat = mr.standard_graticule()
+		mr.topo_map(PJ)
+		gratpj = mr.project_graticule(PJ,grat)
+		mr.merge_map_grat(PJ,gratpj)
+		image = QPixmap(imgfilename)
+		print "Done."
+
+	image = QPixmap(imgfilename)
 
 	self.imw = image.width()
 	self.imh = image.height()
