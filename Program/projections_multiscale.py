@@ -203,3 +203,38 @@ PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
 PJlist.append(PJ)
 
+#### Winkel Tripel ###
+#name = "wintri"
+#fullname = u"Winkel Tripel"
+#sf = 1.1438848
+#R=sf*R0
+#p = Proj(proj='wintri', ellps='sphere',a=R,b=R)
+
+#width = 2*p(180,0)[0]   #width of the image, mm
+#height = 2*p(0,90)[1]   #height of the image, mm 
+
+#def mask(pj,xy):
+#	return True #(hypot(xy[0],xy[1]) < pj.width/2.)
+
+#PJ = MyProj(name,fullname,p,R,width,height)
+#PJ.mask = types.MethodType(mask,PJ)
+#PJlist.append(PJ)
+
+### Interrupted Goode Homolosine ###
+name = "goode"
+fullname = u"Goode Homolosine"
+sf = 1.1438848
+R=sf*R0
+p = Proj(proj='igh', ellps='sphere',a=R,b=R)
+
+width = 2*p(180,0)[0]   #width of the image, mm
+height = 2*p(0,90)[1]   #height of the image, mm 
+
+def mask(pj,xy):
+	return True #(hypot(xy[0],xy[1]) < pj.width/2.)
+
+PJ = MyProj(name,fullname,p,R,width,height)
+PJ.mask = types.MethodType(mask,PJ)
+PJlist.append(PJ)
+
+

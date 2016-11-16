@@ -72,13 +72,14 @@ def topo_map(PJ):
 		for j in range(dimy):
 			x, y = (i-cx)*PX2MM, (-j+cy)*PX2MM			
 			if PJ.mask([x,y]):
-				z=PJ.p(x,y,inverse=True)
-				x0 , y0 = sx+k*z[0] , sy-k*z[1]
 				try:
+					z=PJ.p(x,y,inverse=True,errcheck=True)
+					x0 , y0 = sx+k*z[0] , sy-k*z[1]
+#				try:
 					color=orig[x0 % srcx , y0 % srcy]
 					resul[i,j]=(color[0],color[1],color[2],255)
 				except:
-					resul[i,j]=(255,0,0,255)
+					resul[i,j]=(255,0,0,0)
 			else:
 				resul[i,j]=(0,0,0,0)
 
@@ -111,9 +112,12 @@ def project_graticule(PJ,grat):
 	#gratpj = PJ.p(grat)
 	gratpj = np.column_stack( PJ.p(grat[:,0], grat[:,1]) )
 	gratpj[gratpj>1e29]=np.nan
-	msk = np.apply_along_axis(PJ.mask,1,gratpj)
 
-	gratpj[~msk,:] = np.nan
+	msk = np.apply_along_axis(PJ.mask,1,gratpj)
+	gratpj[~msk,:] = np.nan #discontinuities outside mask
+
+	pos = np.where( np.fabs(np.diff(gratpj[:,0])) + np.fabs(np.diff(gratpj[:,1])) > 1)[0]+1
+	gratpj = np.insert(gratpj, pos, [np.nan,np.nan],axis=0) # discontinuities on jumps
 
 	gratpj = gratpj*MM2PX
 

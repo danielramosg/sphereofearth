@@ -392,7 +392,7 @@ class GeodesicLayer(QWidget): # Class containing the geodesic path
 		qp = QPointF(*geo_scr[i])
 		c = (i // cpts) % 2
 
-		if ((path[c].currentPosition() - qp).manhattanLength() > 50) : # if there is a jump in the projection 
+		if ((path[c].currentPosition() - qp).manhattanLength() > 20) : # if there is a jump in the projection 
 			path[c].moveTo(qp)  
 			path[(c+1)%2].moveTo(qp)
 		else:
