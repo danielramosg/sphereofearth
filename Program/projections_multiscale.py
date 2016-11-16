@@ -272,4 +272,22 @@ PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
 PJlist.append(PJ)
 
+### Robinson ###
+name = "robin"
+fullname = u"Robinson"
+sf = 1.1438848
+R=sf*R0
+p = Proj(proj='robin', ellps='sphere',a=R,b=R)
+
+width = 2*p(180,0)[0]   #width of the image, mm
+height = 2*p(0,90)[1]   #height of the image, mm 
+
+def mask(pj,xy):
+	lp = pj.p(0,xy[1],inverse=True)
+	d=pj.p(180,lp[1])[0]
+	return fabs(xy[0]) <= d   
+
+PJ = MyProj(name,fullname,p,R,width,height)
+PJ.mask = types.MethodType(mask,PJ)
+PJlist.append(PJ)
 
