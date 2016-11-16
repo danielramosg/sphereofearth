@@ -104,7 +104,11 @@ class Mywidget (QWidget):
 	txtfile.close()
 
 	currentmap = self.ui.tab_maps.currentIndex()
-	txtfile=open(os.path.join(application_path,'txt',self.lang,PJlist[currentmap].name + '.html'),'r')
+	try:
+		txtfile=open(os.path.join(application_path,'txt',self.lang,PJlist[currentmap].name + '.html'),'r')
+	except:
+		txtfile=open(os.path.join(application_path,'txt','common','noinfo.html'),'r')
+
 	txt=QString.fromUtf8(txtfile.read())
 	self.ui.text_place.setHtml(txt)
 	txtfile.close()

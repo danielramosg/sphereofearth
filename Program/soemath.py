@@ -34,7 +34,11 @@ def Tissot (x,y,PJ):
 	p=PJ.p
 	R=PJ.R	
 	# lon, lat coordinates of the point
-	(lam, phi) = p(x,y,inverse=True, radians=True)
+	try:
+		(lam, phi) = p(x,y,inverse=True, radians=True, errcheck=True)
+	except:
+		return None,None,None
+
 #	print 'coords: ', lam, phi
 
 	# partial derivatives

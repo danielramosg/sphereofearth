@@ -153,7 +153,12 @@ class SoeMap(QWidget):
 	Map_loc = self.Screen_2_Map([cursor.x(), cursor.y()])
 
 	if self.PJ.mask(Map_loc):
-		coords = self.PJ.p( Map_loc[0],Map_loc[1], inverse=True )
+		try:
+			coords = self.PJ.p( Map_loc[0],Map_loc[1], inverse=True, errcheck=True)
+		except:
+			self.coords = None,None
+			self.cnx.coordlabel.setText("")
+			return
 
 		if coords[0] >= 0.:
 			lsign = 'E'
@@ -170,8 +175,10 @@ class SoeMap(QWidget):
 		self.coords = coords
 	else:
 		self.coords = None,None
+		self.cnx.coordlabel.setText("")
 
-	
+    def leaveEvent(self,event):
+	self.cnx.coordlabel.setText("")	
 
 #    def exit (self):
 #	quit()
@@ -192,7 +199,9 @@ def TissotEllipse(lon, lat, Map):
 
 	if Map.PJ.mask(xy):
 		a,b,S = Tissot(xy[0],xy[1],Map.PJ)
-		
+		if a==None or b==None or S==None:
+			return None,None,None,None,None,None		
+
 		if fabs(a - b) < 1e-2 :
 			pencolor = QPen(Qt.green,1.2)
 		else:

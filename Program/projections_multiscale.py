@@ -231,7 +231,42 @@ width = 2*p(180,0)[0]   #width of the image, mm
 height = 2*p(0,90)[1]   #height of the image, mm 
 
 def mask(pj,xy):
-	return True #(hypot(xy[0],xy[1]) < pj.width/2.)
+	return True 
+
+PJ = MyProj(name,fullname,p,R,width,height)
+PJ.mask = types.MethodType(mask,PJ)
+PJlist.append(PJ)
+
+### Sinusoidal ###
+name = "sinu"
+fullname = u"Sinusoidal"
+sf = 1.1438848
+R=sf*R0
+p = Proj(proj='sinu', ellps='sphere',a=R,b=R)
+
+width = 2*p(180,0)[0]   #width of the image, mm
+height = 2*p(0,90)[1]   #height of the image, mm 
+
+def mask(pj,xy):
+	return fabs(xy[0]) <= pj.width/2. * cos(fabs(xy[1]) / float(pj.height) * 3.141592)   
+
+PJ = MyProj(name,fullname,p,R,width,height)
+PJ.mask = types.MethodType(mask,PJ)
+PJlist.append(PJ)
+
+### Transversal Mercator ###
+name = "tmerc"
+fullname = u"Transversal Mercator"
+sf = 1.
+R=sf*R0
+
+p=Proj(proj='tmerc', ellps='sphere', a=R, b=R)
+
+width = 200 #2*p(90,0)[0]   #width of the image, mm
+height = 2*p(0,90)[1]  #height of the image, mm 
+
+def mask(pj,xy):
+	return (fabs(xy[0])<1/2.*pj.width and fabs(xy[1])<1/2.*pj.height)
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
