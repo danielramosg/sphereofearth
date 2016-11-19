@@ -58,7 +58,7 @@ class MyProj():
 		self.width=width
 		self.height=height
 		#self.mask=mask
-PJlist =[]
+AllPJdict ={}
 
 ### Plate Carree ###
 name = "platecarre"
@@ -76,7 +76,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ) 	#add a method to this instance of MyProj
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 
 ### Mercator ###
@@ -95,7 +95,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Gall-Peters ###
 name = "gallpeters"
@@ -113,7 +113,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Azimuthal Equidistant ###
 name = "aziequi"
@@ -131,7 +131,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Gnomonic ###
 name = "gnomo"
@@ -149,7 +149,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Mollweide ###
 name = "mollweide"
@@ -167,7 +167,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Stereographic ###
 name = "stere"
@@ -184,7 +184,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### van der Grinten ###
 name = "vandg"
@@ -201,7 +201,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 #### Winkel Tripel ###
 #name = "wintri"
@@ -218,7 +218,7 @@ PJlist.append(PJ)
 
 #PJ = MyProj(name,fullname,p,R,width,height)
 #PJ.mask = types.MethodType(mask,PJ)
-#PJlist.append(PJ)
+#AllPJdict.update({name : PJ})
 
 ### Interrupted Goode Homolosine ###
 name = "goode"
@@ -235,7 +235,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Sinusoidal ###
 name = "sinu"
@@ -252,7 +252,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Transversal Mercator ###
 name = "tmerc"
@@ -270,7 +270,7 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
 ### Robinson ###
 name = "robin"
@@ -289,5 +289,6 @@ def mask(pj,xy):
 
 PJ = MyProj(name,fullname,p,R,width,height)
 PJ.mask = types.MethodType(mask,PJ)
-PJlist.append(PJ)
+AllPJdict.update({name : PJ})
 
+#print AllPJdict.keys()

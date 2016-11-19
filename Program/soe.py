@@ -142,7 +142,7 @@ app.installTranslator(translator)
 #	app.setStyleSheet(stylesheet.readAll().data())
 
 
-wd =  Mywidget()
+
 
 #wd.setFont(qfontdb.font("Ubuntu", "Normal", 12))
 #wd.setFont(QFont("Times", 12, QFont.Bold))
@@ -150,21 +150,23 @@ wd =  Mywidget()
 #wd.showFullScreen()
 
 
-if len(sys.argv)==2:
-	try:
-		ar=sys.argv[1]
-	except:
-		sys.exit()
+
+
+if "--allprojs" in sys.argv :
+	Projs = ["platecarre", "mercator", "gallpeters", "aziequi", "gnomo", "mollweide", "stere", "vandg", "goode", "sinu", "tmerc", "robin"]
 else:
-	ar=None
+	Projs = ["platecarre","mercator","gallpeters","aziequi","gnomo","mollweide"]
+
+PJlist=[]
+for key in Projs:
+	PJlist.append(AllPJdict[key])
 
 
-if ar=="--fullscreen":
+wd =  Mywidget()
+if "--fullscreen" in sys.argv :
 	wd.showFullScreen()
-elif ar==None:
-	wd.show()
 else:
-	print "Option not valid"
-	sys.exit()
+	wd.show()
+
 
 app.exec_() 
