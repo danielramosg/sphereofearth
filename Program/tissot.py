@@ -90,7 +90,6 @@ class SoeMap(QWidget):
 	
 	self.resizeEvent(self)
         
-	self.connect(self.cnx.tissot_clear, SIGNAL("clicked()"),self.tissotLayer_bg.Clear)
 	self.connect(self.cnx.radiusbox, SIGNAL("valueChanged(double)"),self.tissotLayer_bg.update)
 	self.connect(self.cnx.geod_clear, SIGNAL("clicked()"),self.geodesicLayer.Clear)
 	self.connect(self.cnx.loxo_clear, SIGNAL("clicked()"),self.loxodromeLayer.Clear)
@@ -288,10 +287,6 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
         super(TissotLayer_bg, self).__init__(parent) 
         self.thismap = parent
 
-    def Clear (self):
-	self.thismap.parent.listellip = []
-	self.update()
-
     def paintEvent(self, event): 
 	painter = QPainter()
 	for coor in self.thismap.parent.listellip:
@@ -312,7 +307,7 @@ class TissotLayer_bg(QWidget): # This class contains the images with clicked ell
 			painter.end()
 
         super(TissotLayer_bg, self).paintEvent(event) #llamar al paintEvent() de la superclase, necesario
-	# print 'TissotLayer_bg actualizada'
+	#print 'TissotLayer_bg actualizada'
 
 
 class GeodesicLayer(QWidget): # Class containing the geodesic path 

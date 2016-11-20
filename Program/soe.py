@@ -76,7 +76,7 @@ class Mywidget (QWidget):
 	self.loxptA = None
 	self.loxptB = None
 
-	self.maps=[0]
+	self.maps=[]
 	for pj in PJlist:
 		pjmap = SoeMap(self, self.ui, pj, resol)
 		self.ui.tab_maps.addTab(pjmap, pj.fullname)
@@ -90,6 +90,30 @@ class Mywidget (QWidget):
 	self.connect(self.ui.tab_maps, SIGNAL("currentChanged(int)"), self.setTexts)
 	self.connect(self.ui.tab_maps, SIGNAL("currentChanged(int)"), self.updateMap)
 
+	self.connect(self.ui.tissot_clear, SIGNAL("clicked()"),self.ClearEllipses)
+	self.connect(self.ui.tissot_undo, SIGNAL("clicked()"),self.UndoEllipse)
+	self.connect(self.ui.tissot_sample, SIGNAL("clicked()"),self.SampleEllipses)
+
+    def ClearEllipses(self):
+	self.listellip = []
+	for mp in self.maps:
+		mp.tissotLayer_bg.update()
+
+    def UndoEllipse(self):
+	if len(self.listellip) > 0 :
+		self.listellip.pop()
+	for mp in self.maps:
+		mp.tissotLayer_bg.update()
+
+    def SampleEllipses(self):
+	for i in range(-120,180,60):
+		for j in range(-40,80,40):
+			self.listellip.append([i,j])
+	for i in range(-150,180,60):
+		for j in range(-60,80,40):
+			self.listellip.append([i,j])
+	for mp in self.maps:
+		mp.tissotLayer_bg.update()
 
     def setTexts(self):
 	self.lang=Languages[self.ui.langbox.currentIndex()]
@@ -121,7 +145,7 @@ class Mywidget (QWidget):
 	txtfile.close()
 	
     def updateMap(self):
-	currentmap = self.ui.tab_maps.currentIndex() + 1
+	currentmap = self.ui.tab_maps.currentIndex()
 	self.maps[currentmap].tissotLayer_bg.update()
 	
 
